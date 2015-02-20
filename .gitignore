@@ -181,3 +181,8 @@ UpgradeLog*.htm
 
 # Microsoft Fakes
 FakesAssemblies/
+
+# Custom
+packages/**
+!packages/repositories.config
+!packages.config

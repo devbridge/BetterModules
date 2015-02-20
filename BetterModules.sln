@@ -1,0 +1,87 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{4F4EE6BB-6437-4AAB-86B8-5C0C6F306D1B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{A57EDF2D-6AA0-4BCB-869D-4FADF32CF1B9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sandbox", "Sandbox", "{10B08C38-8E0B-4157-8FC2-B77CEF306A4D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{26F0B1D1-8290-4906-B165-1D6ACCC2F346}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{83596258-AC7F-41AC-A783-34DD3515148F}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
+		README.md = README.md
+		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterModules.NugetPackage", "BetterModules.NugetPackage\BetterModules.NugetPackage.csproj", "{2D087177-6802-45C4-A0F1-6DBB588E3C86}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterModules.Mvc5.Sandbox", "BetterModules.Mvc5.Sandbox\BetterModules.Mvc5.Sandbox.csproj", "{88BB4C32-0EC8-4676-9870-EBD147CEF3A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterModules.Sample.Module", "BetterModules.Sample.Module\BetterModules.Sample.Module.csproj", "{ED95B78C-2448-4096-A89C-A2CA3916783A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterModules.Sample.Web.Module", "BetterModules.Sample.Web.Module\BetterModules.Sample.Web.Module.csproj", "{523F9A3E-B266-4863-91C4-08690044A852}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterModules.Core.Tests", "BetterModules.Core.Tests\BetterModules.Core.Tests.csproj", "{BFE98842-C880-4E23-9898-32ACB2E95A2F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterModules.Core.Web.Tests", "BetterModules.Core.Web.Tests\BetterModules.Core.Web.Tests.csproj", "{1646AD68-8EC8-4109-B538-E725C5E2A53B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterModules.Core", "BetterModules.Core\BetterModules.Core.csproj", "{C97B2899-5AC5-4528-B205-478D4183676D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterModules.Core.Web", "BetterModules.Core.Web\BetterModules.Core.Web.csproj", "{C8588325-B702-4785-834F-313C19562871}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2D087177-6802-45C4-A0F1-6DBB588E3C86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D087177-6802-45C4-A0F1-6DBB588E3C86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D087177-6802-45C4-A0F1-6DBB588E3C86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D087177-6802-45C4-A0F1-6DBB588E3C86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88BB4C32-0EC8-4676-9870-EBD147CEF3A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88BB4C32-0EC8-4676-9870-EBD147CEF3A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88BB4C32-0EC8-4676-9870-EBD147CEF3A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88BB4C32-0EC8-4676-9870-EBD147CEF3A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED95B78C-2448-4096-A89C-A2CA3916783A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED95B78C-2448-4096-A89C-A2CA3916783A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED95B78C-2448-4096-A89C-A2CA3916783A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED95B78C-2448-4096-A89C-A2CA3916783A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{523F9A3E-B266-4863-91C4-08690044A852}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{523F9A3E-B266-4863-91C4-08690044A852}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{523F9A3E-B266-4863-91C4-08690044A852}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{523F9A3E-B266-4863-91C4-08690044A852}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFE98842-C880-4E23-9898-32ACB2E95A2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFE98842-C880-4E23-9898-32ACB2E95A2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFE98842-C880-4E23-9898-32ACB2E95A2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFE98842-C880-4E23-9898-32ACB2E95A2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1646AD68-8EC8-4109-B538-E725C5E2A53B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1646AD68-8EC8-4109-B538-E725C5E2A53B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1646AD68-8EC8-4109-B538-E725C5E2A53B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1646AD68-8EC8-4109-B538-E725C5E2A53B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C97B2899-5AC5-4528-B205-478D4183676D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C97B2899-5AC5-4528-B205-478D4183676D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C97B2899-5AC5-4528-B205-478D4183676D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C97B2899-5AC5-4528-B205-478D4183676D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8588325-B702-4785-834F-313C19562871}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8588325-B702-4785-834F-313C19562871}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8588325-B702-4785-834F-313C19562871}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8588325-B702-4785-834F-313C19562871}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2D087177-6802-45C4-A0F1-6DBB588E3C86} = {26F0B1D1-8290-4906-B165-1D6ACCC2F346}
+		{88BB4C32-0EC8-4676-9870-EBD147CEF3A1} = {10B08C38-8E0B-4157-8FC2-B77CEF306A4D}
+		{ED95B78C-2448-4096-A89C-A2CA3916783A} = {A57EDF2D-6AA0-4BCB-869D-4FADF32CF1B9}
+		{523F9A3E-B266-4863-91C4-08690044A852} = {A57EDF2D-6AA0-4BCB-869D-4FADF32CF1B9}
+		{BFE98842-C880-4E23-9898-32ACB2E95A2F} = {4F4EE6BB-6437-4AAB-86B8-5C0C6F306D1B}
+		{1646AD68-8EC8-4109-B538-E725C5E2A53B} = {4F4EE6BB-6437-4AAB-86B8-5C0C6F306D1B}
+	EndGlobalSection
+EndGlobal

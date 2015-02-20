@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2D087177-6802-45C4-A0F1-6DBB588E3C86}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BetterModules.NugetPackage</RootNamespace>
+    <AssemblyName>BetterModules.NugetPackage</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Packages\BetterModules.Core.Web\BetterModules.Core.Web.nuspec.template" />
+    <None Include="Packages\BetterModules.Core\BetterModules.Core.nuspec.template" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\BetterModules.Core.Web\BetterModules.Core.Web.csproj">
+      <Project>{c8588325-b702-4785-834f-313c19562871}</Project>
+      <Name>BetterModules.Core.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BetterModules.Core\BetterModules.Core.csproj">
+      <Project>{c97b2899-5ac5-4528-b205-478d4183676d}</Project>
+      <Name>BetterModules.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>mkdir "$(ProjectDir)$(OutDir)packages"
+
+rem --- Creating BetterModules.Core package -------------------------------------------------------------------------------
+mkdir "$(ProjectDir)$(OutDir)packages\BetterModules.Core"
+
+mkdir "$(ProjectDir)$(OutDir)packages\BetterModules.Core\content"
+mkdir "$(ProjectDir)$(OutDir)packages\BetterModules.Core\content\net40"
+copy "$(SolutionDir)LICENSE" "$(ProjectDir)$(OutDir)packages\BetterModules.Core\content\net40\BetterModules.License.txt" /Y
+
+mkdir "$(ProjectDir)$(OutDir)packages\BetterModules.Core\lib"
+mkdir "$(ProjectDir)$(OutDir)packages\BetterModules.Core\lib\net40"
+xcopy "$(ProjectDir)$(OutDir)BetterModules.Core.dll" "$(ProjectDir)$(OutDir)packages\BetterModules.Core\lib\net40\" /Y /Q
+
+"$(ProjectDir)$(OutDir)BetterModules.NugetPackage.exe" "$(ProjectDir)Packages\BetterModules.Core\BetterModules.Core.nuspec.template" "$(ProjectDir)$(OutDir)packages\BetterModules.Core\BetterModules.Core.nuspec"
+"$(SolutionDir).nuget\nuget.exe" pack "$(ProjectDir)$(OutDir)packages\BetterModules.Core\BetterModules.Core.nuspec" -OutputDirectory "$(ProjectDir)$(OutDir)\" -NoPackageAnalysis
+
+rem --- Creating BetterModules.Core.Web package -------------------------------------------------------------------------------
+mkdir "$(ProjectDir)$(OutDir)packages\BetterModules.Core.Web"
+
+mkdir "$(ProjectDir)$(OutDir)packages\BetterModules.Core.Web\lib"
+mkdir "$(ProjectDir)$(OutDir)packages\BetterModules.Core.Web\lib\net40"
+xcopy "$(ProjectDir)$(OutDir)BetterModules.Core.Web.dll" "$(ProjectDir)$(OutDir)packages\BetterModules.Core.Web\lib\net40\" /Y /Q
+xcopy "$(ProjectDir)$(OutDir)RazorGenerator.Mvc.dll" "$(ProjectDir)$(OutDir)packages\BetterModules.Core.Web\lib\net40\" /Y /Q
+
+"$(ProjectDir)$(OutDir)BetterModules.NugetPackage.exe" "$(ProjectDir)Packages\BetterModules.Core.Web\BetterModules.Core.Web.nuspec.template" "$(ProjectDir)$(OutDir)packages\BetterModules.Core.Web\BetterModules.Core.Web.nuspec"
+"$(SolutionDir).nuget\nuget.exe" pack "$(ProjectDir)$(OutDir)packages\BetterModules.Core.Web\BetterModules.Core.Web.nuspec" -OutputDirectory "$(ProjectDir)$(OutDir)\" -NoPackageAnalysis</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
