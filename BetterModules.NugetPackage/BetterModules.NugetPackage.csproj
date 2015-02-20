@@ -49,7 +49,9 @@
     <None Include="Packages\BetterModules.Core.Web\BetterModules.Core.Web.nuspec.template">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Packages\BetterModules.Core\BetterModules.Core.nuspec.template" />
+    <None Include="Packages\BetterModules.Core\BetterModules.Core.nuspec.template">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
