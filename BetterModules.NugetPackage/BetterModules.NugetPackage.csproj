@@ -46,7 +46,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Packages\BetterModules.Core.Web\BetterModules.Core.Web.nuspec.template" />
+    <None Include="Packages\BetterModules.Core.Web\BetterModules.Core.Web.nuspec.template">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Packages\BetterModules.Core\BetterModules.Core.nuspec.template" />
   </ItemGroup>
   <ItemGroup />
@@ -66,10 +68,6 @@
 
 rem --- Creating BetterModules.Core package -------------------------------------------------------------------------------
 mkdir "$(ProjectDir)$(OutDir)packages\BetterModules.Core"
-
-mkdir "$(ProjectDir)$(OutDir)packages\BetterModules.Core\content"
-mkdir "$(ProjectDir)$(OutDir)packages\BetterModules.Core\content\net40"
-copy "$(SolutionDir)LICENSE" "$(ProjectDir)$(OutDir)packages\BetterModules.Core\content\net40\BetterModules.License.txt" /Y
 
 mkdir "$(ProjectDir)$(OutDir)packages\BetterModules.Core\lib"
 mkdir "$(ProjectDir)$(OutDir)packages\BetterModules.Core\lib\net40"
