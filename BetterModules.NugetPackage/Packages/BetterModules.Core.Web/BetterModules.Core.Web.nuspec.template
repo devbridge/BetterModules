@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>BetterModules.Core.Web</id>
+    <version>@BetterModulesVersion@</version>
+    <authors>Devbridge</authors>
+    <owners>Devbridge</owners>
+    <licenseUrl>https://github.com/devbridge/BetterModules/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/devbridge/BetterModules</projectUrl>
+    <!--<iconUrl>TODO:</iconUrl>-->
+    <description>The Core Web module for BetterModules. BetterModules is modular architecture supporting web based and business logic modules.</description>
+    <copyright>BetterModules is licensed under MIT LICENSE AGREEMENT (https://github.com/devbridge/BetterModules/blob/master/LICENSE).</copyright>
+    <dependencies>
+      <dependency id="BetterModules.Core" version="[@BetterModulesVersion@]" />
+      <dependency id="Autofac" version="3.1.5" />
+      <dependency id="Common.Logging" version="2.1.2" />
+      <dependency id="Microsoft.AspNet.Mvc" version="4.0.40804.0" />
+      <dependency id="Microsoft.AspNet.Razor" version="2.0.30506.0" />
+      <dependency id="Microsoft.AspNet.WebPages" version="2.0.30506.0" />
+      <dependency id="Microsoft.Web.Infrastructure" version="1.0.0.0" />
+      <dependency id="Mvc3Futures" version="3.0.20105.0" />
+    </dependencies>
+  </metadata>
+</package>
