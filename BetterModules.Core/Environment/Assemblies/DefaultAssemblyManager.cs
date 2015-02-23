@@ -118,7 +118,7 @@ namespace BetterModules.Core.Environment.Assemblies
             var loadedPaths = modules.Select(f => f.Location).ToArray();
 
             var directory = AppDomain.CurrentDomain.BaseDirectory;
-            if (!directory.ToLowerInvariant().Contains("\\bin\\debug"))
+            if (!directory.ToLowerInvariant().Contains("\\bin"))
             {
                 directory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin");
             }
