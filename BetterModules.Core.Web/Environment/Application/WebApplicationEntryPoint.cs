@@ -1,11 +1,13 @@
 ﻿using System;
+
 using BetterModules.Core.Dependencies;
 using BetterModules.Core.Exceptions;
 using BetterModules.Core.Web.Dependencies;
 using BetterModules.Core.Web.Environment.Application;
+
 using Common.Logging;
 
-[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(WebApplicationEntryPoint), "PreApplicationStart", Order = 100)]
+[assembly: WebApplicationPreStartAttribute(typeof(WebApplicationEntryPoint), "PreApplicationStart", Order = 100)]
 
 namespace BetterModules.Core.Web.Environment.Application
 {
@@ -19,7 +21,7 @@ namespace BetterModules.Core.Web.Environment.Application
         /// <summary>
         /// Method to run logic before application start (as PreApplicationStartMethod). Do not run this method from your code.
         /// </summary>        
-        internal static void PreApplicationStart()
+        public static void PreApplicationStart()
         {
             if (isStarted)
             {

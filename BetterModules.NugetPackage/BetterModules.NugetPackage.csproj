@@ -46,6 +46,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Packages\BetterModules.Core.Web\BetterModules.Core.Web.nuspec.template">
       <SubType>Designer</SubType>
     </None>
