@@ -1,14 +1,20 @@
-﻿using System.Collections.Generic;
-using System.Configuration;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.IO;
+
 using Autofac;
+
 using BetterModules.Core.Configuration;
 using BetterModules.Core.DataAccess.DataContext.Migrations;
 using BetterModules.Core.Dependencies;
 using BetterModules.Core.Environment.Assemblies;
 using BetterModules.Core.Modules;
+
 using BetterModules.Sample.Module;
+
 using Moq;
+
 using NUnit.Framework;
 
 namespace BetterModules.Core.Tests.DataAccess.DataContext.Migrations
@@ -16,57 +22,118 @@ namespace BetterModules.Core.Tests.DataAccess.DataContext.Migrations
     [TestFixture]
     public class DefaultMigrationRunnerIntegrationTests : TestBase
     {
+        private string tempFile;
+        private string tempDir;
+        private string basePath;
+
         [Test]
         public void Should_Run_Sample_Module_Migration_Successfully()
         {
+            basePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Data");
+            tempDir = Path.Combine(basePath, "Temp");
+
             using (var container = ContextScopeProvider.CreateChildContainer())
             {
-                var configuration = container.Resolve<IConfiguration>();
-                var connectionStringName = configuration.Database.ConnectionStringName;
-                Assert.IsNotNull(connectionStringName);
+                var connectionString = PrepareTemporaryDatabase();
 
-                var connectionString = ConfigurationManager.ConnectionStrings[connectionStringName];
-                Assert.IsNotNull(connectionString);
+                var versionUpdateCount = 0;
+                var assemblyLoader = container.Resolve<IAssemblyLoader>();
+                var versionChecker = new Mock<IVersionChecker>();
+                versionChecker
+                    .Setup(vc => vc.VersionExists(It.IsAny<string>(), It.IsAny<long>()))
+                    .Returns<string, long>((s, l) => false);
+                versionChecker
+                    .Setup(vc => vc.AddVersion(It.IsAny<string>(), It.IsAny<long>()))
+                    .Callback<string, long>((s, l) => versionUpdateCount++);
 
-                using (var connection = new SqlConnection(connectionString.ConnectionString))
+                var configuration = new Mock<IConfiguration>();
+                configuration
+                    .Setup(c => c.Database)
+                    .Returns(() => new DatabaseConfigurationElement
+                    {
+                        ConnectionString = connectionString
+                    });
+
+                var migrationRunner = new DefaultMigrationRunner(assemblyLoader, configuration.Object, versionChecker.Object);
+                var descriptors = new List<ModuleDescriptor> { new SampleModuleDescriptor() };
+
+                migrationRunner.MigrateStructure(descriptors);
+
+                // Should run 2 migration scripts
+                Assert.AreEqual(versionUpdateCount, 2);
+
+                using (var connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    DropTablesIfSuchExist(connection);
 
-                    var versionUpdateCount = 0;
-                    var assemblyLoader = container.Resolve<IAssemblyLoader>();
-                    var versionChecker = new Mock<IVersionChecker>();
-                    versionChecker
-                        .Setup(vc => vc.VersionExists(It.IsAny<string>(), It.IsAny<long>()))
-                        .Returns<string, long>((s, l) => false);
-                    versionChecker
-                        .Setup(vc => vc.AddVersion(It.IsAny<string>(), It.IsAny<long>()))
-                        .Callback<string, long>((s, l) => versionUpdateCount++);
-
-                    var migrationRunner = new DefaultMigrationRunner(assemblyLoader, configuration, versionChecker.Object);
-                    var descriptors = new List<ModuleDescriptor> { new SampleModuleDescriptor() };
-
-                    migrationRunner.MigrateStructure(descriptors);
-
-                    // Should run 2 migration scripts
-                    Assert.AreEqual(versionUpdateCount, 2);
-
-                    // Check, if tables re-created
+                    // Check, if tables are created
                     CheckIfTablesExist(connection);
-
-                    // Shouldn't run the same migrations second time
-                    versionUpdateCount = 0;
-                    versionChecker
-                        .Setup(vc => vc.VersionExists(It.IsAny<string>(), It.IsAny<long>()))
-                        .Returns<string, long>((s, l) => true);
-
-                    migrationRunner.MigrateStructure(descriptors);
-
-                    // Should run 0 migration scripts
-                    Assert.AreEqual(versionUpdateCount, 0);
 
                     connection.Close();
                 }
+
+                // Shouldn't run the same migrations second time
+                versionUpdateCount = 0;
+                versionChecker
+                    .Setup(vc => vc.VersionExists(It.IsAny<string>(), It.IsAny<long>()))
+                    .Returns<string, long>((s, l) => true);
+
+                migrationRunner.MigrateStructure(descriptors);
+
+                // Should run 0 migration scripts
+                Assert.AreEqual(versionUpdateCount, 0);
+
+                DeleteTemporaryDatabase(tempFile);
+            }
+        }
+
+        private string PrepareTemporaryDatabase()
+        {
+            TryDeleteOldTemporaryFiles();
+
+            basePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Data");
+            var originalFile = Path.Combine(basePath, "BetterModulesTestsDataSet.mdf");
+
+            tempDir = Path.Combine(basePath, "Temp");
+            tempFile = Path.Combine(tempDir, string.Format("BetterModulesTestsDataSet_{0}.mdf", Guid.NewGuid().ToString()));
+
+            if (!Directory.Exists(tempDir))
+            {
+                Directory.CreateDirectory(tempDir);
+            }
+            File.Copy(originalFile, tempFile);
+
+            var connectionString = string.Format("Data Source=(LocalDb)\\v11.0; Initial Catalog=BetterModulesTestsDataSet; Integrated Security=SSPI; AttachDBFilename={0}", tempFile.TrimEnd('\\'));
+
+            return connectionString;
+        }
+
+        private void TryDeleteOldTemporaryFiles()
+        {
+            if (Directory.Exists(tempDir))
+            {
+                var files = Directory.GetFiles(tempDir);
+                foreach (var file in files)
+                {
+                    var ext = Path.GetExtension(file);
+                    var fileName = Path.GetFileName(file);
+                    if ((ext.ToLowerInvariant().EndsWith("mdf") || ext.ToLowerInvariant().EndsWith("ldf")) && fileName.StartsWith("BetterModulesTestsDataSet_"))
+                    {
+                        DeleteTemporaryDatabase(file);
+                    }
+                }
+            }
+        }
+
+        private void DeleteTemporaryDatabase(string file)
+        {
+            try
+            {
+                File.Delete(file);
+            }
+            catch
+            {
+                // DO nothing - database file may be locked
             }
         }
 
@@ -92,22 +159,6 @@ namespace BetterModules.Core.Tests.DataAccess.DataContext.Migrations
             Assert.IsTrue(tables.Contains("VersionInfo"));
             Assert.IsTrue(tables.Contains("TestTable"));
             Assert.IsTrue(tables.Contains("TestTable2"));
-        }
-
-        private void DropTablesIfSuchExist(SqlConnection connection)
-        {
-            const string dropTablePattern = "IF EXISTS " +
-                                            "(SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '{0}' AND TABLE_SCHEMA = 'module_bettermodulessample') " +
-                                            "DROP TABLE [module_bettermodulessample].[{0}]";
-
-            var command = new SqlCommand(string.Format(dropTablePattern, "VersionInfo"), connection);
-            command.ExecuteNonQuery();
-
-            command = new SqlCommand(string.Format(dropTablePattern, "TestTable"), connection);
-            command.ExecuteNonQuery();
-
-            command = new SqlCommand(string.Format(dropTablePattern, "TestTable2"), connection);
-            command.ExecuteNonQuery();
         }
     }
 }

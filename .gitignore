@@ -170,10 +170,6 @@ Backup*/
 UpgradeLog*.XML
 UpgradeLog*.htm
 
-# SQL Server files
-*.mdf
-*.ldf
-
 # Business Intelligence projects
 *.rdl.data
 *.bim.layout
@@ -186,3 +182,7 @@ FakesAssemblies/
 packages/**
 !packages/repositories.config
 !packages.config
+
+#Test databases
+BetterModules.Core.Tests/App_Data/Temp/*.mdf
+BetterModules.Core.Tests/App_Data/Temp/*.ldf
