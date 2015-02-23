@@ -14,6 +14,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{83596258-AC7F-41AC-A783-34DD3515148F}"
 	ProjectSection(SolutionItems) = preProject
 		LICENSE = LICENSE
+		logo.png = logo.png
 		README.md = README.md
 		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
 	EndProjectSection
