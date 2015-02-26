@@ -49,8 +49,8 @@ namespace BetterModules.NugetPackage
 
         private static string GetVersion()
         {
-            var cmsCoreAssembly = typeof(ModuleDescriptor).Assembly;
-            var assemblyInformationVersion = Attribute.GetCustomAttributes(cmsCoreAssembly, typeof(AssemblyInformationalVersionAttribute));
+            var coreAssembly = typeof(ModuleDescriptor).Assembly;
+            var assemblyInformationVersion = Attribute.GetCustomAttributes(coreAssembly, typeof(AssemblyInformationalVersionAttribute));
 
             if (assemblyInformationVersion.Length > 0)
             {
@@ -59,7 +59,7 @@ namespace BetterModules.NugetPackage
                 return informationVersion.InformationalVersion;
             }
 
-            return cmsCoreAssembly.GetName().Version.ToString(3);
+            return coreAssembly.GetName().Version.ToString(3);
         }
     }
 }
