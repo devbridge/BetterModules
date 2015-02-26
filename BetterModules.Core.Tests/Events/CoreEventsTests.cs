@@ -1,5 +1,5 @@
 ﻿using BetterModules.Core.DataContracts;
-using BetterModules.Core.Events;
+using BetterModules.Events;
 using Moq;
 using NHibernate;
 using NUnit.Framework;

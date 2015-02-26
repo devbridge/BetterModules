@@ -1,6 +1,5 @@
 ﻿using System.Web;
-using BetterModules.Core.Events;
-using BetterModules.Core.Web.Events;
+using BetterModules.Events;
 using Moq;
 using NUnit.Framework;
 

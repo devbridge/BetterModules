@@ -3,7 +3,7 @@ using BetterModules.Core.DataContracts;
 using NHibernate;
 
 // ReSharper disable CheckNamespace
-namespace BetterModules.Core.Events
+namespace BetterModules.Events
 // ReSharper restore CheckNamespace
 {   
     public class EntitySavingEventArgs : EventArgs

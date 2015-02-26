@@ -2,14 +2,17 @@
 using System.Linq;
 using System.Web;
 using System.Web.Routing;
+
 using BetterModules.Core.DataAccess.DataContext.Migrations;
-using BetterModules.Core.Events;
 using BetterModules.Core.Modules;
 using BetterModules.Core.Modules.Registration;
 using BetterModules.Core.Web.Environment.Host;
-using BetterModules.Core.Web.Events;
 using BetterModules.Core.Web.Modules.Registration;
+
+using BetterModules.Events;
+
 using Moq;
+
 using NUnit.Framework;
 
 namespace BetterModules.Core.Web.Tests.Environment.Host

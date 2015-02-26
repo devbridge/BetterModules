@@ -1,4 +1,4 @@
-﻿using BetterModules.Core.Events;
+﻿using BetterModules.Events;
 using NUnit.Framework;
 
 namespace BetterModules.Core.Tests.Events

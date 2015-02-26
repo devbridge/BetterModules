@@ -1,7 +1,7 @@
 ﻿using System;
 
 // ReSharper disable CheckNamespace
-namespace BetterModules.Core.Events
+namespace BetterModules.Events
 // ReSharper restore CheckNamespace
 {
     public delegate void DefaultEventHandler<in TArgs>(TArgs args) where TArgs : EventArgs;

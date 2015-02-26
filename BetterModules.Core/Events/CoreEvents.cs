@@ -2,7 +2,7 @@
 using NHibernate;
 
 // ReSharper disable CheckNamespace
-namespace BetterModules.Core.Events
+namespace BetterModules.Events
 // ReSharper restore CheckNamespace
 {
     public class CoreEvents : EventsBase<CoreEvents>

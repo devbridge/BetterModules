@@ -1,8 +1,7 @@
 ﻿using System.Web;
-using BetterModules.Core.Events;
 
 // ReSharper disable CheckNamespace
-namespace BetterModules.Core.Web.Events
+namespace BetterModules.Events
 // ReSharper restore CheckNamespace
 {
     public class WebCoreEvents : EventsBase<WebCoreEvents>
