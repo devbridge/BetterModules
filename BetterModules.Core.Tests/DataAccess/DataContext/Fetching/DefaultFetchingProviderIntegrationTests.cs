@@ -12,7 +12,7 @@ using NUnit.Framework;
 namespace BetterModules.Core.Tests.DataAccess.DataContext.Fetching
 {
     [TestFixture]
-    public class DefaultFetchingProviderTests : DatabaseTestBase
+    public class DefaultFetchingProviderIntegrationTests : DatabaseTestBase
     {
         [Test]
         public void Should_Call_Fetch_Successfully()
