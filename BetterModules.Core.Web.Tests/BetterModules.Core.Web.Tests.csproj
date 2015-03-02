@@ -107,7 +107,6 @@
     <Compile Include="Mvc\Commands\DefaultCommandResolverTests.cs" />
     <Compile Include="Mvc\CoreControllerBaseTests.cs" />
     <Compile Include="Mvc\Extensions\DefaultControllerExtensionsTests.cs" />
-    <Compile Include="Mvc\Extensions\ViewRenderingExtensionsTests.cs" />
     <Compile Include="Mvc\Extensions\VirtualPathTests.cs" />
     <Compile Include="Mvc\Routes\DefaultRouteTableTests.cs" />
     <Compile Include="Mvc\Routes\RouteExtensionsTests.cs" />

@@ -99,14 +99,14 @@ namespace BetterModules.Core.DataAccess
             return UnitOfWork.Session.QueryOver<TEntity>().Where(f => !f.IsDeleted);
         }
 
-        public IQueryOver<TEntity, TEntity> AsQueryOver<TEntity>(Expression<Func<TEntity>> alias = null) where TEntity : class
+        public IQueryOver<TEntity, TEntity> AsQueryOver<TEntity>(Expression<Func<TEntity>> alias) where TEntity : class, IEntity
         {
             if (alias != null)
             {
-                return UnitOfWork.Session.QueryOver(alias);
+                return UnitOfWork.Session.QueryOver(alias).Where(f => !f.IsDeleted);
             }
 
-            return UnitOfWork.Session.QueryOver<TEntity>();
+            return UnitOfWork.Session.QueryOver<TEntity>().Where(f => !f.IsDeleted);
         }
 
         public virtual IQueryable<TEntity> AsQueryable<TEntity>(Expression<Func<TEntity, bool>> filter) where TEntity : IEntity

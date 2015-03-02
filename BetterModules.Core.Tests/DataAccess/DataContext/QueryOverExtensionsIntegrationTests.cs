@@ -1,0 +1,114 @@
+﻿using System;
+using System.Linq;
+
+using BetterModules.Core.DataAccess.DataContext;
+using BetterModules.Core.Exceptions.DataTier;
+using BetterModules.Sample.Module.Models;
+
+using NUnit.Framework;
+
+namespace BetterModules.Core.Tests.DataAccess.DataContext
+{
+    [TestFixture]
+    public class QueryOverExtensionsIntegrationTests : DatabaseTestBase
+    {
+        private TestItemCategory category1;
+        private TestItemModel model1;
+        private TestItemModel model2;
+        private TestItemModel model3;
+        private bool isSet;
+
+        [SetUp]
+        public void SetUp()
+        {
+            if (!isSet)
+            {
+                isSet = true;
+
+                category1 = TestDataProvider.ProvideRandomTestItemCategory();
+
+                model1 = TestDataProvider.ProvideRandomTestItemModel(category1);
+                model1.Name = "QVO_01";
+                model2 = TestDataProvider.ProvideRandomTestItemModel(category1);
+                model2.Name = "QVO_02";
+                model3 = TestDataProvider.ProvideRandomTestItemModel(category1);
+                model3.Name = "QVO_03";
+
+                Repository.Save(model3);
+                Repository.Save(model2);
+                Repository.Save(model1);
+                
+                UnitOfWork.Commit();
+            }
+        }
+
+        [Test]
+        public void Should_Return_First_Element_Successfully()
+        {
+            var query = Repository.AsQueryOver<TestItemModel>().Where(t => t.Id == model1.Id);
+            var item = query.First<TestItemModel, TestItemModel>();
+
+            Assert.IsNotNull(item);
+            Assert.AreEqual(item.Name, model1.Name);
+        }
+        
+        [Test]
+        [ExpectedException(typeof(EntityNotFoundException))]
+        public void Should_Throw_EntityNotFound_Exception_Retrieving_First()
+        {
+            var guid = Guid.NewGuid();
+            Repository
+                .AsQueryOver<TestItemModel>()
+                .Where(t => t.Id == guid)
+                .First<TestItemModel, TestItemModel>();
+        }
+
+        [Test]
+        public void Should_Add_Default_Paging()
+        {
+            var list = Repository
+                .AsQueryOver<TestItemModel>()
+                .Where(t => t.Category == category1)
+                .AddPaging(null, null)
+                .OrderBy(t => t.Name).Asc
+                .List<TestItemModel>()
+                .ToList();
+
+            Assert.AreEqual(list.Count, 3);
+            Assert.AreEqual(model1.Name, list[0].Name);
+            Assert.AreEqual(model2.Name, list[1].Name);
+            Assert.AreEqual(model3.Name, list[2].Name);
+        }
+
+        [Test]
+        public void Should_Return_First_Page_Of_Items()
+        {
+            var list = Repository
+                .AsQueryOver<TestItemModel>()
+                .Where(t => t.Category == category1)
+                .AddPaging(1, 2)
+                .OrderBy(t => t.Name).Asc
+                .List<TestItemModel>()
+                .ToList();
+
+            Assert.AreEqual(list.Count, 2);
+            Assert.AreEqual(model1.Name, list[0].Name);
+            Assert.AreEqual(model2.Name, list[1].Name);
+        }
+
+        [Test]
+        public void Should_Return_Second_Page_Of_Items()
+        {
+            var list = Repository
+                .AsQueryOver<TestItemModel>()
+                .Where(t => t.Category == category1)
+                .AddPaging(2, 2)
+                .OrderBy(t => t.Name).Asc
+                .List<TestItemModel>()
+                .ToList();
+
+            Assert.AreEqual(list.Count, 1);
+            Assert.AreEqual(model3.Name, list[0].Name);
+        }
+    }
+}

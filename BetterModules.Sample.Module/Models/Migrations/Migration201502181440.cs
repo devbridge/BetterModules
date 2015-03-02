@@ -39,8 +39,8 @@ namespace BetterModules.Sample.Module.Models.Migrations
 
             const string sqlQuery = @"
 
-INSERT INTO module_bettermodulessample.TestItems (Name, TestItemCategoryId, Version, CreatedByUser, ModifiedByUser) 
-    VALUES ('Item1', (SELECT Id FROM module_bettermodulessample.TestItemCategories WHERE Name = 'ItemCategory1'), 1, 'TestAdmin', 'TestAdmin')
+INSERT INTO module_bettermodulessample.TestItems (Id, Name, TestItemCategoryId, Version, CreatedByUser, ModifiedByUser) 
+    VALUES ('{0}', 'Item1', (SELECT Id FROM module_bettermodulessample.TestItemCategories WHERE Name = 'ItemCategory1'), 1, 'TestAdmin', 'TestAdmin')
 INSERT INTO module_bettermodulessample.TestItems (Name, TestItemCategoryId, Version, CreatedByUser, ModifiedByUser) 
     VALUES ('Item2', (SELECT Id FROM module_bettermodulessample.TestItemCategories WHERE Name = 'ItemCategory2'), 1, 'TestAdmin', 'TestAdmin')
 
@@ -64,7 +64,7 @@ VALUES ('Item2 Child2',
 	(SELECT Id FROM module_bettermodulessample.TestItems WHERE Name = 'Item2'),
 	(SELECT Id FROM module_bettermodulessample.TestItemCategories WHERE Name = 'ChildCategory2'), 1, 'TestAdmin', 'TestAdmin')
 ";
-            Execute.Sql(sqlQuery);
+            Execute.Sql(string.Format(sqlQuery, SampleModuleDescriptor.TestItemModelId));
         }
     }
 }

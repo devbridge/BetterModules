@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using BetterModules.Sample.Module.Models;
 
 namespace BetterModules.Core.Tests.TestHelpers
 {
@@ -41,6 +42,24 @@ namespace BetterModules.Core.Tests.TestHelpers
         {
             return new DateTime(ProvideRandomNumber(1990, 2019), ProvideRandomNumber(1, 12), ProvideRandomNumber(1, 29),
                                 ProvideRandomNumber(0, 23), ProvideRandomNumber(0, 59), ProvideRandomNumber(0, 59));
+        }
+
+        public TestItemModel ProvideRandomTestItemModel(TestItemCategory category = null)
+        {
+            var model = new TestItemModel();
+            model.Name = ProvideRandomString();
+
+            model.Category = category ?? ProvideRandomTestItemCategory();
+
+            return model;
+        }
+
+        public TestItemCategory ProvideRandomTestItemCategory()
+        {
+            var model = new TestItemCategory();
+            model.Name = ProvideRandomString();
+            
+            return model;
         }
     }
 }

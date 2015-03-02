@@ -24,7 +24,7 @@ namespace BetterModules.Core.DataAccess
 
         IQueryOver<TEntity, TEntity> AsQueryOver<TEntity>() where TEntity : class, IEntity;
 
-        IQueryOver<TEntity, TEntity> AsQueryOver<TEntity>(Expression<Func<TEntity>> alias) where TEntity : class;
+        IQueryOver<TEntity, TEntity> AsQueryOver<TEntity>(Expression<Func<TEntity>> alias) where TEntity : class, IEntity;
 
         IQueryable<TEntity> AsQueryable<TEntity>() where TEntity : IEntity;
 

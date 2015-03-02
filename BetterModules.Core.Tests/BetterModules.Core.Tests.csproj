@@ -84,8 +84,16 @@
   <ItemGroup>
     <Compile Include="ApplicationContextTests.cs" />
     <Compile Include="Configuration\DefaultConfigurationLoaderTests.cs" />
+    <Compile Include="DataAccess\DataContext\EventListeners\DeleteEventListenerIntegrationTests.cs" />
+    <Compile Include="DataAccess\DataContext\EventListeners\EventListenerHelperTests.cs" />
+    <Compile Include="DataAccess\DataContext\EventListeners\SaveOrUpdateEventListenerTests.cs" />
     <Compile Include="DataAccess\DataContext\Fetching\DefaultFetchingProviderIntegrationTests.cs" />
     <Compile Include="DataAccess\DataContext\Fetching\EagerFetchTests.cs" />
+    <Compile Include="DataAccess\DataContext\Interceptors\StaleInterceptorIntegrationTests.cs" />
+    <Compile Include="DataAccess\DataContext\QueryableExtensionsTests.cs" />
+    <Compile Include="DataAccess\DataContext\QueryOverExtensionsIntegrationTests.cs" />
+    <Compile Include="DataAccess\DataContext\RestrictionsExtensionsIntegrationTests.cs" />
+    <Compile Include="DataAccess\DefaultRepositoryIntegrationTests.cs" />
     <Compile Include="TestHelpers\Migrations\TestDatabaseInitializer.cs" />
     <Compile Include="DataAccess\PredicateBuilderTests.cs" />
     <Compile Include="DatabaseTestBase.cs" />

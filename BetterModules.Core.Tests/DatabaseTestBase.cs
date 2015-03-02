@@ -1,15 +1,43 @@
-﻿using Autofac;
+﻿using System.Data.SqlClient;
+
+using Autofac;
+
 using BetterModules.Core.Configuration;
-using BetterModules.Core.Dependencies;
+using BetterModules.Core.DataAccess;
+using BetterModules.Core.DataAccess.DataContext;
 using BetterModules.Core.Tests.TestHelpers;
 using BetterModules.Core.Tests.TestHelpers.Migrations;
-using NUnit.Framework;
 
 namespace BetterModules.Core.Tests
 {
     public abstract class DatabaseTestBase : TestBase
     {
         private static LocalDatabase database;
+        
+        private IRepository repository;
+
+        private IUnitOfWork unitOfWork;
+
+        protected SqlConnection SqlConnection
+        {
+            get { return database.SqlConnection; }
+        }
+
+        protected IRepository Repository
+        {
+            get
+            {
+                return repository ?? (repository = Container.Resolve<IRepository>());
+            }
+        }
+
+        protected IUnitOfWork UnitOfWork
+        {
+            get
+            {
+                return unitOfWork ?? (unitOfWork = Container.Resolve<IUnitOfWork>());
+            }
+        }
 
         protected DatabaseTestBase()
         {
@@ -23,20 +51,18 @@ namespace BetterModules.Core.Tests
         {
             database = TestDatabaseInitializer.RunDatabaseMigrationTests();
 
-            using (var container = ContextScopeProvider.CreateChildContainer())
-            {
-                var configuration = container.Resolve<IConfiguration>();
-                configuration.Database.ConnectionString = database.ConnectionString;
-            }
+            var configuration = Container.Resolve<IConfiguration>();
+            configuration.Database.ConnectionString = database.ConnectionString;
         }
 
-        [TestFixtureTearDown]
-        public void OnTestFixtureTearDown()
+        protected override void OnTextFixtureDown()
         {
             if (database != null)
             {
                 database.Dispose();
             }
+
+            base.OnTextFixtureDown();
         }
     }
 }
