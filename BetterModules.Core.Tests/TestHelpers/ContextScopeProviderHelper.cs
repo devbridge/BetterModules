@@ -26,6 +26,23 @@ namespace BetterModules.Core.Tests.TestHelpers
 
             ContextScopeProvider.RegisterTypes(builder);
         }
+        
+        public void RegisterFakeServiceInstance(Object type, Type interfaceType)
+        {
+            using (var container = ContextScopeProvider.CreateChildContainer())
+            {
+                var service = container.Resolve(interfaceType);
+                if (!originalObjects.ContainsKey(interfaceType))
+                {
+                    originalObjects.Add(interfaceType, service.GetType());
+                }
+            }
+
+            var builder = new ContainerBuilder();
+            builder.RegisterInstance(type).As(interfaceType).SingleInstance();
+
+            ContextScopeProvider.RegisterTypes(builder);
+        }
 
         public void Dispose()
         {

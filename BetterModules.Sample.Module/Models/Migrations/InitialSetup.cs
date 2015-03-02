@@ -1,4 +1,5 @@
-﻿using BetterModules.Core.DataAccess.DataContext.Migrations;
+﻿using System;
+using BetterModules.Core.DataAccess.DataContext.Migrations;
 using BetterModules.Core.Models;
 using FluentMigrator;
 
@@ -18,10 +19,63 @@ namespace BetterModules.Sample.Module.Models.Migrations
         public override void Up()
         {
             Create
-                 .Table("TestTable").InSchema(SchemaName)
+                 .Table("TestItemCategories").InSchema(SchemaName)
                  .WithBaseColumns()
-                 .WithColumn("Name").AsString(MaxLength.Name).NotNullable()
-                 .WithColumn("Description").AsString(MaxLength.Text).NotNullable();
+                 .WithColumn("Name").AsString(100).NotNullable();
+
+            Create
+                .Table("TestItems").InSchema(SchemaName)
+                .WithBaseColumns()
+                .WithColumn("Name").AsString(100).NotNullable()
+                .WithColumn("TestItemCategoryId").AsGuid().NotNullable();
+
+            Create
+                .ForeignKey("Fk__TestItems__TestItemCategories")
+                .FromTable("TestItems").InSchema(SchemaName).ForeignColumn("TestItemCategoryId")
+                .ToTable("TestItemCategories").InSchema(SchemaName).PrimaryColumn("Id");
+
+            Insert
+                .IntoTable("TestItemCategories").InSchema(SchemaName)
+                .Row(new
+                {
+                    Name = "ItemCategory1", 
+                    Version = 5, 
+                    CreatedOn = new DateTime(2010, 10, 10, 10, 10, 10),
+                    ModifiedOn = new DateTime(2011, 11, 11, 11, 11, 11),
+                    CreatedByUser = "TestCreator",
+                    ModifiedByUser = "TestModifier",
+                    IsDeleted = 0
+                })
+                .Row(new
+                {
+                    Name = "ItemCategory2", 
+                    Version = 1, 
+                    CreatedOn = DateTime.Now,
+                    ModifiedOn = DateTime.Now,
+                    CreatedByUser = "TestCreator",
+                    ModifiedByUser = "TestCreator",
+                    IsDeleted = 0
+                })
+                .Row(new
+                {
+                    Name = "ChildCategory1", 
+                    Version = 1, 
+                    CreatedOn = DateTime.Now,
+                    ModifiedOn = DateTime.Now,
+                    CreatedByUser = "TestCreator",
+                    ModifiedByUser = "TestCreator",
+                    IsDeleted = 0
+                })
+                .Row(new
+                {
+                    Name = "ChildCategory2", 
+                    Version = 1, 
+                    CreatedOn = DateTime.Now,
+                    ModifiedOn = DateTime.Now,
+                    CreatedByUser = "TestCreator",
+                    ModifiedByUser = "TestCreator",
+                    IsDeleted = 0
+                });
         }
     }
 }
