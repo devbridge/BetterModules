@@ -1,6 +1,5 @@
 ﻿using System;
 using BetterModules.Core.DataAccess.DataContext.Migrations;
-using BetterModules.Core.Models;
 using FluentMigrator;
 
 namespace BetterModules.Sample.Module.Models.Migrations
@@ -18,11 +17,13 @@ namespace BetterModules.Sample.Module.Models.Migrations
 
         public override void Up()
         {
+            // Test Item Categories
             Create
                  .Table("TestItemCategories").InSchema(SchemaName)
                  .WithBaseColumns()
                  .WithColumn("Name").AsString(100).NotNullable();
 
+            // Test Items
             Create
                 .Table("TestItems").InSchema(SchemaName)
                 .WithBaseColumns()
@@ -76,6 +77,18 @@ namespace BetterModules.Sample.Module.Models.Migrations
                     ModifiedByUser = "TestCreator",
                     IsDeleted = 0
                 });
+
+            // Inherited Test Items
+            Create
+                 .Table("InheritedTestItems").InSchema(SchemaName)
+                 .WithColumn("Id").AsGuid().PrimaryKey()
+                 .WithColumn("Description").AsString(100).NotNullable();
+
+            Create
+                .ForeignKey("Fk__InheritedTestItems__TestItems")
+                .FromTable("InheritedTestItems").InSchema(SchemaName).ForeignColumn("Id")
+                .ToTable("TestItems").InSchema(SchemaName).PrimaryColumn("Id");
+
         }
     }
 }

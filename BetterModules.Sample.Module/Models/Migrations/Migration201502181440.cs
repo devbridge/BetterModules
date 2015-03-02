@@ -39,10 +39,15 @@ namespace BetterModules.Sample.Module.Models.Migrations
 
             const string sqlQuery = @"
 
-INSERT INTO module_bettermodulessample.TestItems (Id, Name, TestItemCategoryId, Version, CreatedByUser, ModifiedByUser) 
-    VALUES ('{0}', 'Item1', (SELECT Id FROM module_bettermodulessample.TestItemCategories WHERE Name = 'ItemCategory1'), 1, 'TestAdmin', 'TestAdmin')
+INSERT INTO module_bettermodulessample.TestItems (Id, Name, TestItemCategoryId, Version, CreatedByUser, ModifiedByUser, 
+    CreatedOn, ModifiedOn) 
+    VALUES ('{0}', 'Item1', (SELECT Id FROM module_bettermodulessample.TestItemCategories WHERE Name = 'ItemCategory1'), 1, 'Creator', 'Modifier',
+    '2015-01-01 01:01:01', '2015-02-02 02:02:02')
 INSERT INTO module_bettermodulessample.TestItems (Name, TestItemCategoryId, Version, CreatedByUser, ModifiedByUser) 
     VALUES ('Item2', (SELECT Id FROM module_bettermodulessample.TestItemCategories WHERE Name = 'ItemCategory2'), 1, 'TestAdmin', 'TestAdmin')
+
+INSERT INTO module_bettermodulessample.InheritedTestItems (Id, Description) 
+    VALUES ('{0}', 'Inherited Item1')
 
 INSERT INTO module_bettermodulessample.TestItemChildren (Name, TestItemId, TestItemCategoryId, Version, CreatedByUser, ModifiedByUser) 
 VALUES ('Item1 Child1', 

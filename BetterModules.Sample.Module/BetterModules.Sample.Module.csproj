@@ -57,7 +57,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\InheritedTestItemModel.cs" />
     <Compile Include="Models\Maps\TestItemChildMap.cs" />
+    <Compile Include="Models\Maps\InheritedTestItemModelMap.cs" />
     <Compile Include="Models\Maps\TestItemMap.cs" />
     <Compile Include="Models\Maps\TestItemCategoryMap.cs" />
     <Compile Include="Models\Migrations\InitialSetup.cs" />

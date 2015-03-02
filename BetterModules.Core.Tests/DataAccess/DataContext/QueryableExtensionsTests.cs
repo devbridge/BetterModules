@@ -113,7 +113,7 @@ namespace BetterModules.Core.Tests.DataAccess.DataContext
             Assert.AreEqual("02", list1[1].Name);
             Assert.AreEqual("01", list1[2].Name);
         }
-
+        
         private class TestModel
         {
             public TestModel(string name)
