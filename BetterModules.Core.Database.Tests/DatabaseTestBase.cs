@@ -1,17 +1,18 @@
 ﻿using System.Data.SqlClient;
-
 using Autofac;
-
 using BetterModules.Core.Configuration;
 using BetterModules.Core.DataAccess;
 using BetterModules.Core.DataAccess.DataContext;
-using BetterModules.Core.Tests.TestHelpers;
-using BetterModules.Core.Tests.TestHelpers.Migrations;
+using BetterModules.Core.Database.Tests.TestHelpers;
+using BetterModules.Core.Database.Tests.TestHelpers.Migrations;
+using BetterModules.Core.Tests;
 
-namespace BetterModules.Core.Tests
+namespace BetterModules.Core.Database.Tests
 {
     public abstract class DatabaseTestBase : TestBase
     {
+        private DatabaseRandomTestDataProvider testDataProvider;
+
         private static LocalDatabase database;
         
         private IRepository repository;
@@ -63,6 +64,18 @@ namespace BetterModules.Core.Tests
             }
 
             base.OnTextFixtureDown();
+        }
+
+        public virtual DatabaseRandomTestDataProvider DatabaseTestDataProvider
+        {
+            get
+            {
+                if (testDataProvider == null)
+                {
+                    testDataProvider = new DatabaseRandomTestDataProvider();
+                }
+                return testDataProvider;
+            }
         }
     }
 }

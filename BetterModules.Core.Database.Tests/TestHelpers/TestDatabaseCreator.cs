@@ -10,7 +10,7 @@ using BetterModules.Core.Environment.Assemblies;
 using BetterModules.Core.Modules;
 using Moq;
 
-namespace BetterModules.Core.Tests.TestHelpers
+namespace BetterModules.Core.Database.Tests.TestHelpers
 {
     public class LocalDatabase : IDisposable
     {

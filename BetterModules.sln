@@ -35,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterModules.Core", "Bette
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterModules.Core.Web", "BetterModules.Core.Web\BetterModules.Core.Web.csproj", "{C8588325-B702-4785-834F-313C19562871}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterModules.Core.Database.Tests", "BetterModules.Core.Database.Tests\BetterModules.Core.Database.Tests.csproj", "{890E75A2-68E2-4579-91EC-64DEBB51723D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,10 @@ Global
 		{C8588325-B702-4785-834F-313C19562871}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8588325-B702-4785-834F-313C19562871}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C8588325-B702-4785-834F-313C19562871}.Release|Any CPU.Build.0 = Release|Any CPU
+		{890E75A2-68E2-4579-91EC-64DEBB51723D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{890E75A2-68E2-4579-91EC-64DEBB51723D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{890E75A2-68E2-4579-91EC-64DEBB51723D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{890E75A2-68E2-4579-91EC-64DEBB51723D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -84,5 +90,6 @@ Global
 		{523F9A3E-B266-4863-91C4-08690044A852} = {A57EDF2D-6AA0-4BCB-869D-4FADF32CF1B9}
 		{BFE98842-C880-4E23-9898-32ACB2E95A2F} = {4F4EE6BB-6437-4AAB-86B8-5C0C6F306D1B}
 		{1646AD68-8EC8-4109-B538-E725C5E2A53B} = {4F4EE6BB-6437-4AAB-86B8-5C0C6F306D1B}
+		{890E75A2-68E2-4579-91EC-64DEBB51723D} = {4F4EE6BB-6437-4AAB-86B8-5C0C6F306D1B}
 	EndGlobalSection
 EndGlobal

@@ -3,7 +3,7 @@ using BetterModules.Sample.Module;
 using BetterModules.Sample.Module.Models;
 using NUnit.Framework;
 
-namespace BetterModules.Core.Tests.Models
+namespace BetterModules.Core.Database.Tests.Models
 {
     [TestFixture]
     public class EntityMapBaseIntegrationTests : DatabaseTestBase

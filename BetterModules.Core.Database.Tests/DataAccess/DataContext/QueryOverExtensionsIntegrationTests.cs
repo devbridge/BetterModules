@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Linq;
-
 using BetterModules.Core.DataAccess.DataContext;
 using BetterModules.Core.Exceptions.DataTier;
 using BetterModules.Sample.Module.Models;
-
 using NUnit.Framework;
 
-namespace BetterModules.Core.Tests.DataAccess.DataContext
+namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
 {
     [TestFixture]
     public class QueryOverExtensionsIntegrationTests : DatabaseTestBase
@@ -25,13 +23,13 @@ namespace BetterModules.Core.Tests.DataAccess.DataContext
             {
                 isSet = true;
 
-                category1 = TestDataProvider.ProvideRandomTestItemCategory();
+                category1 = DatabaseTestDataProvider.ProvideRandomTestItemCategory();
 
-                model1 = TestDataProvider.ProvideRandomTestItemModel(category1);
+                model1 = DatabaseTestDataProvider.ProvideRandomTestItemModel(category1);
                 model1.Name = "QVO_01";
-                model2 = TestDataProvider.ProvideRandomTestItemModel(category1);
+                model2 = DatabaseTestDataProvider.ProvideRandomTestItemModel(category1);
                 model2.Name = "QVO_02";
-                model3 = TestDataProvider.ProvideRandomTestItemModel(category1);
+                model3 = DatabaseTestDataProvider.ProvideRandomTestItemModel(category1);
                 model3.Name = "QVO_03";
 
                 Repository.Save(model3);

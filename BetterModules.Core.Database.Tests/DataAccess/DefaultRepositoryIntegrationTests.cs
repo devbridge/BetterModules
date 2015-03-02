@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Linq;
-
 using Autofac;
-
 using BetterModules.Core.DataAccess;
 using BetterModules.Core.DataAccess.DataContext;
 using BetterModules.Core.Dependencies;
 using BetterModules.Core.Exceptions.DataTier;
 using BetterModules.Sample.Module;
 using BetterModules.Sample.Module.Models;
-
 using NHibernate.Proxy.DynamicProxy;
 using NUnit.Framework;
 
-namespace BetterModules.Core.Tests.DataAccess
+namespace BetterModules.Core.Database.Tests.DataAccess
 {
     [TestFixture]
     public class DefaultRepositoryIntegrationTests : DatabaseTestBase
@@ -32,15 +29,15 @@ namespace BetterModules.Core.Tests.DataAccess
             {
                 isSet = true;
 
-                category1 = TestDataProvider.ProvideRandomTestItemCategory();
+                category1 = DatabaseTestDataProvider.ProvideRandomTestItemCategory();
 
-                model1 = TestDataProvider.ProvideRandomTestItemModel(category1);
+                model1 = DatabaseTestDataProvider.ProvideRandomTestItemModel(category1);
                 model1.Name = "DRT_01";
-                model2 = TestDataProvider.ProvideRandomTestItemModel(category1);
+                model2 = DatabaseTestDataProvider.ProvideRandomTestItemModel(category1);
                 model2.Name = "DRT_02";
-                model3 = TestDataProvider.ProvideRandomTestItemModel(category1);
+                model3 = DatabaseTestDataProvider.ProvideRandomTestItemModel(category1);
                 model3.Name = "DRT_03";
-                deletedModel = TestDataProvider.ProvideRandomTestItemModel(category1);
+                deletedModel = DatabaseTestDataProvider.ProvideRandomTestItemModel(category1);
                 deletedModel.Name = "DRT_04";
 
                 Repository.Save(model3);
@@ -239,7 +236,7 @@ namespace BetterModules.Core.Tests.DataAccess
         [Test]
         public void Should_Save_Entity()
         {
-            var model = TestDataProvider.ProvideRandomTestItemModel();
+            var model = DatabaseTestDataProvider.ProvideRandomTestItemModel();
             
             Repository.Save(model);
             UnitOfWork.Commit();
@@ -250,7 +247,7 @@ namespace BetterModules.Core.Tests.DataAccess
         [Test]
         public void Should_Delete_Entity_By_Id_NotAsProxy()
         {
-            var model = TestDataProvider.ProvideRandomTestItemModel();
+            var model = DatabaseTestDataProvider.ProvideRandomTestItemModel();
 
             Repository.Save(model);
             UnitOfWork.Commit();
@@ -267,7 +264,7 @@ namespace BetterModules.Core.Tests.DataAccess
         [Test]
         public void Should_Delete_Entity_By_Id_AsProxy()
         {
-            var model = TestDataProvider.ProvideRandomTestItemModel();
+            var model = DatabaseTestDataProvider.ProvideRandomTestItemModel();
 
             Repository.Save(model);
             UnitOfWork.Commit();
@@ -284,7 +281,7 @@ namespace BetterModules.Core.Tests.DataAccess
         [Test]
         public void Should_Delete_Entity()
         {
-            var model = TestDataProvider.ProvideRandomTestItemModel();
+            var model = DatabaseTestDataProvider.ProvideRandomTestItemModel();
 
             Repository.Save(model);
             UnitOfWork.Commit();
@@ -302,7 +299,7 @@ namespace BetterModules.Core.Tests.DataAccess
         public void Should_Attach_Entity()
         {
             // Create entity
-            var model = TestDataProvider.ProvideRandomTestItemModel();
+            var model = DatabaseTestDataProvider.ProvideRandomTestItemModel();
             Repository.Save(model);
             UnitOfWork.Commit();
 
@@ -330,7 +327,7 @@ namespace BetterModules.Core.Tests.DataAccess
         public void Should_Detach_Entity()
         {
             // Create entity
-            var model = TestDataProvider.ProvideRandomTestItemModel();
+            var model = DatabaseTestDataProvider.ProvideRandomTestItemModel();
             Repository.Save(model);
             UnitOfWork.Commit();
 
@@ -357,7 +354,7 @@ namespace BetterModules.Core.Tests.DataAccess
         public void Should_Refresh_Entity()
         {
             // Create entity
-            var model = TestDataProvider.ProvideRandomTestItemModel();
+            var model = DatabaseTestDataProvider.ProvideRandomTestItemModel();
             Repository.Save(model);
             UnitOfWork.Commit();
 

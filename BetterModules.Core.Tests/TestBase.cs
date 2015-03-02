@@ -35,7 +35,7 @@ namespace BetterModules.Core.Tests
             }
         }
 
-        public RandomTestDataProvider TestDataProvider
+        public virtual RandomTestDataProvider TestDataProvider
         {
             get
             {

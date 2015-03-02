@@ -3,7 +3,7 @@ using BetterModules.Core.Security;
 using BetterModules.Sample.Module.Models;
 using NUnit.Framework;
 
-namespace BetterModules.Core.Tests.DataAccess.DataContext.EventListeners
+namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.EventListeners
 {
     [TestFixture]
     public class SaveOrUpdateEventListenerTests : DatabaseTestBase
@@ -11,7 +11,7 @@ namespace BetterModules.Core.Tests.DataAccess.DataContext.EventListeners
         [Test]
         public void Should_Update_Entity_Properties_When_Creating()
         {
-            var entity = TestDataProvider.ProvideRandomTestItemModel();
+            var entity = DatabaseTestDataProvider.ProvideRandomTestItemModel();
             Repository.Save(entity);
             UnitOfWork.Commit();
 
@@ -26,7 +26,7 @@ namespace BetterModules.Core.Tests.DataAccess.DataContext.EventListeners
         [Test]
         public void Should_Update_Entity_Properties_When_Updating()
         {
-            var entity = TestDataProvider.ProvideRandomTestItemModel();
+            var entity = DatabaseTestDataProvider.ProvideRandomTestItemModel();
             Repository.Save(entity);
             UnitOfWork.Commit();
 

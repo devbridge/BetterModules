@@ -1,15 +1,12 @@
 ﻿using System.Linq;
-
 using Autofac;
-
 using BetterModules.Core.DataAccess;
 using BetterModules.Core.DataAccess.DataContext.Fetching;
 using BetterModules.Core.Dependencies;
 using BetterModules.Sample.Module.Models;
-
 using NUnit.Framework;
 
-namespace BetterModules.Core.Tests.DataAccess.DataContext.Fetching
+namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.Fetching
 {
     [TestFixture]
     public class DefaultFetchingProviderIntegrationTests : DatabaseTestBase

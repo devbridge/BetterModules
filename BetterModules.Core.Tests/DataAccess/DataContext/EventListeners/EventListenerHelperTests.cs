@@ -87,7 +87,7 @@ namespace BetterModules.Core.Tests.DataAccess.DataContext.EventListeners
 
         private TestItemModel CreateEntity()
         {
-            var entity =TestDataProvider.ProvideRandomTestItemModel();
+            var entity = new TestItemModel();
             entity.CreatedByUser = entity.ModifiedByUser = entity.DeletedByUser = null;
             entity.CreatedOn = entity.ModifiedOn = DateTime.MinValue;
             entity.DeletedOn = null;

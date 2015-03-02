@@ -3,7 +3,7 @@ using BetterModules.Sample.Module.Models;
 using NHibernate.Criterion;
 using NUnit.Framework;
 
-namespace BetterModules.Core.Tests.DataAccess.DataContext
+namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
 {
     [TestFixture]
     public class RestrictionsExtensionsIntegrationTests : DatabaseTestBase
@@ -11,7 +11,7 @@ namespace BetterModules.Core.Tests.DataAccess.DataContext
         [Test]
         public void Should_Filter_Null_Or_Whitespace_Column_Correctly()
         {
-            var category = TestDataProvider.ProvideRandomTestItemCategory();
+            var category = DatabaseTestDataProvider.ProvideRandomTestItemCategory();
             category.Name = "   ";
 
             Repository.Save(category);

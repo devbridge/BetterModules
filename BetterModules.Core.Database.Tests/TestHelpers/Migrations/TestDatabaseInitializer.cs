@@ -1,16 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Data.SqlClient;
-
 using BetterModules.Core.DataAccess.DataContext.Migrations;
 using BetterModules.Core.Modules;
-
 using BetterModules.Sample.Module;
-
 using Moq;
-
 using NUnit.Framework;
 
-namespace BetterModules.Core.Tests.TestHelpers.Migrations
+namespace BetterModules.Core.Database.Tests.TestHelpers.Migrations
 {
     public class TestDatabaseInitializer
     {

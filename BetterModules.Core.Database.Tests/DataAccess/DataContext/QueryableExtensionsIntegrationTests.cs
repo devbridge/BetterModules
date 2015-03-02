@@ -5,7 +5,7 @@ using BetterModules.Sample.Module.Models;
 using NHibernate.Linq;
 using NUnit.Framework;
 
-namespace BetterModules.Core.Tests.DataAccess.DataContext
+namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
 {
     [TestFixture]
     public class QueryableExtensionsIntegrationTests : DatabaseTestBase
@@ -22,9 +22,9 @@ namespace BetterModules.Core.Tests.DataAccess.DataContext
         [Test]
         public void Should_Return_Correct_Items_Future_Count()
         {
-            var category1 = TestDataProvider.ProvideRandomTestItemCategory();
-            var category2 = TestDataProvider.ProvideRandomTestItemCategory();
-            var category3 = TestDataProvider.ProvideRandomTestItemCategory();
+            var category1 = DatabaseTestDataProvider.ProvideRandomTestItemCategory();
+            var category2 = DatabaseTestDataProvider.ProvideRandomTestItemCategory();
+            var category3 = DatabaseTestDataProvider.ProvideRandomTestItemCategory();
             category1.Name = "QEIT_" + category1.Name.Substring(10);
             category2.Name = "QEIT_" + category1.Name.Substring(10);
             category3.Name = "QEIT_" + category1.Name.Substring(10);

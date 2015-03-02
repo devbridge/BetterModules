@@ -1,7 +1,7 @@
 ﻿using BetterModules.Core.Exceptions.DataTier;
 using NUnit.Framework;
 
-namespace BetterModules.Core.Tests.DataAccess.DataContext.Interceptors
+namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.Interceptors
 {
     [TestFixture]
     public class StaleInterceptorIntegrationTests : DatabaseTestBase
@@ -9,7 +9,7 @@ namespace BetterModules.Core.Tests.DataAccess.DataContext.Interceptors
         [Test]
         public void Should_Create_Version()
         {
-            var model = TestDataProvider.ProvideRandomTestItemModel();
+            var model = DatabaseTestDataProvider.ProvideRandomTestItemModel();
             
             Assert.AreEqual(model.Version, 0);
 
@@ -22,7 +22,7 @@ namespace BetterModules.Core.Tests.DataAccess.DataContext.Interceptors
         [Test]
         public void Should_Increase_Version_If_Dirty()
         {
-            var model = TestDataProvider.ProvideRandomTestItemModel();
+            var model = DatabaseTestDataProvider.ProvideRandomTestItemModel();
 
             Assert.AreEqual(model.Version, 0);
 
@@ -47,7 +47,7 @@ namespace BetterModules.Core.Tests.DataAccess.DataContext.Interceptors
         [ExpectedException(typeof (ConcurrentDataException))]
         public void Should_Throw_Concurrent_Data_Exception_Saving()
         {
-            var model = TestDataProvider.ProvideRandomTestItemModel();
+            var model = DatabaseTestDataProvider.ProvideRandomTestItemModel();
 
             Assert.AreEqual(model.Version, 0);
 
@@ -65,7 +65,7 @@ namespace BetterModules.Core.Tests.DataAccess.DataContext.Interceptors
         [ExpectedException(typeof (ConcurrentDataException))]
         public void Should_Throw_Concurrent_Data_Exception_Deleting()
         {
-            var model = TestDataProvider.ProvideRandomTestItemModel();
+            var model = DatabaseTestDataProvider.ProvideRandomTestItemModel();
 
             Assert.AreEqual(model.Version, 0);
 
