@@ -64,11 +64,12 @@ namespace BetterModules.Core.Database.Tests.TestHelpers.Migrations
                 }
             }
 
-            Assert.GreaterOrEqual(tables.Count, 4);
+            Assert.GreaterOrEqual(tables.Count, 5);
             Assert.IsTrue(tables.Contains("VersionInfo"));
             Assert.IsTrue(tables.Contains("TestItems"));
             Assert.IsTrue(tables.Contains("TestItemCategories"));
             Assert.IsTrue(tables.Contains("TestItemChildren"));
+            Assert.IsTrue(tables.Contains("InheritedTestItems"));
         }
     }
 }

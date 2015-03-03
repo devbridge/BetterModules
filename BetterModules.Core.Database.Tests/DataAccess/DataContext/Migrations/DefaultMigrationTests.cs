@@ -2,7 +2,7 @@
 using BetterModules.Core.Exceptions;
 using NUnit.Framework;
 
-namespace BetterModules.Core.Tests.DataAccess.DataContext.Migrations
+namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.Migrations
 {
     [TestFixture]
     public class DefaultMigrationTests
