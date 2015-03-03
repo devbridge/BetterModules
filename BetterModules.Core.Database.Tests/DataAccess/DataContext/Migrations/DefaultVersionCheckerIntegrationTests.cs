@@ -1,11 +1,13 @@
 ﻿using System.IO;
-using System.Net;
+
 using Autofac;
+
 using BetterModules.Core.DataAccess.DataContext.Migrations;
 using BetterModules.Core.Environment.FileSystem;
-using BetterModules.Core.Models;
 using BetterModules.Core.Modules.Registration;
+
 using BetterModules.Sample.Module;
+
 using NUnit.Framework;
 
 namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.Migrations

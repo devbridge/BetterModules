@@ -89,6 +89,8 @@
     <Compile Include="DataAccess\DataContext\QueryOverExtensionsIntegrationTests.cs" />
     <Compile Include="DataAccess\DataContext\RestrictionsExtensionsIntegrationTests.cs" />
     <Compile Include="DataAccess\DefaultRepositoryIntegrationTests.cs" />
+    <Compile Include="DataAccess\DataContext\DefaultUnitOfWorkFactoryIntegrationTests.cs" />
+    <Compile Include="DataAccess\DataContext\DefaultUnitOfWorkTests.cs" />
     <Compile Include="DatabaseTestBase.cs" />
     <Compile Include="Models\EntityMapBaseIntegrationTests.cs" />
     <Compile Include="Models\EntitySubClassMapBaseIntergrationTests.cs" />

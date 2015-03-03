@@ -108,5 +108,77 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
             Assert.AreEqual(list.Count, 1);
             Assert.AreEqual(model3.Name, list[0].Name);
         }
+
+        [Test]
+        public void Should_Apply_Filter_Order_Asc_Paging_Correctly()
+        {
+            var list = Repository
+                .AsQueryOver<TestItemModel>()
+                .ApplyFilters(t => t.Category == category1, t => t.Name, false, 1, 2)
+                .List<TestItemModel>()
+                .ToList();
+
+            Assert.AreEqual(list.Count, 2);
+            Assert.AreEqual(model1.Name, list[0].Name);
+            Assert.AreEqual(model2.Name, list[1].Name);
+        }
+        
+        [Test]
+        public void Should_Apply_Filter_Order_Desc_Paging_Correctly()
+        {
+            var list = Repository
+                .AsQueryOver<TestItemModel>()
+                .ApplyFilters(t => t.Category == category1, t => t.Name, true, 1, 2)
+                .List<TestItemModel>()
+                .ToList();
+
+            Assert.AreEqual(list.Count, 2);
+            Assert.AreEqual(model3.Name, list[0].Name);
+            Assert.AreEqual(model2.Name, list[1].Name);
+        }
+        
+        [Test]
+        public void Should_Apply_Filter_Order_Desc_No_Paging_Correctly()
+        {
+            var list = Repository
+                .AsQueryOver<TestItemModel>()
+                .ApplyFilters(t => t.Category == category1, t => t.Name, true)
+                .List<TestItemModel>()
+                .ToList();
+
+            Assert.AreEqual(list.Count, 3);
+            Assert.AreEqual(model3.Name, list[0].Name);
+            Assert.AreEqual(model2.Name, list[1].Name);
+            Assert.AreEqual(model1.Name, list[2].Name);
+        }
+
+        [Test]
+        public void Should_Apply_SubQuery_Filter_Order_Desc_Paging_Correctly()
+        {
+            var list = Repository
+                .AsQueryOver<TestItemModel>()
+                .ApplySubQueryFilters(t => t.Category == category1, t => t.Name, true, 1, 2)
+                .List<TestItemModel>()
+                .ToList();
+
+            Assert.AreEqual(list.Count, 2);
+            Assert.AreEqual(model3.Name, list[0].Name);
+            Assert.AreEqual(model2.Name, list[1].Name);
+        }
+        
+        [Test]
+        public void Should_Apply_SubQuery_Filter_Order_Desc_No_Paging_Correctly()
+        {
+            var list = Repository
+                .AsQueryOver<TestItemModel>()
+                .ApplySubQueryFilters(t => t.Category == category1, t => t.Name, true)
+                .List<TestItemModel>()
+                .ToList();
+
+            Assert.AreEqual(list.Count, 3);
+            Assert.AreEqual(model3.Name, list[0].Name);
+            Assert.AreEqual(model2.Name, list[1].Name);
+            Assert.AreEqual(model1.Name, list[2].Name);
+        }
     }
 }
