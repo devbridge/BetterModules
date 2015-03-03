@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+
 using BetterModules.Core.Environment.FileSystem;
 using BetterModules.Core.Modules.Registration;
+
 using Common.Logging;
+
 using NHibernate.Transform;
 
 namespace BetterModules.Core.DataAccess.DataContext.Migrations
@@ -33,7 +36,7 @@ namespace BetterModules.Core.DataAccess.DataContext.Migrations
         {
             get
             {
-                return string.Concat(FolderPath, filename);
+                return Path.Combine(FolderPath, filename);
             }
         }
 
