@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Autofac;
+using BetterModules.Core.Models;
 using BetterModules.Core.Modules.Registration;
 
 namespace BetterModules.Core.Modules
@@ -48,7 +49,7 @@ namespace BetterModules.Core.Modules
         {
             get
             {
-                return null;
+                return SchemaNameProvider.GetSchemaName(Name);
             }
         }
 

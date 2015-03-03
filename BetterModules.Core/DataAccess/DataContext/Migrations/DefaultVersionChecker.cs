@@ -32,7 +32,7 @@ namespace BetterModules.Core.DataAccess.DataContext.Migrations
             }
         }
 
-        private string FilePath
+        public string CacheFilePath
         {
             get
             {
@@ -160,14 +160,14 @@ namespace BetterModules.Core.DataAccess.DataContext.Migrations
 
         private bool LoadFromFile()
         {
-            if (File.Exists(FilePath))
+            if (File.Exists(CacheFilePath))
             {
                 Log.Trace("Loading migration files list from cache file");
 
                 StreamReader file = null;
                 try
                 {
-                    file = new StreamReader(FilePath);
+                    file = new StreamReader(CacheFilePath);
                     string line;
                     while ((line = file.ReadLine()) != null)
                     {
@@ -239,7 +239,7 @@ namespace BetterModules.Core.DataAccess.DataContext.Migrations
                     Directory.CreateDirectory(FolderPath);
                 }
 
-                file = new StreamWriter(FilePath, true);
+                file = new StreamWriter(CacheFilePath, true);
                 file.WriteLine("{0} {1}", version, moduleName);
                 file.Flush();
             }

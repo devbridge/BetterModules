@@ -84,6 +84,7 @@
     <Compile Include="DataAccess\DataContext\Fetching\DefaultFetchingProviderIntegrationTests.cs" />
     <Compile Include="DataAccess\DataContext\Interceptors\StaleInterceptorIntegrationTests.cs" />
     <Compile Include="DataAccess\DataContext\Migrations\DefaultMigrationTests.cs" />
+    <Compile Include="DataAccess\DataContext\Migrations\DefaultVersionCheckerIntegrationTests.cs" />
     <Compile Include="DataAccess\DataContext\QueryableExtensionsIntegrationTests.cs" />
     <Compile Include="DataAccess\DataContext\QueryOverExtensionsIntegrationTests.cs" />
     <Compile Include="DataAccess\DataContext\RestrictionsExtensionsIntegrationTests.cs" />
