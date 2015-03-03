@@ -185,6 +185,23 @@ namespace BetterModules.Core.Database.Tests.DataAccess
             Assert.AreEqual(list[1].Id, model2.Id);
             Assert.AreEqual(list[2].Id, model3.Id);
         }
+        
+        [Test]
+        public void Should_Return_QueryOver_Without_Deleted_By_Null_Alias()
+        {
+            TestItemModel alias = null;
+            var list = Repository
+                .AsQueryOver<TestItemModel>(null)
+                .Where(t => t.Category == category1)
+                .OrderBy(q => q.Name).Asc
+                .List<TestItemModel>();
+
+            Assert.IsNotNull(list);
+            Assert.AreEqual(list.Count, 3);
+            Assert.AreEqual(list[0].Id, model1.Id);
+            Assert.AreEqual(list[1].Id, model2.Id);
+            Assert.AreEqual(list[2].Id, model3.Id);
+        }
 
         [Test]
         public void Should_Return_Queryable_By_Filter()

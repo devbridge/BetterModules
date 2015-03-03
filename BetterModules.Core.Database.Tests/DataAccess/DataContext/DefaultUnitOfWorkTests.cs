@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data;
+﻿using System.Data;
 using Autofac;
 using BetterModules.Core.DataAccess.DataContext;
 using BetterModules.Sample.Module.Models;

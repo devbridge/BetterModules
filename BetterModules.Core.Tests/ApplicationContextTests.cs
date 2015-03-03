@@ -57,5 +57,13 @@ namespace BetterModules.Core.Tests
                 Assert.AreEqual(modules.First().ModuleDescriptor.GetType(), typeof(SampleModuleDescriptor));
             }
         }
+
+        [Test]
+        public void Should_Initialize_Logger_Successfully()
+        {
+            var logger = Application.InitializeLogger();
+
+            Assert.IsNotNull(logger);
+        }
     }
 }

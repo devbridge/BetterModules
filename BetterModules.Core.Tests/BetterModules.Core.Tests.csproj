@@ -54,6 +54,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Autofac.3.1.5\lib\net40\Autofac.dll</HintPath>
     </Reference>
+    <Reference Include="Common.Logging, Version=2.1.2.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Common.Logging.2.1.2\lib\net40\Common.Logging.dll</HintPath>
+    </Reference>
     <Reference Include="Iesi.Collections, Version=1.0.1.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
@@ -91,7 +95,10 @@
     <Compile Include="Events\CoreEventsTests.cs" />
     <Compile Include="Events\EntitySavingEventArgsTests.cs" />
     <Compile Include="Events\SingleItemEventArgsTests.cs" />
+    <Compile Include="Exceptions\DataTier\ConcurrentDataExceptionTests.cs" />
+    <Compile Include="Exceptions\DataTier\EntityNotFoundExceptionTests.cs" />
     <Compile Include="Extensions\TypeExtensionsTests.cs" />
+    <Compile Include="Models\EquatableEntityTests.cs" />
     <Compile Include="Models\SchemaNameProviderTests.cs" />
     <Compile Include="Modules\ModuleDescriptorTests.cs" />
     <Compile Include="Modules\Registration\DefaultModulesRegistrationTests.cs" />
