@@ -37,27 +37,16 @@ namespace BetterModules.Core.Configuration
 
             try
             {
-                config = config ?? OpenApplicationConfiguration();
+                config = OpenApplicationConfiguration();
             }
             catch { }
 
             try
             {
-                config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                config = config ?? ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             }
             catch
             {
-            }
-
-            if (config == null)
-            {
-                try
-                {
-                    config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                }
-                catch
-                {
-                }
             }
 
             if (config != null && config.RootSectionGroup != null)
