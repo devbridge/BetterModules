@@ -175,7 +175,7 @@ namespace BetterModules.Core.Web.Mvc
         /// Validates the model explicilty.
         /// </summary>
         /// <param name="model">The model.</param>
-        protected virtual void ValidateModelExplicilty(object model)
+        protected virtual void ValidateModelExplicitly(object model)
         {
             if (!TryValidateModel(model))
             {
