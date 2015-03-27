@@ -15,9 +15,13 @@ namespace BetterModules.Core.Web.Mvc.Extensions
         /// <returns>View, rendered to string</returns>
         public static string RenderViewToString(this CoreControllerBase controller, string viewName, object model, bool enableFormContext = false)
         {
-            if (string.IsNullOrEmpty(viewName))
+            if (string.IsNullOrEmpty(viewName) || viewName.ToLower() == controller.ControllerContext.RouteData.GetRequiredString("action").ToLower())
             {
-                viewName = controller.ControllerContext.RouteData.GetRequiredString("action");
+                var areaName = controller.ControllerContext.RouteData.GetRequiredString("area");
+                var controllerName = controller.ControllerContext.RouteData.GetRequiredString("controller");
+                var actionName = controller.ControllerContext.RouteData.GetRequiredString("action");
+
+                viewName = string.Format("~/Areas/{0}/Views/{1}/{2}.cshtml", areaName, controllerName, actionName);
             }
 
             controller.ViewData.Model = model;
