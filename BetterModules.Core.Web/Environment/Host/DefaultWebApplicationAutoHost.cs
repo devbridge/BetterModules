@@ -6,13 +6,8 @@ using System.Threading;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Mvc;
-using System.Web.Routing;
-using Autofac;
-using BetterModules.Core.Dependencies;
 using BetterModules.Core.Exceptions;
 using BetterModules.Core.Web.Exceptions.Host;
-using BetterModules.Core.Web.Modules.Registration;
-using BetterModules.Events;
 using Common.Logging;
 using RazorGenerator.Mvc;
 
@@ -23,7 +18,17 @@ namespace BetterModules.Core.Web.Environment.Host
         private static readonly ILog _logger = LogManager.GetCurrentClassLogger();
 
         private static object _lock = new object();
+
         protected ILog Logger { get { return _logger; } }
+
+        private string _hostName = "Web application host";
+
+        public string HostName
+        {
+            get { return _hostName; }
+            set { _hostName = value; }
+        }
+
         protected int InitializedCount
         {
             get
@@ -101,26 +106,19 @@ namespace BetterModules.Core.Web.Environment.Host
 
         public virtual void OnAuthenticateRequest(HttpApplication application)
         {
-            WebCoreEvents.Instance.OnHostAuthenticateRequest(application);
-            
         }
 
         public virtual void OnApplicationStart(HttpApplication application, bool validateViewEngines = true)
         {
             try
             {
-                Logger.Info("Web application host starting...");
+                Logger.InfoFormat("{0} starting...", HostName);
                 if (validateViewEngines && !ViewEngines.Engines.Any(engine => engine is CompositePrecompiledMvcEngine))
                 {
                     throw new CoreException("ViewEngines.Engines collection doesn't contain precompiled composite MVC view engine. Application modules use precompiled MVC views for rendering. Please check if Engines list is not cleared manualy in global.asax.cx");
                 }
 
-                using (var container = ContextScopeProvider.CreateChildContainer())
-                {
-                    var modulesRegistration = container.Resolve<IWebModulesRegistration>();
-                    modulesRegistration.RegisterKnownModuleRoutes(RouteTable.Routes);
-                }
-                Logger.Info("Web application host started.");
+                Logger.InfoFormat("{0} started.", HostName);
             }
             catch (Exception ex)
             {
@@ -130,16 +128,11 @@ namespace BetterModules.Core.Web.Environment.Host
 
         public virtual void OnApplicationEnd(HttpApplication application)
         {
-            Logger.Info("Web host application stopped.");
+            Logger.InfoFormat("{0} stopped.", HostName);
         }
 
         public virtual void OnApplicationError(HttpApplication application)
         {
-            var error = application.Server.GetLastError();
-            Logger.Fatal("Unhandled exception occurred in web host application.", error);
-
-            // Notify.
-            WebCoreEvents.Instance.OnHostError(application);
         }
 
         public virtual void OnBeginRequest(HttpApplication application)

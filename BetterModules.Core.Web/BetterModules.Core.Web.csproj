@@ -100,7 +100,7 @@
     <Compile Include="Environment\Application\WebApplicationPreStartManager.cs" />
     <Compile Include="Environment\Host\DefaultWebApplicationHost.cs" />
     <Compile Include="Environment\Host\IWebApplicationHost.cs" />
-    <Compile Include="Environment\Host\StartEventHost.cs" />
+    <Compile Include="Environment\Host\UtilityHost.cs" />
     <Compile Include="Events\WebCoreEvents.cs" />
     <Compile Include="Exceptions\Host\RestartApplicationException.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />
