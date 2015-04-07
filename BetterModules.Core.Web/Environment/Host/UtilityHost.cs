@@ -15,6 +15,7 @@ namespace BetterModules.Core.Web.Environment.Host
     {
         public override void Init(HttpApplication context)
         {
+            Application = context;
             lock (Lock)
             {
                 if (InitializedCount++ == 0)
@@ -35,7 +36,9 @@ namespace BetterModules.Core.Web.Environment.Host
             lock (Lock)
             {
                 if (--InitializedCount == 0)
-                WebCoreEvents.Instance.OnHostStop(Application);
+                {
+                    WebCoreEvents.Instance.OnHostStop(Application);
+                }
             }
         }
 

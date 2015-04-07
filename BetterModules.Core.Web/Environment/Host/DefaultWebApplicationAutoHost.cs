@@ -59,7 +59,14 @@ namespace BetterModules.Core.Web.Environment.Host
 
         private HttpApplication _application;
 
-        protected HttpApplication Application { get { return _application; } }
+        protected HttpApplication Application
+        {
+            get
+            {
+                return _application;
+            }
+            set { _application = value; }
+        }
 
         public object Lock
         {
@@ -92,7 +99,7 @@ namespace BetterModules.Core.Web.Environment.Host
             }
         }
 
-        private void AttachApplicationEvents(HttpApplication application)
+        protected void AttachApplicationEvents(HttpApplication application)
         {
             application.AuthenticateRequest += Application_AuthenticateRequest;
             application.BeginRequest        += Application_BeginRequest;
