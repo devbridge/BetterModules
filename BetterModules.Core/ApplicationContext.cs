@@ -1,4 +1,6 @@
-﻿using Autofac;
+﻿using System;
+using System.Linq;
+using Autofac;
 using BetterModules.Core.Configuration;
 using BetterModules.Core.DataAccess;
 using BetterModules.Core.DataAccess.DataContext;
@@ -10,6 +12,7 @@ using BetterModules.Core.Environment.FileSystem;
 using BetterModules.Core.Exceptions;
 using BetterModules.Core.Modules.Registration;
 using BetterModules.Core.Security;
+using NHibernate;
 
 namespace BetterModules.Core
 {
@@ -121,6 +124,23 @@ namespace BetterModules.Core
 
                 var moduleRegistration = container.Resolve<IModulesRegistration>();
                 moduleRegistration.InitializeModules();
+            }
+        }
+
+        public static void RunDatabaseMigrations()
+        {
+            using (var container = ContextScopeProvider.CreateChildContainer())
+            {
+                if (container == null)
+                {
+                    throw new CoreException("Application dependencies container is not initialized.");
+                }
+
+                var migrationRunner = container.Resolve<IMigrationRunner>();
+                var modulesRegistration = container.Resolve<IModulesRegistration>();
+
+                var descriptors = modulesRegistration.GetModules().Select(m => m.ModuleDescriptor).ToList();
+                migrationRunner.MigrateStructure(descriptors);
             }
         }
     }

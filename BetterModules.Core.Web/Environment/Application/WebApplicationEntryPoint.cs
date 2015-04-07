@@ -93,6 +93,19 @@ namespace BetterModules.Core.Web.Environment.Application
                 throw new CoreException(message, ex);
             }
 
+            try
+            {
+                logger.Info("Migrating database...");
+                ApplicationContext.RunDatabaseMigrations();
+            }
+            catch (Exception ex)
+            {
+                string message = "Failed to run database migrations.";
+                logger.Fatal(message, ex);
+
+                throw new CoreException(message, ex);
+            }
+
             isStarted = true;
         }
     }
