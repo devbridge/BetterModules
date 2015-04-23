@@ -1,3 +1,7 @@
+using System;
+using System.Linq;
+using System.Reflection;
+using BetterModules.Core.Modules.Registration;
 using FluentNHibernate.Mapping;
 
 namespace BetterModules.Core.Models
@@ -39,7 +43,43 @@ namespace BetterModules.Core.Models
         protected EntitySubClassMapBase(string moduleName)
         {
             this.moduleName = moduleName;
+            var currentModule = ModulesRegistrationSingleton.Instance.GetModules().First(module => module.ModuleDescriptor.Name == moduleName);
+            schemaName = currentModule.ModuleDescriptor.SchemaName;
+            Init();
+        }
 
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EntitySubClassMapBase{TEntity}"/> class.
+        /// </summary>
+        /// <param name="moduleDescriptorType">Type of the module descriptor.</param>
+        protected EntitySubClassMapBase(Type moduleDescriptorType)
+        {
+            var currentModule =
+                ModulesRegistrationSingleton.Instance.GetModules()
+                    .First(module => module.ModuleDescriptor.GetType() == moduleDescriptorType);
+            schemaName = currentModule.ModuleDescriptor.SchemaName;
+            Init();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EntitySubClassMapBase{TEntity}"/> class.
+        /// </summary>
+        protected EntitySubClassMapBase()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var currentModule =
+                ModulesRegistrationSingleton.Instance.GetModules()
+                    .FirstOrDefault(module => module.ModuleDescriptor.AssemblyName == assembly.GetName());
+            if (currentModule != null)
+            {
+                schemaName = currentModule.ModuleDescriptor.SchemaName;
+            }
+            Init();
+        }
+
+        private void Init()
+        {
             if (SchemaName != null)
             {
                 Schema(SchemaName);
