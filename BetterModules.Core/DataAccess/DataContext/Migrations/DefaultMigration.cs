@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using BetterModules.Core.Exceptions;
 using BetterModules.Core.Models;
+using BetterModules.Core.Modules.Registration;
 using FluentMigrator;
 using FluentMigrator.Builders.IfDatabase;
 
@@ -14,17 +16,27 @@ namespace BetterModules.Core.DataAccess.DataContext.Migrations
 
         private readonly string moduleName;
 
+        private string schemaName;
+
         public string SchemaName
         {
             get
             {
-                return SchemaNameProvider.GetSchemaName(moduleName);
+                return schemaName ?? (schemaName = SchemaNameProvider.GetSchemaName(moduleName));
             }
         }
 
         public DefaultMigration(string moduleName)
         {
             this.moduleName = moduleName;
+            var currentModule = ModulesRegistrationSingleton.Instance.GetModules().First(module => module.ModuleDescriptor.Name == moduleName);
+            schemaName = currentModule.ModuleDescriptor.SchemaName;
+        }
+
+        public DefaultMigration(Type moduleDescriptorType)
+        {
+            var currentModule = ModulesRegistrationSingleton.Instance.GetModules().First(module => module.ModuleDescriptor.GetType() == moduleDescriptorType);
+            schemaName = currentModule.ModuleDescriptor.SchemaName;
         }
 
         /// <summary>
