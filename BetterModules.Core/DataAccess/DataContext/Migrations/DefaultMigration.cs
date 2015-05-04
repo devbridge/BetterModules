@@ -10,9 +10,11 @@ namespace BetterModules.Core.DataAccess.DataContext.Migrations
 {
     public abstract class DefaultMigration : Migration
     {
-        protected const string PostgresThrowNotSupportedErrorSql = "RAISE EXCEPTION 'NOT SUPPORTED IN CURRENT VERSION!';";
+        protected const string PostgresThrowNotSupportedErrorSql =
+            "RAISE EXCEPTION 'NOT SUPPORTED IN CURRENT VERSION!';";
 
-        protected const string OracleThrowNotSupportedErrorSql = "raise_application_error(-1, 'NOT SUPPORTED IN CURRENT VERSION!');";
+        protected const string OracleThrowNotSupportedErrorSql =
+            "raise_application_error(-1, 'NOT SUPPORTED IN CURRENT VERSION!');";
 
         private readonly string moduleName;
 
@@ -20,23 +22,42 @@ namespace BetterModules.Core.DataAccess.DataContext.Migrations
 
         public string SchemaName
         {
-            get
-            {
-                return schemaName ?? (schemaName = SchemaNameProvider.GetSchemaName(moduleName));
-            }
+            get { return schemaName ?? (schemaName = SchemaNameProvider.GetSchemaName(moduleName)); }
         }
 
         public DefaultMigration(string moduleName)
         {
             this.moduleName = moduleName;
-            var currentModule = ModulesRegistrationSingleton.Instance.GetModules().First(module => module.ModuleDescriptor.Name == moduleName);
-            schemaName = currentModule.ModuleDescriptor.SchemaName;
+            var currentModule = ModulesRegistrationSingleton.Instance.GetModules()
+                    .FirstOrDefault(
+                        module => module.ModuleDescriptor != null && module.ModuleDescriptor.Name == moduleName);
+            if (currentModule != null)
+            {
+                schemaName = currentModule.ModuleDescriptor.SchemaName;
+            }
         }
 
         public DefaultMigration(Type moduleDescriptorType)
         {
-            var currentModule = ModulesRegistrationSingleton.Instance.GetModules().First(module => module.ModuleDescriptor.GetType() == moduleDescriptorType);
-            schemaName = currentModule.ModuleDescriptor.SchemaName;
+            var currentModule = ModulesRegistrationSingleton.Instance.GetModules()
+                    .FirstOrDefault(
+                        module => module.ModuleDescriptor != null && module.ModuleDescriptor.GetType() == moduleDescriptorType);
+            if (currentModule != null)
+            {
+                schemaName = currentModule.ModuleDescriptor.SchemaName;
+            }
+        }
+
+        public DefaultMigration()
+        {
+            var assembly = this.GetType().Assembly;
+            var currentModule = ModulesRegistrationSingleton.Instance.GetModules()
+                    .FirstOrDefault(
+                        module => module.ModuleDescriptor != null && module.ModuleDescriptor.AssemblyName == assembly.GetName());
+            if (currentModule != null)
+            {
+                schemaName = currentModule.ModuleDescriptor.SchemaName;
+            }
         }
 
         /// <summary>
@@ -44,7 +65,8 @@ namespace BetterModules.Core.DataAccess.DataContext.Migrations
         /// </summary>
         public override void Down()
         {
-            throw new CoreException("Down migration not possible.", new NotSupportedException("Application doesn't support DOWN migrations."));
+            throw new CoreException("Down migration not possible.",
+                new NotSupportedException("Application doesn't support DOWN migrations."));
         }
 
         protected IIfDatabaseExpressionRoot IfSqlServer()
