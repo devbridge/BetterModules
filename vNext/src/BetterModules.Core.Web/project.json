@@ -1,0 +1,15 @@
+﻿{
+  "version": "1.0.0-*",
+  "description": "",
+  "authors": [ "Devbridge" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+
+  "dependencies": {
+  },
+
+  "frameworks" : {
+    "dnx451": { }
+  }
+}

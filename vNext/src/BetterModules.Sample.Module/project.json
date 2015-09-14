@@ -1,0 +1,16 @@
+﻿{
+    "version": "1.0.0-*",
+    "description": "Sample Module",
+    "authors": [ "Sample Author" ],
+    "tags": [ "" ],
+    "projectUrl": "",
+    "licenseUrl": "",
+
+    "dependencies": {
+        "BetterModules.Core": "1.0.0-*"
+    },
+
+    "frameworks": {
+        "dnx451": { }
+    }
+}

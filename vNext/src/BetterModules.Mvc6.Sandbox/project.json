@@ -1,0 +1,48 @@
+{
+    "webroot": "wwwroot",
+    "userSecretsId": "aspnet5-BetterModules.Mvc6.Sandbox-b140b676-8027-4d3e-a391-dc91b5e50f82",
+    "version": "1.0.0-*",
+
+    "dependencies": {
+        "Microsoft.AspNet.Mvc": "6.0.0-beta7",
+        "Microsoft.AspNet.Mvc.TagHelpers": "6.0.0-beta6",
+        "Microsoft.AspNet.Diagnostics": "1.0.0-beta6",
+        "Microsoft.AspNet.Server.IIS": "1.0.0-beta7",
+        "Microsoft.AspNet.Server.WebListener": "1.0.0-beta6",
+        "Microsoft.AspNet.StaticFiles": "1.0.0-beta6",
+        "Microsoft.AspNet.Tooling.Razor": "1.0.0-beta6",
+        "Microsoft.Framework.Configuration.Abstractions": "1.0.0-beta7",
+        "Microsoft.Framework.Configuration.Json": "1.0.0-beta6",
+        "Microsoft.Framework.Configuration.UserSecrets": "1.0.0-beta6",
+        "Microsoft.Framework.Logging": "1.0.0-beta7",
+        "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0-beta6",
+        "BetterModules.Core": "1.0.0-*",
+        "BetterModules.Sample.Module": "1.0.0-*",
+        "Microsoft.Framework.Logging.EventLog": "1.0.0-beta7",
+        "Microsoft.Framework.Logging.Console": "1.0.0-beta7"
+    },
+
+    "commands": {
+        "web": "Microsoft.AspNet.Hosting --server Microsoft.AspNet.Server.WebListener --server.urls http://localhost:5000",
+        "gen": "Microsoft.Framework.CodeGeneration"
+    },
+
+    "frameworks": {
+        "dnx451": { }
+    },
+
+    "exclude": [
+        "wwwroot",
+        "node_modules",
+        "bower_components"
+    ],
+    "publishExclude": [
+        "node_modules",
+        "bower_components",
+        "**.xproj",
+        "**.user",
+        "**.vspscc"
+    ],
+    "scripts": {
+    }
+}

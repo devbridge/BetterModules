@@ -1,0 +1,77 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2A67FEF9-6A8E-42D4-95D7-E2DC166C32DF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3E752E57-C27F-4A6D-8F02-12226E643F76}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BetterModules.Core", "src\BetterModules.Core\BetterModules.Core.xproj", "{A7D843AE-B3B1-4929-9D1E-EFC78D02A4CD}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BetterModules.Core.Web", "src\BetterModules.Core.Web\BetterModules.Core.Web.xproj", "{D5DD9647-F622-4899-B6C6-3210EC7AC86B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{E97ED681-48EA-4EF1-97F2-EE7E1EEC516B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sandbox", "Sandbox", "{1E51A74B-E932-4933-AA00-AAF788D2A2DC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{DFE453A6-3825-4769-ADF3-E5FA08086BFE}"
+	ProjectSection(SolutionItems) = preProject
+		src\LICENSE = src\LICENSE
+		src\logo.png = src\logo.png
+		src\README.md = src\README.md
+		src\SharedAssemblyInfo.cs = src\SharedAssemblyInfo.cs
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BetterModules.Mvc6.Sandbox", "src\BetterModules.Mvc6.Sandbox\BetterModules.Mvc6.Sandbox.xproj", "{39A05B8E-5254-4E78-A03B-2014CDAA29A3}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BetterModules.Sample.Module", "src\BetterModules.Sample.Module\BetterModules.Sample.Module.xproj", "{431BEF5E-502D-4B21-B13C-6E917EACC532}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{46ED6C76-1BCC-4177-9A67-492424080985}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BetterModules.Core.Tests", "test\BetterModules.Core.Tests\BetterModules.Core.Tests.xproj", "{00B11517-DAEB-43AA-B826-B2AA545AE166}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A7D843AE-B3B1-4929-9D1E-EFC78D02A4CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7D843AE-B3B1-4929-9D1E-EFC78D02A4CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7D843AE-B3B1-4929-9D1E-EFC78D02A4CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7D843AE-B3B1-4929-9D1E-EFC78D02A4CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5DD9647-F622-4899-B6C6-3210EC7AC86B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5DD9647-F622-4899-B6C6-3210EC7AC86B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5DD9647-F622-4899-B6C6-3210EC7AC86B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5DD9647-F622-4899-B6C6-3210EC7AC86B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39A05B8E-5254-4E78-A03B-2014CDAA29A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39A05B8E-5254-4E78-A03B-2014CDAA29A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39A05B8E-5254-4E78-A03B-2014CDAA29A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39A05B8E-5254-4E78-A03B-2014CDAA29A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{431BEF5E-502D-4B21-B13C-6E917EACC532}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{431BEF5E-502D-4B21-B13C-6E917EACC532}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{431BEF5E-502D-4B21-B13C-6E917EACC532}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{431BEF5E-502D-4B21-B13C-6E917EACC532}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00B11517-DAEB-43AA-B826-B2AA545AE166}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00B11517-DAEB-43AA-B826-B2AA545AE166}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00B11517-DAEB-43AA-B826-B2AA545AE166}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00B11517-DAEB-43AA-B826-B2AA545AE166}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A7D843AE-B3B1-4929-9D1E-EFC78D02A4CD} = {2A67FEF9-6A8E-42D4-95D7-E2DC166C32DF}
+		{D5DD9647-F622-4899-B6C6-3210EC7AC86B} = {2A67FEF9-6A8E-42D4-95D7-E2DC166C32DF}
+		{E97ED681-48EA-4EF1-97F2-EE7E1EEC516B} = {2A67FEF9-6A8E-42D4-95D7-E2DC166C32DF}
+		{1E51A74B-E932-4933-AA00-AAF788D2A2DC} = {2A67FEF9-6A8E-42D4-95D7-E2DC166C32DF}
+		{DFE453A6-3825-4769-ADF3-E5FA08086BFE} = {2A67FEF9-6A8E-42D4-95D7-E2DC166C32DF}
+		{39A05B8E-5254-4E78-A03B-2014CDAA29A3} = {1E51A74B-E932-4933-AA00-AAF788D2A2DC}
+		{431BEF5E-502D-4B21-B13C-6E917EACC532} = {E97ED681-48EA-4EF1-97F2-EE7E1EEC516B}
+		{00B11517-DAEB-43AA-B826-B2AA545AE166} = {46ED6C76-1BCC-4177-9A67-492424080985}
+	EndGlobalSection
+EndGlobal
