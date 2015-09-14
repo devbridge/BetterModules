@@ -56,10 +56,13 @@ namespace BetterModules.Core.Extensions
 
         private static void LoadConfiguration(IServiceCollection services, IConfiguration configuration)
         {
-            services.Configure<DefaultConfigurationSection>(configuration.GetSection("modulesSettings"));
+            services.Configure<DefaultConfigurationSection>(configuration);
             var provider = services.BuildServiceProvider();
             var config = provider.GetService<IOptions<DefaultConfigurationSection>>().Options;
-            config.Database.ConnectionString = configuration[config.Database.ConnectionStringName];
+            if (config?.Database != null)
+            {
+                config.Database.ConnectionString = configuration[config.Database.ConnectionStringName];
+            }
             services.AddInstance<Configuration.IConfiguration>(config);
         }
 

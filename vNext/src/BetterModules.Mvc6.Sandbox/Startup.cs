@@ -19,6 +19,8 @@ namespace BetterModules.Mvc6.Sandbox
                 .AddJsonFile($"config.{env.EnvironmentName}.json", optional: true)
                 .AddJsonFile("Config/modules.json")
                 .AddJsonFile("Config/connectionStrings.json");
+                //.AddXmlFile("Config/modules.config")
+                //.AddXmlFile("Config/connectionStrings.config");
 
             if (env.IsDevelopment())
             {

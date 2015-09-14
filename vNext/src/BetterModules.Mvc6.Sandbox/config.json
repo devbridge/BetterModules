@@ -1,10 +1,5 @@
 {
     "AppSettings": {
         "SiteTitle": "BetterModules.Mvc6.Sandbox"
-    },
-    "Data": {
-        "DefaultConnection": {
-            "ConnectionString": "Server=(localdb)\\mssqllocaldb;Database=aspnet5-BetterModules.Mvc6.Sandbox-b140b676-8027-4d3e-a391-dc91b5e50f82;Trusted_Connection=True;MultipleActiveResultSets=true"
-        }
     }
 }

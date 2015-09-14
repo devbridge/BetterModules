@@ -12,14 +12,15 @@
         "Microsoft.AspNet.StaticFiles": "1.0.0-beta6",
         "Microsoft.AspNet.Tooling.Razor": "1.0.0-beta6",
         "Microsoft.Framework.Configuration.Abstractions": "1.0.0-beta7",
-        "Microsoft.Framework.Configuration.Json": "1.0.0-beta6",
-        "Microsoft.Framework.Configuration.UserSecrets": "1.0.0-beta6",
+        "Microsoft.Framework.Configuration.Json": "1.0.0-beta7",
+        "Microsoft.Framework.Configuration.UserSecrets": "1.0.0-beta7",
         "Microsoft.Framework.Logging": "1.0.0-beta7",
         "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0-beta6",
         "BetterModules.Core": "1.0.0-*",
         "BetterModules.Sample.Module": "1.0.0-*",
         "Microsoft.Framework.Logging.EventLog": "1.0.0-beta7",
-        "Microsoft.Framework.Logging.Console": "1.0.0-beta7"
+        "Microsoft.Framework.Logging.Console": "1.0.0-beta7",
+        "Microsoft.Framework.Configuration.Xml": "1.0.0-beta7"
     },
 
     "commands": {
