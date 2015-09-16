@@ -1,15 +1,17 @@
-﻿{
-  "version": "1.0.0-*",
-  "description": "",
-  "authors": [ "Devbridge" ],
-  "tags": [ "" ],
-  "projectUrl": "",
-  "licenseUrl": "",
+{
+    "version": "1.0.0-*",
+    "description": "",
+    "authors": [ "Devbridge" ],
+    "tags": [ "" ],
+    "projectUrl": "",
+    "licenseUrl": "",
 
-  "dependencies": {
-  },
+    "dependencies": {
+        "BetterModules.Core": "1.0.0-*",
+        "Microsoft.AspNet.Mvc": "6.0.0-beta7"
+    },
 
-  "frameworks" : {
-    "dnx451": { }
-  }
+    "frameworks": {
+        "dnx451": { }
+    }
 }

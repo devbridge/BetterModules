@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using System.Web.Mvc;
+using Microsoft.AspNet.Mvc;
 
 namespace BetterModules.Core.Web.Mvc.Extensions
 {

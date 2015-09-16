@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Web.Mvc;
 using System.Web.Routing;
-using Autofac;
-using Autofac.Features.Metadata;
 using BetterModules.Core.Web.Dependencies;
 using BetterModules.Core.Web.Mvc.Routes;
+using Microsoft.AspNet.Mvc;
 
 namespace BetterModules.Core.Web.Mvc
 {
