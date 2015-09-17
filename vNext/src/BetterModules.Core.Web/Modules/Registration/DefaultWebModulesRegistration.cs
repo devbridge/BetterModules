@@ -83,9 +83,9 @@ namespace BetterModules.Core.Web.Modules.Registration
             if (webContext != null)
             {
                 var webDescriptor = (WebModuleDescriptor)webContext.ModuleDescriptor;
-                webDescriptor.RegisterModuleCommands(webContext, containerBuilder);
-                webDescriptor.RegisterModuleControllers(webContext, containerBuilder, controllerExtensions);
-                webDescriptor.RegisterCustomRoutes(webContext, containerBuilder);
+                webDescriptor.RegisterModuleCommands(webContext, services);
+                webDescriptor.RegisterModuleControllers(webContext, services, controllerExtensions);
+                webDescriptor.RegisterCustomRoutes(webContext, services);
             }
 
             base.RegisterModuleDescriptor(registrationContext, services);

@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Web.Mvc;
-using Autofac;
 using BetterModules.Core.Extensions;
 using BetterModules.Core.Modules;
 using BetterModules.Core.Modules.Registration;
 using BetterModules.Core.Web.Modules.Registration;
 using BetterModules.Core.Web.Mvc.Commands;
 using BetterModules.Core.Web.Mvc.Extensions;
+using Microsoft.AspNet.Mvc;
+using Microsoft.Framework.DependencyInjection;
 
 namespace BetterModules.Core.Web.Modules
 {
@@ -59,8 +59,8 @@ namespace BetterModules.Core.Web.Modules
         /// Registers a routes.
         /// </summary>
         /// <param name="context">The area registration context.</param>
-        /// <param name="containerBuilder">The container builder.</param>
-        public virtual void RegisterCustomRoutes(WebModuleRegistrationContext context, ContainerBuilder containerBuilder)
+        /// <param name="services"></param>
+        public virtual void RegisterCustomRoutes(WebModuleRegistrationContext context, IServiceCollection services)
         {
         }
 
@@ -68,9 +68,9 @@ namespace BetterModules.Core.Web.Modules
         /// Registers module controller types.
         /// </summary>
         /// <param name="registrationContext">The area registration context.</param>
-        /// <param name="containerBuilder">The container builder.</param>
+        /// <param name="services"></param>
         /// <param name="controllerExtensions">The controller extensions.</param>
-        public virtual void RegisterModuleControllers(WebModuleRegistrationContext registrationContext, ContainerBuilder containerBuilder, IControllerExtensions controllerExtensions)
+        public virtual void RegisterModuleControllers(WebModuleRegistrationContext registrationContext, IServiceCollection services, IControllerExtensions controllerExtensions)
         {
             var controllerTypes = controllerExtensions.GetControllerTypes(GetType().Assembly);
 
@@ -85,24 +85,25 @@ namespace BetterModules.Core.Web.Modules
                     {
                         namespaces.Add(controllerType.Namespace);
                     }
-
-                    containerBuilder
-                        .RegisterType(controllerType)
-                        .AsSelf()
-                        .Keyed<IController>(key)
-                        .WithMetadata("ControllerType", controllerType)
-                        .InstancePerDependency()
-                        .PropertiesAutowired(PropertyWiringOptions.PreserveSetValues);
+                    services.AddTransient(controllerType);
+                    // TODO: register controllers with keys and metadata
+                    //containerBuilder
+                    //    .RegisterType(controllerType)
+                    //    .AsSelf()
+                    //    .Keyed<IController>(key)
+                    //    .WithMetadata("ControllerType", controllerType)
+                    //    .InstancePerDependency()
+                    //    .PropertiesAutowired(PropertyWiringOptions.PreserveSetValues);
                 }
 
                 registrationContext.MapRoute(
-                        string.Format("module_{0}_internal_routes", AreaName),
-                        string.Format("{0}/{{controller}}/{{action}}", AreaName),
-                        new
-                        {
-                            area = AreaName
-                        },
-                        namespaces.ToArray());
+                    $"module_{AreaName}_internal_routes",
+                    $"{AreaName}/{{controller}}/{{action}}",
+                    new
+                    {
+                        area = AreaName
+                    },
+                    namespaces.ToArray());
             }
         }
 
@@ -110,8 +111,8 @@ namespace BetterModules.Core.Web.Modules
         /// Registers the module command types.
         /// </summary>
         /// <param name="registrationContext">The area registration context.</param>
-        /// <param name="containerBuilder">The container builder.</param>
-        public virtual void RegisterModuleCommands(WebModuleRegistrationContext registrationContext, ContainerBuilder containerBuilder)
+        /// <param name="services"></param>
+        public virtual void RegisterModuleCommands(WebModuleRegistrationContext registrationContext, IServiceCollection services)
         {
             Assembly assembly = GetType().Assembly;
 
@@ -122,14 +123,30 @@ namespace BetterModules.Core.Web.Modules
                     typeof(ICommandOut<>),
                     typeof(ICommand<,>)
                 };
-
-            containerBuilder
-                .RegisterAssemblyTypes(assembly)
-                .Where(scan => commandTypes.Any(commandType => scan.IsAssignableToGenericType(commandType)))
-                .AsImplementedInterfaces()
-                .AsSelf()
-                .PropertiesAutowired()
-                .InstancePerLifetimeScope();
+            var types = assembly
+                .GetExportedTypes()
+                .Where(type => commandTypes.Any(type.IsAssignableToGenericType))
+                .ToList();
+            foreach (var type in types)
+            {
+                services.AddScoped(type);
+                var interfaces = type
+                    .GetInterfaces()
+                    .Where(x => x.IsPublic && x != typeof (IDisposable))
+                    .ToList();
+                foreach (var @interface in interfaces)
+                {
+                    services.AddScoped(@interface, type);
+                }
+            }
+            // TODO: register commands
+            //containerBuilder
+            //    .RegisterAssemblyTypes(assembly)
+            //    .Where(scan => commandTypes.Any(commandType => scan.IsAssignableToGenericType(commandType)))
+            //    .AsImplementedInterfaces()
+            //    .AsSelf()
+            //    .PropertiesAutowired()
+            //    .InstancePerLifetimeScope();
         }
 
         /// <summary>
