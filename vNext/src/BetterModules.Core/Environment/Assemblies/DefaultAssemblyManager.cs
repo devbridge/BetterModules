@@ -119,7 +119,7 @@ namespace BetterModules.Core.Environment.Assemblies
             {
                 logger.LogVerbose("Add referenced modules.");
             }
-
+            
             var libraries = libraryManager.GetReferencingLibraries("BetterModules.Core");
             foreach (var library in libraries)
             {

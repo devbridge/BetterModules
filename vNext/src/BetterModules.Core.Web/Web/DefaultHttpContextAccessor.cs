@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using System.Web;
-using System.Web.Mvc;
 using BetterModules.Core.Web.Configuration;
+using Microsoft.AspNet.Http;
+using Microsoft.AspNet.Mvc;
 
 namespace BetterModules.Core.Web.Web
 {
@@ -26,23 +26,12 @@ namespace BetterModules.Core.Web.Web
             this.configuration = configuration;
         }
 
-        /// <summary>
-        /// Gets the current http context.
-        /// </summary>
-        /// <returns>Current http context instance.</returns>
-        public HttpContextBase GetCurrent()
-        {
-            var httpContext = HttpContext.Current;
-            
-            if (httpContext == null)
-            {
-                return null;
-            }            
-
-            return new HttpContextWrapper(httpContext); 
-        }
-
         // TBD: create a DefaultControllerContextAccessor service to get current controller views and etc. 
+
+        public HttpContext GetCurrent()
+        {
+            throw new NotImplementedException();
+        }
 
         /// <summary>
         /// Returns the physical file path that corresponds to the specified virtual path on the Web server.

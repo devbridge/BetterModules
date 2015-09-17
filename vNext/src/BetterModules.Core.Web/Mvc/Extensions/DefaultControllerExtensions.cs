@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Web.Mvc;
 using BetterModules.Core.Environment.Assemblies;
+using Microsoft.AspNet.Mvc;
 
 namespace BetterModules.Core.Web.Mvc.Extensions
 {
@@ -35,7 +35,7 @@ namespace BetterModules.Core.Web.Mvc.Extensions
         /// </returns>
         public virtual bool IsControllerType(Type type)
         {
-            return IsControllerType<IController>(type);
+            return IsControllerType<Controller>(type);
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace BetterModules.Core.Web.Mvc.Extensions
         /// <returns>Controller types from assembly.</returns>
         public IEnumerable<Type> GetControllerTypes(Assembly assembly)
         {
-            return GetControllerTypes<IController>(assembly);
+            return GetControllerTypes<Controller>(assembly);
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace BetterModules.Core.Web.Mvc.Extensions
         /// </summary>
         /// <typeparam name="TController">The type of the controller.</typeparam>
         /// <returns>Controller action names.</returns>
-        public IEnumerable<MethodInfo> GetControllerActions<TController>() where TController : ControllerBase
+        public IEnumerable<MethodInfo> GetControllerActions<TController>() where TController : Controller
         {
             var controllerType = typeof(TController);
             return GetControllerActions(controllerType);

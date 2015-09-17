@@ -1,5 +1,4 @@
-﻿using System.Web.Routing;
-using Microsoft.Web.Mvc;
+﻿using Microsoft.AspNet.Routing;
 
 namespace BetterModules.Core.Web.Mvc.Routes
 {

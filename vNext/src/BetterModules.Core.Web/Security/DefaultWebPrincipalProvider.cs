@@ -1,6 +1,6 @@
 ﻿using System.Security.Principal;
 using BetterModules.Core.Security;
-using BetterModules.Core.Web.Web;
+using Microsoft.AspNet.Http;
 
 namespace BetterModules.Core.Web.Security
 {
@@ -28,7 +28,7 @@ namespace BetterModules.Core.Web.Security
         /// </returns>
         public override IPrincipal GetCurrentPrincipal()
         {
-            var currentHttpContext = httpContextAccessor.GetCurrent();
+            var currentHttpContext = httpContextAccessor.HttpContext;
 
             if (currentHttpContext == null)
             {

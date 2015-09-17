@@ -1,8 +1,9 @@
-﻿using System.Web.Routing;
-using Autofac;
-using BetterModules.Core.Environment.Assemblies;
+﻿using BetterModules.Core.Environment.Assemblies;
 using BetterModules.Core.Modules.Registration;
 using BetterModules.Core.Web.Mvc.Extensions;
+using Microsoft.AspNet.Routing;
+using Microsoft.Framework.DependencyInjection;
+using Microsoft.Framework.Logging;
 
 namespace BetterModules.Core.Web.Modules.Registration
 {
@@ -21,8 +22,8 @@ namespace BetterModules.Core.Web.Modules.Registration
         /// </summary>
         /// <param name="assemblyLoader">The assembly loader.</param>
         /// <param name="controllerExtensions">The controller extensions.</param>
-        public DefaultWebModulesRegistration(IAssemblyLoader assemblyLoader, IControllerExtensions controllerExtensions)
-            : base(assemblyLoader)
+        public DefaultWebModulesRegistration(IAssemblyLoader assemblyLoader, IControllerExtensions controllerExtensions, ILoggerFactory loggerFactory)
+            : base(assemblyLoader, loggerFactory)
         {
             this.controllerExtensions = controllerExtensions;
         }
@@ -66,10 +67,7 @@ namespace BetterModules.Core.Web.Modules.Registration
                 var webModuleContext = context.Value as WebModuleRegistrationContext;
                 if (webModuleContext != null)
                 {
-                    foreach (var moduleRoute in webModuleContext.Routes)
-                    {
-                        routes.Add(moduleRoute);
-                    }
+                    routes.Add(webModuleContext.Routes);
                 }
             }
         }
@@ -78,8 +76,8 @@ namespace BetterModules.Core.Web.Modules.Registration
         /// Registers the types.
         /// </summary>
         /// <param name="registrationContext">The registration context.</param>
-        /// <param name="containerBuilder">The container builder.</param>
-        protected override void RegisterModuleDescriptor(ModuleRegistrationContext registrationContext, ContainerBuilder containerBuilder)
+        /// <param name="services"></param>
+        protected override void RegisterModuleDescriptor(ModuleRegistrationContext registrationContext, IServiceCollection services)
         {
             var webContext = registrationContext as WebModuleRegistrationContext;
             if (webContext != null)
@@ -90,7 +88,7 @@ namespace BetterModules.Core.Web.Modules.Registration
                 webDescriptor.RegisterCustomRoutes(webContext, containerBuilder);
             }
 
-            base.RegisterModuleDescriptor(registrationContext, containerBuilder);
+            base.RegisterModuleDescriptor(registrationContext, services);
         }
     }
 }

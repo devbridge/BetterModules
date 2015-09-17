@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
-using System.Web;
-using System.Web.Mvc;
+using Microsoft.AspNet.Http;
+using Microsoft.AspNet.Mvc;
 
 namespace BetterModules.Core.Web.Web
 {
@@ -14,7 +14,7 @@ namespace BetterModules.Core.Web.Web
         /// Gets the current http context.
         /// </summary>
         /// <returns>Current http context instance.</returns>
-        HttpContextBase GetCurrent();
+        HttpContext GetCurrent();
 
         /// <summary>
         /// Returns the physical file path that corresponds to the specified virtual path on the Web server.

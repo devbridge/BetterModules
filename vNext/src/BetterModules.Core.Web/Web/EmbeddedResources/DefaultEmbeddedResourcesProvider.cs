@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using BetterModules.Core.Environment.Assemblies;
 using BetterModules.Core.Web.Modules.Registration;
-using Common.Logging;
+using Microsoft.Framework.Logging;
 
 namespace BetterModules.Core.Web.Web.EmbeddedResources
 {
@@ -18,7 +18,7 @@ namespace BetterModules.Core.Web.Web.EmbeddedResources
         /// <summary>
         /// Current class logger.
         /// </summary>
-        private static readonly ILog Logger = LogManager.GetCurrentClassLogger();
+        private readonly ILogger logger;
         
         /// <summary>
         /// Contains resource name - assembly name pairs dictionary.
@@ -45,12 +45,16 @@ namespace BetterModules.Core.Web.Web.EmbeddedResources
         /// </summary>
         /// <param name="modulesRegistry">The modules registry.</param>
         /// <param name="assemblyLoader">The assembly loader contract.</param>
-        public DefaultEmbeddedResourcesProvider(IWebModulesRegistration modulesRegistry, IAssemblyLoader assemblyLoader)
+        /// <param name="loggerFactory">The logger factory</param>
+        public DefaultEmbeddedResourcesProvider(IWebModulesRegistration modulesRegistry,
+            IAssemblyLoader assemblyLoader,
+            ILoggerFactory loggerFactory)
         {
             resourceNameEmbeddedResource = new ConcurrentDictionary<string, EmbeddedResourceDescriptor>();
             virtualPathResourceName = new ConcurrentDictionary<string, string>();
             this.modulesRegistry = modulesRegistry;
-            this.assemblyLoader = assemblyLoader;            
+            this.assemblyLoader = assemblyLoader;
+            logger = loggerFactory.CreateLogger(typeof (DefaultEmbeddedResourcesProvider).FullName);
         }
 
         /// <summary>
@@ -59,9 +63,9 @@ namespace BetterModules.Core.Web.Web.EmbeddedResources
         /// <param name="assembly">The assembly to scan.</param>
         public void AddEmbeddedResourcesFrom(Assembly assembly)
         {
-            if (Logger.IsTraceEnabled)
+            if (logger.IsEnabled(LogLevel.Verbose))
             {
-                Logger.TraceFormat("Adds embedded resources from assembly {0}.", assembly.FullName);
+                logger.LogVerbose("Adds embedded resources from assembly {0}.", assembly.FullName);
             }
 
             var resourceNames = assembly.GetManifestResourceNames();            
@@ -177,7 +181,7 @@ namespace BetterModules.Core.Web.Web.EmbeddedResources
             }
             catch (Exception ex)
             {
-                Logger.WarnFormat("Failed to convert virtual path '{0}' to embedded resource name.", ex, virtualPath);                
+                logger.LogWarning("Failed to convert virtual path '{0}' to embedded resource name.", ex, virtualPath);                
             }
 
             return success;

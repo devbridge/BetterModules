@@ -1,5 +1,5 @@
-﻿using System.Web.Routing;
-using BetterModules.Core.Modules.Registration;
+﻿using BetterModules.Core.Modules.Registration;
+using Microsoft.AspNet.Routing;
 
 namespace BetterModules.Core.Web.Modules.Registration
 {

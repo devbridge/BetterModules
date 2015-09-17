@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
-using System.Web.Mvc;
 using BetterModules.Core.Web.Models;
 using BetterModules.Core.Web.Mvc.Commands;
 using BetterModules.Core.Web.Mvc.Extensions;
+using Microsoft.AspNet.Mvc;
+using Microsoft.AspNet.Mvc.Rendering;
 
 namespace BetterModules.Core.Web.Mvc
 {
@@ -85,12 +86,12 @@ namespace BetterModules.Core.Web.Mvc
         /// Creates a <see cref="T:System.Web.Mvc.JsonResult" /> object that serializes the specified object to JavaScript Object Notation (JSON) format.
         /// </summary>
         /// <param name="data">The JavaScript object graph to serialize.</param>
-        /// <param name="behavior">Specifies whether HTTP GET requests from the client are allowed.</param>
+        // <param name="behavior">Specifies whether HTTP GET requests from the client are allowed.</param>
         /// <returns>
         /// The JSON result object that serializes the specified object to JSON format.
         /// </returns>
         [NonAction]
-        public virtual JsonResult Json(WireJson data, JsonRequestBehavior behavior = JsonRequestBehavior.DenyGet)
+        public virtual JsonResult Json(WireJson data/*, JsonRequestBehavior behavior = JsonRequestBehavior.DenyGet*/)
         {
             List<string> messages = data.Messages != null
                                         ? data.Messages.ToList()
@@ -99,7 +100,7 @@ namespace BetterModules.Core.Web.Mvc
             messages.AddRange(data.Success ? Messages.Success : Messages.Error);
             data.Messages = messages.ToArray();
 
-            return base.Json(data, behavior);
+            return base.Json(data/*, behavior*/);
         }
 
         /// <summary>
@@ -107,14 +108,14 @@ namespace BetterModules.Core.Web.Mvc
         /// </summary>
         /// <param name="success">The request result.</param>
         /// <param name="data">The JavaScript object graph to serialize.</param>
-        /// <param name="behavior">Specifies whether HTTP GET requests from the client are allowed.</param>
+        // <param name="behavior">Specifies whether HTTP GET requests from the client are allowed.</param>
         /// <returns>
         /// The JSON result object that serializes the specified object to JSON format.
         /// </returns>
         [NonAction]
-        public virtual JsonResult WireJson(bool success, object data = null, JsonRequestBehavior behavior = JsonRequestBehavior.DenyGet)
+        public virtual JsonResult WireJson(bool success, object data = null/*, JsonRequestBehavior behavior = JsonRequestBehavior.DenyGet*/)
         {
-            return Json(new WireJson { Success = success, Data = data }, behavior);
+            return Json(new WireJson { Success = success, Data = data }/*, behavior*/);
         }
 
         /// <summary>
@@ -123,14 +124,14 @@ namespace BetterModules.Core.Web.Mvc
         /// <param name="success">The request result.</param>
         /// <param name="html">The HTML.</param>
         /// <param name="data">The JavaScript object graph to serialize.</param>
-        /// <param name="behavior">Specifies whether HTTP GET requests from the client are allowed.</param>
+        // <param name="behavior">Specifies whether HTTP GET requests from the client are allowed.</param>
         /// <returns>
         /// The JSON result object that serializes the specified object to JSON format combined with Html.
         /// </returns>
         [NonAction]
-        public virtual JsonResult ComboWireJson(bool success, string html, dynamic data, JsonRequestBehavior behavior = JsonRequestBehavior.DenyGet)
+        public virtual JsonResult ComboWireJson(bool success, string html, dynamic data/*, JsonRequestBehavior behavior = JsonRequestBehavior.DenyGet*/)
         {
-            return Json(new ComboWireJson(success, html, data), behavior);
+            return Json(new ComboWireJson(success, html, data)/*, behavior*/);
         }
 
         /// <summary>
@@ -164,7 +165,7 @@ namespace BetterModules.Core.Web.Mvc
         /// Called before the action method is invoked.
         /// </summary>
         /// <param name="filterContext">Information about the current request and action.</param>
-        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             UpdateModelStateErrors();
 

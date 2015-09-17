@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Web.Mvc;
+using Microsoft.AspNet.Mvc;
 
 namespace BetterModules.Core.Web.Mvc.Extensions
 {
@@ -65,6 +65,6 @@ namespace BetterModules.Core.Web.Mvc.Extensions
         /// </summary>
         /// <typeparam name="TController">The type of the controller.</typeparam>
         /// <returns>Controller action names.</returns>
-        IEnumerable<MethodInfo> GetControllerActions<TController>() where TController : ControllerBase; 
+        IEnumerable<MethodInfo> GetControllerActions<TController>() where TController : Controller; 
     }
 }

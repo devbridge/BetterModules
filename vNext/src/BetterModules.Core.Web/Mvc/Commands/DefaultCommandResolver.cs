@@ -1,24 +1,24 @@
-﻿using Autofac;
-using BetterModules.Core.Web.Dependencies;
+﻿
+using System;
+using Microsoft.Framework.DependencyInjection;
 
 namespace BetterModules.Core.Web.Mvc.Commands
 {
     public class DefaultCommandResolver : ICommandResolver
     {
-        private readonly PerWebRequestContainerProvider containerProvider;
+        private readonly IServiceProvider serviceProvider;
 
-        public DefaultCommandResolver(PerWebRequestContainerProvider containerProvider)
+        public DefaultCommandResolver(IServiceProvider serviceProvider)
         {
-            this.containerProvider = containerProvider;
+            this.serviceProvider = serviceProvider;
         }
 
         public TCommand ResolveCommand<TCommand>(ICommandContext context) where TCommand : ICommandBase
         {
-            if (containerProvider.CurrentScope.IsRegistered<TCommand>())
+            var command = serviceProvider.GetService<TCommand>();
+            if (command != null)
             {
-                var command = containerProvider.CurrentScope.Resolve<TCommand>();
-                command.Context = context;                
-
+                command.Context = context;
                 return command;
             }
 
