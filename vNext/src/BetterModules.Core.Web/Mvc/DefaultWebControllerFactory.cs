@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Web.Mvc;
-using System.Web.Routing;
-using BetterModules.Core.Web.Dependencies;
-using BetterModules.Core.Web.Mvc.Routes;
+using System.Collections.Generic;
 using Microsoft.AspNet.Mvc;
 
 namespace BetterModules.Core.Web.Mvc
@@ -12,58 +9,45 @@ namespace BetterModules.Core.Web.Mvc
     /// </summary>
     public class DefaultWebControllerFactory : DefaultControllerFactory
     {
-        private readonly PerWebRequestContainerProvider containerProvider;
-
-        public DefaultWebControllerFactory(PerWebRequestContainerProvider containerProvider)
+        public DefaultWebControllerFactory(IControllerActivator controllerActivator, IEnumerable<IControllerPropertyActivator> propertyActivators) 
+            : base(controllerActivator, propertyActivators)
         {
-            this.containerProvider = containerProvider;
         }
 
         /// <summary>
         /// Retrieves the controller instance for the specified request context and controller type.
         /// </summary>
-        /// <param name="requestContext">The context of the HTTP request, which includes the HTTP context and route data.</param>
+        /// <param name="actionContext">The context of the HTTP request, which includes the HTTP context and route data.</param>
         /// <param name="controllerType">The type of the controller.</param>
         /// <returns>
         /// The controller instance.
         /// </returns>
-        protected override IController GetControllerInstance(RequestContext requestContext, Type controllerType)
+        protected Controller GetControllerInstance(ActionContext actionContext, Type controllerType)
         {
-            IController controller = null;
+            var provider = actionContext.HttpContext.RequestServices;
+            Controller controller = null;
 
-            if (controllerType != null && containerProvider.CurrentScope.IsRegistered(controllerType))
+            if (controllerType != null)
             {
-                controller = containerProvider.CurrentScope.Resolve(controllerType) as IController;
+                controller = provider.GetService(controllerType) as Controller;
             }
 
-            return controller ?? base.GetControllerInstance(requestContext, controllerType);
+            return controller ?? (Controller)CreateController(actionContext);
         }
 
         /// <summary>
-        /// Retrieves the controller type for the specified name and request context.
+        /// Retrieves the controller type for the specified action context.
         /// </summary>
-        /// <param name="requestContext">The context of the HTTP request, which includes the HTTP context and route data.</param>
-        /// <param name="controllerName">The name of the controller.</param>
+        /// <param name="actionContext">The context of the HTTP request, which includes the HTTP context and route data.</param>
         /// <returns>
         /// The controller type.
         /// </returns>
-        protected override Type GetControllerType(RequestContext requestContext, string controllerName)
+        protected Type GetControllerType(ActionContext actionContext)
         {
-            var areaName = requestContext.RouteData.GetAreaName();
+            // TODO: check if actionContext can be cast into ControllerActionDescriptor. If not, throw custom exception
+            var descriptor = (ControllerActionDescriptor)actionContext.ActionDescriptor;
 
-            if (string.IsNullOrEmpty(areaName))
-            {
-                return base.GetControllerType(requestContext, controllerName);
-            }
-
-            string key = (areaName + "-" + controllerName + "Controller").ToUpperInvariant();
-            if (containerProvider.CurrentScope.IsRegisteredWithKey<IController>(key))
-            {
-                var controllerMetadata = containerProvider.CurrentScope.ResolveKeyed<Meta<IController>>(key);
-                return controllerMetadata.Metadata["ControllerType"] as Type;
-            }
-
-            return base.GetControllerType(requestContext, controllerName);
+            return descriptor.ControllerTypeInfo.AsType();
         }
     }
 }

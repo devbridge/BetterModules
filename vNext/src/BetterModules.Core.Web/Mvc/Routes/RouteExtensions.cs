@@ -14,7 +14,7 @@ namespace BetterModules.Core.Web.Mvc.Routes
         /// <returns>Area name.</returns>
         public static string GetAreaName(this RouteData routeData)
         {
-            return AreaHelpers.GetAreaName(routeData);
+            return routeData.Values["area"] as string;
         }
     }
 }

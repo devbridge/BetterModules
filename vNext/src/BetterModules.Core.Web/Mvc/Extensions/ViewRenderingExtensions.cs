@@ -24,8 +24,8 @@ namespace BetterModules.Core.Web.Mvc.Extensions
 
             if (string.IsNullOrEmpty(viewName) || viewName.ToLower() == controller.ActionContext.ActionDescriptor.Name.ToLower())
             {
-                var areaName = controller.ActionContext.RouteData.Values["area"];
-                var controllerName = controller.ActionContext.RouteData.Values["controller"];
+                var areaName = (string)controller.ActionContext.RouteData.Values["area"];
+                var controllerName = (string)controller.ActionContext.RouteData.Values["controller"];
                 var actionName = controller.ActionContext.ActionDescriptor.Name;
 
                 viewName = $"~/Areas/{areaName}/Views/{controllerName}/{actionName}.cshtml";

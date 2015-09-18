@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
-using System.Web.Caching;
-using System.Web.Hosting;
 
 namespace BetterModules.Core.Web.Web.EmbeddedResources
 {

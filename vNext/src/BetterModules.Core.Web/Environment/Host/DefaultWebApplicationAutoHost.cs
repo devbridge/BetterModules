@@ -1,15 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading;
-using System.Web;
-using System.Web.Hosting;
-using System.Web.Mvc;
 using BetterModules.Core.Exceptions;
 using BetterModules.Core.Web.Exceptions.Host;
-using Common.Logging;
-using RazorGenerator.Mvc;
 
 namespace BetterModules.Core.Web.Environment.Host
 {

@@ -3,7 +3,9 @@ using System.IO;
 using System.Reflection;
 using BetterModules.Core.Web.Configuration;
 using Microsoft.AspNet.Http;
+using Microsoft.AspNet.Http.Extensions;
 using Microsoft.AspNet.Mvc;
+using Microsoft.AspNet.Mvc.Rendering.Expressions;
 
 namespace BetterModules.Core.Web.Web
 {
@@ -58,7 +60,7 @@ namespace BetterModules.Core.Web.Web
         /// <returns>The absolute path that corresponds to path.</returns>
         public string MapPublicPath(string path)
         {
-            return string.Concat(GetServerUrl(new HttpRequestWrapper(HttpContext.Current.Request)).TrimEnd('/'), VirtualPathUtility.ToAbsolute(path));
+            return string.Concat(GetServerUrl(GetCurrent().Request).TrimEnd('/'), VirtualPathUtility.ToAbsolute(path));
         }
 
         /// <summary>
@@ -72,14 +74,13 @@ namespace BetterModules.Core.Web.Web
         public string ResolveActionUrl<TController>(System.Linq.Expressions.Expression<Action<TController>> expression, bool fullUrl = false) 
             where TController : Controller
         {
-            var routeValuesFromExpression = Microsoft.Web.Mvc.Internal.ExpressionHelper.GetRouteValuesFromExpression(expression);
+            var routeValuesFromExpression = ExpressionHelper.GetRouteValuesFromExpression(expression);
             var action = routeValuesFromExpression["Action"].ToString();
             var controller = routeValuesFromExpression["Controller"].ToString();
             var current = GetCurrent();
-
             if (current != null)
             {
-                string url = new UrlHelper(current.Request.RequestContext).Action(action, controller, routeValuesFromExpression);
+                string url = new UrlHelper(current.).Action(action, controller, routeValuesFromExpression);
                 if (fullUrl)
                 {
                     url = string.Concat(GetServerUrl(current.Request).TrimEnd('/'), url);
@@ -98,17 +99,18 @@ namespace BetterModules.Core.Web.Web
         /// </summary>
         /// <param name="request">The request.</param>
         /// <returns></returns>
-        private string GetServerUrl(HttpRequestBase request)
+        private string GetServerUrl(HttpRequest request)
         {
+            // TODO: Check if this is the right way to get server Url
             if (request != null
                 && string.IsNullOrWhiteSpace(configuration.WebSiteUrl) || configuration.WebSiteUrl.Equals("auto", StringComparison.InvariantCultureIgnoreCase))
             {
-                var url = request.Url.AbsoluteUri;
-                var query = HttpContext.Current.Request.Url.PathAndQuery;
-                if (!string.IsNullOrEmpty(query) && query != "/")
-                {
-                    url = url.Replace(query, null);
-                }
+                var url = request?.Host.Value;
+                //var query = HttpContext.Current.Request.Url.PathAndQuery;
+                //if (!string.IsNullOrEmpty(query) && query != "/")
+                //{
+                //    url = url.Replace(query, null);
+                //}
 
                 return url;
             }

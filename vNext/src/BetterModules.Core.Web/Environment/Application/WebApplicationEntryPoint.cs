@@ -1,11 +1,6 @@
 ﻿using System;
-
-using BetterModules.Core.Dependencies;
 using BetterModules.Core.Exceptions;
-using BetterModules.Core.Web.Dependencies;
 using BetterModules.Core.Web.Environment.Application;
-
-using Common.Logging;
 
 [assembly: WebApplicationPreStartAttribute(typeof(WebApplicationEntryPoint), "PreApplicationStart", Order = 100)]
 

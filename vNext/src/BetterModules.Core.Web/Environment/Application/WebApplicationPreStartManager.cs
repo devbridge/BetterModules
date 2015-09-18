@@ -5,9 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security;
-using System.Web;
-using System.Web.Compilation;
-using System.Web.Hosting;
 using BetterModules.Core.Web.Environment.Application;
 using BetterModules.Core.Web.Extensions;
 

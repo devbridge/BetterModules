@@ -1,9 +1,11 @@
 ﻿using System.Reflection;
-using System.Web.Compilation;
 using BetterModules.Core.Environment.Assemblies;
 using BetterModules.Core.Environment.FileSystem;
 using BetterModules.Core.Modules.Registration;
 using BetterModules.Core.Web.Web.EmbeddedResources;
+using Microsoft.Dnx.Runtime;
+using Microsoft.Framework.Logging;
+using IAssemblyLoader = BetterModules.Core.Environment.Assemblies.IAssemblyLoader;
 
 namespace BetterModules.Core.Web.Environment.Assemblies
 {
@@ -22,8 +24,9 @@ namespace BetterModules.Core.Web.Environment.Assemblies
         /// <param name="embeddedResourcesProvider">The embedded resources provider.</param>
         /// <param name="assemblyLoader">The assembly loader.</param>
         public DefaultWebAssemblyManager(IWorkingDirectory workingDirectory, IModulesRegistration modulesRegistration, 
-            IEmbeddedResourcesProvider embeddedResourcesProvider, IAssemblyLoader assemblyLoader)
-            : base(workingDirectory, modulesRegistration, assemblyLoader)
+            IEmbeddedResourcesProvider embeddedResourcesProvider, IAssemblyLoader assemblyLoader, 
+            ILibraryManager libraryManager, ILoggerFactory loggerFactory)
+            : base(workingDirectory, modulesRegistration, assemblyLoader, libraryManager, loggerFactory)
         {
             this.embeddedResourcesProvider = embeddedResourcesProvider;
         }
@@ -36,7 +39,8 @@ namespace BetterModules.Core.Web.Environment.Assemblies
         {
             base.AddUploadedModule(assembly);
 
-            BuildManager.AddReferencedAssembly(assembly);
+            //TODO: Check how to add referenced assembly (if we need to do it at all)
+            //BuildManager.AddReferencedAssembly(assembly);
             embeddedResourcesProvider.AddEmbeddedResourcesFrom(assembly);
         }
 

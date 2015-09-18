@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Web;
-using System.Web.Routing;
-using Autofac;
-using BetterModules.Core.Dependencies;
 using BetterModules.Core.Web.Environment.Application;
 using BetterModules.Core.Web.Environment.Host;
 using BetterModules.Core.Web.Modules.Registration;

@@ -5,7 +5,6 @@ using BetterModules.Core.Web.Models;
 using BetterModules.Core.Web.Mvc.Commands;
 using BetterModules.Core.Web.Mvc.Extensions;
 using Microsoft.AspNet.Mvc;
-using Microsoft.AspNet.Mvc.Rendering;
 
 namespace BetterModules.Core.Web.Mvc
 {
@@ -93,9 +92,7 @@ namespace BetterModules.Core.Web.Mvc
         [NonAction]
         public virtual JsonResult Json(WireJson data/*, JsonRequestBehavior behavior = JsonRequestBehavior.DenyGet*/)
         {
-            List<string> messages = data.Messages != null
-                                        ? data.Messages.ToList()
-                                        : new List<string>();
+            List<string> messages = data.Messages?.ToList() ?? new List<string>();
 
             messages.AddRange(data.Success ? Messages.Success : Messages.Error);
             data.Messages = messages.ToArray();

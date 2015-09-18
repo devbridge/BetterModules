@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Web;
-using System.Web.Caching;
-using Common.Logging;
 
 namespace BetterModules.Core.Web.Services.Caching
 {

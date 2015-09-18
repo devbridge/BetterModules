@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Reflection;
-using System.Web.Hosting;
 
 namespace BetterModules.Core.Web.Web.EmbeddedResources
 {
