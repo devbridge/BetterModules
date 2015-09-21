@@ -17,27 +17,27 @@ namespace BetterModules.Core.Extensions
 {
     public static class BetterModulesServiceCollectionExtensions
     {
-        public static IServiceCollection AddBetterModules(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddBetterModulesCore(this IServiceCollection services, IConfiguration configuration)
         {
-            LoadConfiguration(services, configuration);
-            ConfigureDefaultServices(services);
+            services.LoadConfiguration(configuration);
+            services.ConfigureDefaultServices();
 
-            LoadAssemblies(services);
+            services.LoadAssemblies();
 
             return services;
         }
 
-        public static IServiceCollection AddBetterModules(this IServiceCollection services, IConfiguration configuration, Action<ILoggerFactory> configureLoggers)
+        public static IServiceCollection AddBetterModulesCore(this IServiceCollection services, IConfiguration configuration, Action<ILoggerFactory> configureLoggers)
         {
             var provider = services.BuildServiceProvider();
             var loggerFactory = provider.GetService<ILoggerFactory>();
 
             configureLoggers(loggerFactory);
 
-            return services.AddBetterModules(configuration);
+            return services.AddBetterModulesCore(configuration);
         }
 
-        private static void ConfigureDefaultServices(IServiceCollection services)
+        public static void ConfigureDefaultServices(this IServiceCollection services)
         {
             services.AddSingleton<IModulesRegistration, DefaultModulesRegistration>();
             services.AddSingleton<ISessionFactoryProvider, DefaultSessionFactoryProvider>();
@@ -54,7 +54,7 @@ namespace BetterModules.Core.Extensions
             services.AddSingleton<IMigrationRunner, DefaultMigrationRunner>();
         }
 
-        private static void LoadConfiguration(IServiceCollection services, IConfiguration configuration)
+        public static void LoadConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<DefaultConfigurationSection>(configuration);
             var provider = services.BuildServiceProvider();
@@ -66,7 +66,7 @@ namespace BetterModules.Core.Extensions
             services.AddInstance<Configuration.IConfiguration>(config);
         }
 
-        private static void LoadAssemblies(IServiceCollection services)
+        public static void LoadAssemblies(this IServiceCollection services)
         {
 
             var provider = services.BuildServiceProvider();

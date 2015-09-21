@@ -80,7 +80,7 @@ namespace BetterModules.Core.Web.Web
             var current = GetCurrent();
             if (current != null)
             {
-                string url = new UrlHelper(current.).Action(action, controller, routeValuesFromExpression);
+                string url = new UrlHelper(null, null).Action(action, controller, routeValuesFromExpression);
                 if (fullUrl)
                 {
                     url = string.Concat(GetServerUrl(current.Request).TrimEnd('/'), url);

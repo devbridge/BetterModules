@@ -8,7 +8,7 @@ namespace BetterModules.Core.Extensions
 {
     public static class BetterModulesApplicationBuilderExtensions
     {
-        public static IApplicationBuilder UseBetterModules(this IApplicationBuilder builder)
+        public static IApplicationBuilder UseBetterModulesCore(this IApplicationBuilder builder)
         {
             RunDatabaseMigrations(builder);
 

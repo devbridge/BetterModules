@@ -41,7 +41,7 @@ namespace BetterModules.Mvc6.Sandbox
             services.AddMvc();
             services.AddOptions();
             
-            services.AddBetterModules(Configuration, loggerFactory =>
+            services.AddBetterModulesCore(Configuration, loggerFactory =>
             {
                 loggerFactory.MinimumLevel = LogLevel.Verbose;
                 loggerFactory.AddEventLog(LogLevel.Verbose);
@@ -78,7 +78,7 @@ namespace BetterModules.Mvc6.Sandbox
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            app.UseBetterModules();
+            app.UseBetterModulesCore();
         }
     }
 }

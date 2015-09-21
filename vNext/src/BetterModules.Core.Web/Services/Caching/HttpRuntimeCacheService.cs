@@ -1,4 +1,7 @@
 ﻿using System;
+using FluentNHibernate.Conventions.Helpers;
+using Microsoft.Framework.Caching.Memory;
+using Microsoft.Framework.Logging;
 
 namespace BetterModules.Core.Web.Services.Caching
 {
@@ -10,7 +13,12 @@ namespace BetterModules.Core.Web.Services.Caching
         /// <summary>
         /// Current class logger.
         /// </summary>
-        private static readonly ILog Logger = LogManager.GetCurrentClassLogger();
+        private readonly ILogger logger;
+
+        public HttpRuntimeCacheService(ILoggerFactory loggerFactory)
+        {
+            this.logger = loggerFactory.CreateLogger(typeof(HttpRuntimeCacheService).FullName);
+        }
 
         /// <summary>
         /// Sets object in cache with a specified key for specific time.
@@ -40,7 +48,7 @@ namespace BetterModules.Core.Web.Services.Caching
             }
             catch (Exception ex)
             {
-                Logger.WarnFormat("Failed to retrieve cache item {0}.", ex, key);
+                logger.LogWarning("Failed to retrieve cache item {0}.", ex, key);
                 obj = null;                
             }
             
@@ -56,7 +64,7 @@ namespace BetterModules.Core.Web.Services.Caching
             }
             catch (Exception ex)
             {
-                Logger.WarnFormat("Failed to convert cache item {0} of type {1} to type {2}.", ex, key, obj.GetType().FullName, typeof(T).FullName);
+                logger.LogWarning("Failed to convert cache item {0} of type {1} to type {2}.", ex, key, obj.GetType().FullName, typeof(T).FullName);
                 converted = default(T);
             }
 

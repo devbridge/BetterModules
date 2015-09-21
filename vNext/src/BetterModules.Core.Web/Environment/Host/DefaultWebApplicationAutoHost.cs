@@ -4,16 +4,15 @@ using System.IO;
 using System.Threading;
 using BetterModules.Core.Exceptions;
 using BetterModules.Core.Web.Exceptions.Host;
+using Microsoft.Framework.Logging;
 
 namespace BetterModules.Core.Web.Environment.Host
 {
     public abstract class DefaultWebApplicationAutoHost : IWebApplicationAutoHost
     {
-        private static readonly ILog _logger = LogManager.GetCurrentClassLogger();
+        private readonly ILogger logger;
 
         private static object _lock = new object();
-
-        protected ILog Logger { get { return _logger; } }
 
         private string _hostName = "Web application host";
 
@@ -52,6 +51,11 @@ namespace BetterModules.Core.Web.Environment.Host
         private static readonly Dictionary<Type, int> InitializedTypes = new Dictionary<Type, int>();
 
         private HttpApplication _application;
+
+        protected DefaultWebApplicationAutoHost(ILoggerFactory loggerFactory)
+        {
+            this.logger = loggerFactory.CreateLogger(typeof(DefaultWebApplicationAutoHost).FullName);
+        }
 
         protected HttpApplication Application
         {
@@ -113,23 +117,23 @@ namespace BetterModules.Core.Web.Environment.Host
         {
             try
             {
-                Logger.InfoFormat("{0} starting...", HostName);
+                logger.LogInformation("{0} starting...", HostName);
                 if (validateViewEngines && !ViewEngines.Engines.Any(engine => engine is CompositePrecompiledMvcEngine))
                 {
                     throw new CoreException("ViewEngines.Engines collection doesn't contain precompiled composite MVC view engine. Application modules use precompiled MVC views for rendering. Please check if Engines list is not cleared manualy in global.asax.cx");
                 }
 
-                Logger.InfoFormat("{0} started.", HostName);
+                logger.LogInformation("{0} started.", HostName);
             }
             catch (Exception ex)
             {
-                Logger.Fatal("Failed to start host application.", ex);
+                logger.LogCritical("Failed to start host application.", ex);
             }
         }
 
         public virtual void OnApplicationEnd(HttpApplication application)
         {
-            Logger.InfoFormat("{0} stopped.", HostName);
+            logger.LogInformation("{0} stopped.", HostName);
         }
 
         public virtual void OnApplicationError(HttpApplication application)
@@ -209,7 +213,7 @@ namespace BetterModules.Core.Web.Environment.Host
             }
             catch (Exception ex)
             {
-                Logger.Warn("Failed to touch web host application \bin folder.", ex);
+                logger.LogWarning("Failed to touch web host application \bin folder.", ex);
                 return false;
             }
         }
@@ -237,7 +241,7 @@ namespace BetterModules.Core.Web.Environment.Host
             }
             catch (Exception ex)
             {
-                Logger.Warn("Failed to touch web host application web.config file.", ex);
+                logger.LogWarning("Failed to touch web host application web.config file.", ex);
                 return false;
             }
         }
