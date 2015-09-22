@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace BetterModules.Core.Web.Mvc
+namespace BetterModules.Core.Infrastructure
 {
     public interface IMessagesIndicator
     {

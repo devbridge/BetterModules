@@ -2,7 +2,7 @@
 using System;
 using Microsoft.Framework.DependencyInjection;
 
-namespace BetterModules.Core.Web.Mvc.Commands
+namespace BetterModules.Core.Infrastructure.Commands
 {
     public class DefaultCommandResolver : ICommandResolver
     {

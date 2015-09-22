@@ -23,7 +23,7 @@ using Microsoft.Framework.OptionsModel;
 
 namespace BetterModules.Core.Web.Extensions
 {
-    public static class BetterModulesWebServiceCollectionExtensions
+    public static class BetterModulesServiceCollectionExtensions
     {
         public static IServiceCollection AddBetterModules(this IServiceCollection services, IConfiguration configuration)
         {

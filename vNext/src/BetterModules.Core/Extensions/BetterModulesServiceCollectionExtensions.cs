@@ -46,12 +46,13 @@ namespace BetterModules.Core.Extensions
             services.AddSingleton<IMappingResolver, DefaultMappingResolver>();
             services.AddSingleton<IWorkingDirectory, DefaultWorkingDirectory>();
             services.AddSingleton<IFetchingProvider, DefaultFetchingProvider>();
-            services.AddSingleton<IUnitOfWork, DefaultUnitOfWork>();
-            services.AddSingleton<IRepository, DefaultRepository>();
             services.AddSingleton<IPrincipalProvider, DefaultPrincipalProvider>();
             services.AddSingleton<IAssemblyManager, DefaultAssemblyManager>();
             services.AddSingleton<IVersionChecker, DefaultVersionChecker>();
             services.AddSingleton<IMigrationRunner, DefaultMigrationRunner>();
+
+            services.AddScoped<IUnitOfWork, DefaultUnitOfWork>();
+            services.AddScoped<IRepository, DefaultRepository>();
         }
 
         public static void LoadConfiguration(this IServiceCollection services, IConfiguration configuration)
@@ -68,7 +69,6 @@ namespace BetterModules.Core.Extensions
 
         public static void LoadAssemblies(this IServiceCollection services)
         {
-
             var provider = services.BuildServiceProvider();
 
             var assemblyManager = provider.GetService<IAssemblyManager>();

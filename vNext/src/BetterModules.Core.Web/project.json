@@ -7,8 +7,10 @@
     "licenseUrl": "",
 
     "dependencies": {
-        "BetterModules.Core": "1.0.0-*",
-        "Microsoft.AspNet.Mvc": "6.0.0-beta7"
+      "BetterModules.Core": "1.0.0-*",
+      "Microsoft.AspNet.Mvc": "1.0.0-beta7",
+      "Microsoft.AspNet.Http": "1.0.0-beta7",
+      "Microsoft.Framework.DependencyInjection": "1.0.0-beta7"
     },
 
     "frameworks": {

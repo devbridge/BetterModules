@@ -3,8 +3,6 @@ using System.Linq;
 using BetterModules.Core.DataContracts;
 using BetterModules.Core.Modules.Registration;
 using FluentNHibernate.Mapping;
-using Microsoft.AspNet.Builder;
-using Microsoft.Framework.DependencyInjection;
 
 namespace BetterModules.Core.Models
 {

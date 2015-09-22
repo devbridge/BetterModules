@@ -1,7 +1,7 @@
 ﻿using BetterModules.Core.DataAccess;
 using BetterModules.Core.DataAccess.DataContext;
 
-namespace BetterModules.Core.Web.Mvc.Commands
+namespace BetterModules.Core.Infrastructure.Commands
 {
     public abstract class CoreCommandBase : ICommandBase
     {

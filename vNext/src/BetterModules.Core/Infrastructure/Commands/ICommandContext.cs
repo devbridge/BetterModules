@@ -1,6 +1,6 @@
 ﻿using System.Security.Principal;
 
-namespace BetterModules.Core.Web.Mvc.Commands
+namespace BetterModules.Core.Infrastructure.Commands
 {
     public interface ICommandContext
     {

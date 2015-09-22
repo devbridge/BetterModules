@@ -1,4 +1,4 @@
-﻿namespace BetterModules.Core.Web.Mvc.Commands
+﻿namespace BetterModules.Core.Infrastructure.Commands
 {
     /// <summary>
     /// Defines command base contract.

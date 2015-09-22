@@ -1,8 +1,4 @@
-﻿using System;
-using Microsoft.AspNet.Http.Features;
-using Microsoft.AspNet.Http.Features.Internal;
-
-namespace BetterModules.Core.Modules.Registration
+﻿namespace BetterModules.Core.Modules.Registration
 {
     public static class ModulesRegistrationSingleton
     {

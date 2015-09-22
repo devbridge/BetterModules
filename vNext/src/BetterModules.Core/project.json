@@ -16,7 +16,6 @@
         "Microsoft.Framework.OptionsModel": "1.0.0-beta7",
         "Microsoft.Framework.Configuration.Json": "1.0.0-beta6",
         "Microsoft.Framework.Logging": "1.0.0-beta7",
-        "Microsoft.AspNet.Http": "1.0.0-beta7",
         "Microsoft.Framework.DependencyInjection": "1.0.0-beta7",
         "Microsoft.Dnx.Runtime.Abstractions": "1.0.0-beta7"
     },

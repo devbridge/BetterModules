@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using BetterModules.Core.Web.Mvc;
+using BetterModules.Core.Infrastructure;
 
 namespace BetterModules.Core.Web.Models
 {
