@@ -41,19 +41,5 @@ namespace BetterModules.Core.Web.Environment.Host
                 }
             }
         }
-
-        public override void OnApplicationError(HttpApplication application)
-        {
-            var error = application.Server.GetLastError();
-            Logger.Fatal("Unhandled exception occurred in web host application.", error);
-
-            // Notify.
-            WebCoreEvents.Instance.OnHostError(application);
-        }
-
-        public override void OnAuthenticateRequest(HttpApplication application)
-        {
-            WebCoreEvents.Instance.OnHostAuthenticateRequest(application);
-        }
     }
 }
