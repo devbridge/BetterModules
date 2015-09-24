@@ -9,6 +9,7 @@ namespace BetterModules.Events
         /// <summary>
         /// Occurs when a host starts.
         /// </summary>
+
         public event DefaultEventHandler<SingleItemEventArgs<HttpApplication>> HostStart;
 
         public event DefaultEventHandler<SingleItemEventArgs<HttpApplication>> HostStop;

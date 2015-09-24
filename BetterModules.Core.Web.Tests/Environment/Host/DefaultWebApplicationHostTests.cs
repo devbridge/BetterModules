@@ -1,11 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.Routing;
 
-using BetterModules.Core.DataAccess.DataContext.Migrations;
-using BetterModules.Core.Modules;
-using BetterModules.Core.Modules.Registration;
+using BetterModules.Core.Tests.TestHelpers;
 using BetterModules.Core.Web.Environment.Host;
 using BetterModules.Core.Web.Modules.Registration;
 
@@ -24,58 +21,40 @@ namespace BetterModules.Core.Web.Tests.Environment.Host
         private bool eventFired;
 
         [Test]
-        public void ShouldExecute_OnApplicationStart_Correctly()
+        public void ShouldExecute_Init_Correctly()
         {
             eventFired = false;
             var routesRegistered = false;
-            var databaseMigrated = false;
 
-            var registration = new Mock<IWebModulesRegistration>();
-            registration
-                .Setup(r => r.RegisterKnownModuleRoutes(It.IsAny<RouteCollection>()))
-                .Callback<RouteCollection>(rc => routesRegistered = true);
+            using (var fakeProvider = new ContextScopeProviderHelper())
+            {
 
-            var moduleDescriptor1 = new ModuleRegistrationContext(new Mock<ModuleDescriptor>().Object);
-            var moduleDescriptor2 = new ModuleRegistrationContext(new Mock<ModuleDescriptor>().Object);
+                var registration = new Mock<IWebModulesRegistration>();
+                registration
+                    .Setup(r => r.RegisterKnownModuleRoutes(It.IsAny<RouteCollection>()))
+                    .Callback<RouteCollection>(rc => routesRegistered = true);
+                fakeProvider.RegisterFakeServiceInstance(registration.Object, typeof (IWebModulesRegistration));
 
-            registration
-                .Setup(r => r.GetModules())
-                .Returns(() => new[] { moduleDescriptor1, moduleDescriptor2 });
+                var host = new UtilityHost();
+                CreateApplication();
 
-            var migrationRunner = new Mock<IMigrationRunner>();
-            migrationRunner
-                .Setup(r => r.MigrateStructure(It.IsAny<IList<ModuleDescriptor>>()))
-                .Callback<IList<ModuleDescriptor>>(
-                    descriptors =>
-                    {
-                        Assert.AreEqual(descriptors.Count, 2);
-                        Assert.IsTrue(descriptors.Any(d => d == moduleDescriptor1.ModuleDescriptor));
-                        Assert.IsTrue(descriptors.Any(d => d == moduleDescriptor2.ModuleDescriptor));
-
-                        databaseMigrated = true;
-                    });
-
-            var host = new DefaultWebApplicationHost(registration.Object, migrationRunner.Object);
-            CreateApplication();
-
-            WebCoreEvents.Instance.HostStart += Instance_Fired;
-            host.OnApplicationStart(application);
-            WebCoreEvents.Instance.HostStart -= Instance_Fired;
-
+                WebCoreEvents.Instance.HostStart += Instance_Fired;
+                host.Init(application);
+                WebCoreEvents.Instance.HostStart -= Instance_Fired;
+            }
             Assert.IsTrue(eventFired);
             Assert.IsTrue(routesRegistered);
-            Assert.IsTrue(databaseMigrated);
         }
         
         [Test]
-        public void ShouldExecute_OnApplicationEnd_Correctly()
+        public void ShouldExecute_Dispose_Correctly()
         {
-            var host = CreateHost();
+            var host = new UtilityHost();
             CreateApplication();
             eventFired = false;
-
+            host.Init(application);
             WebCoreEvents.Instance.HostStop += Instance_Fired;
-            host.OnApplicationEnd(application);
+            host.Dispose();
             WebCoreEvents.Instance.HostStop -= Instance_Fired;
 
             Assert.IsTrue(eventFired);
@@ -119,17 +98,38 @@ namespace BetterModules.Core.Web.Tests.Environment.Host
 
         private IWebApplicationHost CreateHost()
         {
-            var registration = new Mock<IWebModulesRegistration>();
-            var migrationRunner = new Mock<IMigrationRunner>();
-
-            var host = new DefaultWebApplicationHost(registration.Object, migrationRunner.Object);
-
+            var host = new UtilityHost();
             return host;
         }
 
         private void CreateApplication()
         {
             application = new Mock<HttpApplication>().Object;
+        }
+
+        private class EventTestApplicationAutoHost : DefaultWebApplicationAutoHost
+        {
+            public List<string> Results = new List<string>();
+
+            public override void OnAuthenticateRequest(HttpApplication application)
+            {
+                Results.Add("OnAuthenticateRequest");
+            }
+
+            public override void OnBeginRequest(HttpApplication application)
+            {
+                Results.Add("OnBeginRequest");
+            }
+
+            public override void OnEndRequest(HttpApplication application)
+            {
+                Results.Add("OnEndRequest");
+            }
+
+            public override void OnApplicationError(HttpApplication application)
+            {
+                Results.Add("OnApplicationError");
+            }
         }
     }
 }

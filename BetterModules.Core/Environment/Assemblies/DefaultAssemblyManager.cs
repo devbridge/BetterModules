@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using BetterModules.Core.Environment.FileSystem;
 using BetterModules.Core.Exceptions;
+using BetterModules.Core.Modules;
 using BetterModules.Core.Modules.Registration;
 using Common.Logging;
 
@@ -114,8 +115,27 @@ namespace BetterModules.Core.Environment.Assemblies
                 Log.Trace("Add referenced modules.");
             }
 
-            var modules = AppDomain.CurrentDomain.GetAssemblies().Where(f => f.FullName.ToLowerInvariant().Contains("module")).ToList();
-            var loadedPaths = modules.Select(f => f.Location).ToArray();
+            var modules = new List<Assembly>();
+
+            foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                if (asm.IsDynamic)
+                {
+                    continue;
+                }
+                try
+                {
+                    if (asm.GetTypes().Any(t => typeof (ModuleDescriptor).IsAssignableFrom(t)))
+                    {
+                        modules.Add(asm);
+                    }
+                }
+                catch
+                {
+                    // Ignore
+                }
+            }
+            var loadedPaths = modules.Select(f => Path.GetFileName(f.Location)).ToArray();
 
             var directory = AppDomain.CurrentDomain.BaseDirectory;
             if (!directory.ToLowerInvariant().Contains("\\bin"))
@@ -124,21 +144,34 @@ namespace BetterModules.Core.Environment.Assemblies
             }
 
             var referencedPaths = Directory.GetFiles(directory, "*.dll");
-            var notLoadedReferencedPaths = referencedPaths.Where(r => !loadedPaths.Contains(r, StringComparer.OrdinalIgnoreCase)).ToList();
+            var notLoadedReferencedPaths = referencedPaths.Where(r => !loadedPaths.Contains(Path.GetFileName(r), StringComparer.OrdinalIgnoreCase)).ToList();
+
+            var domain = AppDomain.CreateDomain("tempAssemblyHolder");
 
             foreach (var notLoadedReferencedPath in notLoadedReferencedPaths)
             {
                 string fileName = Path.GetFileNameWithoutExtension(notLoadedReferencedPath);
-                if (fileName != null && fileName.ToLowerInvariant().Contains("module"))
+                if (fileName != null )
                 {
                     AssemblyName assemblyName = AssemblyName.GetAssemblyName(notLoadedReferencedPath);
-                    if (assemblyName.FullName.ToLowerInvariant().Contains("module"))
+
+                    try
                     {
-                        var module = assemblyLoader.Load(assemblyName);
-                        modules.Add(module);
+                        var module = domain.Load(assemblyName);
+                        if (module.GetTypes().Any(t => typeof(ModuleDescriptor).IsAssignableFrom(t)))
+                        {
+                            assemblyLoader.Load(assemblyName);
+                            modules.Add(module);
+                        }
+                    }
+                    catch
+                    {
+                        // Just ignore it
                     }
                 }
             }
+
+            AppDomain.Unload(domain);
 
             foreach (var module in modules)
             {

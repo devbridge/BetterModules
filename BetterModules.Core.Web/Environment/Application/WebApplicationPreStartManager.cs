@@ -8,8 +8,8 @@ using System.Security;
 using System.Web;
 using System.Web.Compilation;
 using System.Web.Hosting;
-
 using BetterModules.Core.Web.Environment.Application;
+using BetterModules.Core.Web.Extensions;
 
 [assembly: PreApplicationStartMethod(typeof(WebApplicationPreStartManager), "PreApplicationStart")]
 
@@ -34,7 +34,14 @@ namespace BetterModules.Core.Web.Environment.Application
         {
             if (!_hasInited)
             {
+                // Run pre-start methods
                 RunPreStartMethods();
+
+                // Register post-start methods to run after App_Start
+                foreach (var type in GetWebApplicationHostTypes())
+                {
+                    Microsoft.Web.Infrastructure.DynamicModuleHelper.DynamicModuleUtility.RegisterModule(type);
+                }
 
                 _hasInited = true;
             }
@@ -94,32 +101,32 @@ namespace BetterModules.Core.Web.Environment.Application
         }
 
         // Call the relevant activation method from all assemblies
-        private static void RunPreStartMethods()
+        private static void RunPreStartMethods(bool designerMode = false)
+        {
+            RunActivationMethods<WebApplicationPreStartAttribute>(designerMode);
+        }
+
+        private static void RunActivationMethods<T>(bool designerMode = false) where T : BaseActivationMethodAttribute
         {
             var attribs = Assemblies.Concat(AppCodeAssemblies)
-                                    .SelectMany(GetPreStartAttributes)
-                                    .OrderBy(att => att.Order);
+                .SelectMany(assembly => assembly.GetAttributes<T>())
+                .OrderBy(att => att.Order);
 
             foreach (var activationAttrib in attribs)
             {
-                activationAttrib.InvokeMethod();
+                if (!designerMode || activationAttrib.ShouldRunInDesignerMode())
+                {
+                    activationAttrib.InvokeMethod();
+                }
             }
         }
 
-        private static IEnumerable<WebApplicationPreStartAttribute> GetPreStartAttributes(Assembly assembly)
+        static IEnumerable<Type> GetWebApplicationHostTypes()
         {
-            try
-            {
-                return assembly.GetCustomAttributes(
-                    typeof(WebApplicationPreStartAttribute),
-                    false).OfType<WebApplicationPreStartAttribute>();
-            }
-            catch
-            {
-                // In some very odd (and not well understood) cases, GetCustomAttributes throws. Just ignore it.
-                // See https://github.com/davidebbo/WebActivator/issues/12 for details
-                return Enumerable.Empty<WebApplicationPreStartAttribute>();
-            }
+            return Assemblies.Concat(AppCodeAssemblies)
+                .SelectMany(assembly => assembly.GetAttributes<WebApplicationHostAttribute>())
+                .OrderBy(att => att.Order)
+                .Select(att => att.Type);
         }
     }
 }

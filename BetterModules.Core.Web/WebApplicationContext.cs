@@ -34,6 +34,8 @@ namespace BetterModules.Core.Web
     /// </summary>
     public static class WebApplicationContext
     {
+        private static bool isStarted;
+
         private static readonly object configurationLoaderLock = new object();
 
         private static volatile IWebConfiguration config;
@@ -131,6 +133,11 @@ namespace BetterModules.Core.Web
                 builder = new ContainerBuilder();
             }
 
+            if (isStarted)
+            {
+                return builder;
+            }
+
             if (configuration != null)
             {
                 Config = configuration;
@@ -162,6 +169,8 @@ namespace BetterModules.Core.Web
                     .As<IWebConfiguration>()
                     .SingleInstance();
             }
+
+            isStarted = true;
 
             return builder;
         }

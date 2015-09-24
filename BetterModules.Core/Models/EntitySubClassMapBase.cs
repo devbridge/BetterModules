@@ -1,3 +1,6 @@
+using System;
+using System.Linq;
+using BetterModules.Core.Modules.Registration;
 using FluentNHibernate.Mapping;
 
 namespace BetterModules.Core.Models
@@ -39,7 +42,51 @@ namespace BetterModules.Core.Models
         protected EntitySubClassMapBase(string moduleName)
         {
             this.moduleName = moduleName;
+            var currentModule = ModulesRegistrationSingleton.Instance.GetModules()
+                .FirstOrDefault(
+                    module => module.ModuleDescriptor != null && module.ModuleDescriptor.Name == moduleName);
+            if (currentModule != null)
+            {
+                schemaName = currentModule.ModuleDescriptor.SchemaName;
+            }
+            Init();
+        }
 
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EntitySubClassMapBase{TEntity}"/> class.
+        /// </summary>
+        /// <param name="moduleDescriptorType">Type of the module descriptor.</param>
+        protected EntitySubClassMapBase(Type moduleDescriptorType)
+        {
+            var currentModule = ModulesRegistrationSingleton.Instance.GetModules()
+                    .FirstOrDefault(
+                        module => module.ModuleDescriptor != null && module.ModuleDescriptor.GetType() == moduleDescriptorType);
+            if (currentModule != null)
+            {
+                schemaName = currentModule.ModuleDescriptor.SchemaName;
+            }
+            Init();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EntitySubClassMapBase{TEntity}"/> class.
+        /// </summary>
+        protected EntitySubClassMapBase()
+        {
+            var assembly = this.GetType().Assembly;
+            var currentModule = ModulesRegistrationSingleton.Instance.GetModules()
+                    .FirstOrDefault(
+                        module => module.ModuleDescriptor != null && module.ModuleDescriptor.AssemblyName == assembly.GetName());
+            if (currentModule != null)
+            {
+                schemaName = currentModule.ModuleDescriptor.SchemaName;
+            }
+            Init();
+        }
+
+        private void Init()
+        {
             if (SchemaName != null)
             {
                 Schema(SchemaName);

@@ -1,4 +1,7 @@
+using System;
+using System.Linq;
 using BetterModules.Core.DataContracts;
+using BetterModules.Core.Modules.Registration;
 using FluentNHibernate.Mapping;
 
 namespace BetterModules.Core.Models
@@ -41,7 +44,50 @@ namespace BetterModules.Core.Models
         protected EntityMapBase(string moduleName)
         {
             this.moduleName = moduleName;
+            var currentModule = ModulesRegistrationSingleton.Instance.GetModules()
+                .FirstOrDefault(
+                    module => module.ModuleDescriptor != null && module.ModuleDescriptor.Name == moduleName);
+            if (currentModule != null)
+            {
+                schemaName = currentModule.ModuleDescriptor.SchemaName;
+            }
+            Init();
+        }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EntityMapBase{TEntity}"/> class.
+        /// </summary>
+        /// <param name="moduleDescriptorType">Type of the module descriptor.</param>
+        protected EntityMapBase(Type moduleDescriptorType)
+        {
+            var currentModule = ModulesRegistrationSingleton.Instance.GetModules()
+                    .FirstOrDefault(
+                        module => module.ModuleDescriptor != null && module.ModuleDescriptor.GetType() == moduleDescriptorType);
+            if (currentModule != null)
+            {
+                schemaName = currentModule.ModuleDescriptor.SchemaName;
+            }
+            Init();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EntityMapBase{TEntity}"/> class.
+        /// </summary>
+        protected EntityMapBase()
+        {
+            var assembly = this.GetType().Assembly;
+            var currentModule = ModulesRegistrationSingleton.Instance.GetModules()
+                    .FirstOrDefault(
+                        module => module.ModuleDescriptor != null && module.ModuleDescriptor.AssemblyName == assembly.GetName());
+            if (currentModule != null)
+            {
+                schemaName = currentModule.ModuleDescriptor.SchemaName;
+            }
+            Init();
+        }
+
+        private void Init()
+        {
             if (SchemaName != null)
             {
                 Schema(SchemaName);
@@ -50,7 +96,7 @@ namespace BetterModules.Core.Models
             Id(x => x.Id).GeneratedBy.Custom<EntityIdGenerator>();
 
             Map(x => x.IsDeleted).Not.Nullable();
-            
+
             Map(x => x.CreatedOn).Not.Nullable();
             Map(x => x.ModifiedOn).Not.Nullable();
             Map(x => x.DeletedOn).Nullable();
@@ -58,7 +104,7 @@ namespace BetterModules.Core.Models
             Map(x => x.CreatedByUser).Not.Nullable().Length(MaxLength.Name);
             Map(x => x.ModifiedByUser).Not.Nullable().Length(MaxLength.Name);
             Map(x => x.DeletedByUser).Nullable().Length(MaxLength.Name);
-            
+
             Version(x => x.Version);
 
             OptimisticLock.Version();
