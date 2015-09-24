@@ -3,26 +3,28 @@ using System.Linq;
 using BetterModules.Core.DataAccess.DataContext.Migrations;
 using BetterModules.Core.Modules.Registration;
 using Microsoft.AspNet.Builder;
+using Microsoft.AspNet.Hosting;
 using Microsoft.Framework.DependencyInjection;
 
 namespace BetterModules.Core.Web.Extensions
 {
     public static class BetterModulesApplicationBuilderExtensions
     {
-        public static IApplicationBuilder UseBetterModules(this IApplicationBuilder app)
+        public static IApplicationBuilder UseBetterModules(this IApplicationBuilder app, IHostingEnvironment env)
         {
             RunDatabaseMigrations(app.ApplicationServices);
-#if DEBUG
-            app.Use(async (context, next) =>
+            if (env.IsDevelopment())
             {
-                if (context.Request.Query["restart"] == "1")
+                app.Use(async (context, next) =>
                 {
-                    //find a way to restart a server
-                    return;
-                }
-                await next.Invoke();
-            });
-#endif
+                    if (context.Request.Query["restart"] == "1")
+                    {
+                        //find a way to restart a server
+                        return;
+                    }
+                    await next.Invoke();
+                });
+            }
             return app;
         }
 

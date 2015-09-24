@@ -2,7 +2,6 @@
 using BetterModules.Core.Environment.Assemblies;
 using BetterModules.Core.Environment.FileSystem;
 using BetterModules.Core.Modules.Registration;
-using BetterModules.Core.Web.Web.EmbeddedResources;
 using Microsoft.Dnx.Runtime;
 using Microsoft.Framework.Logging;
 using IAssemblyLoader = BetterModules.Core.Environment.Assemblies.IAssemblyLoader;

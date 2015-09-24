@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using BetterModules.Core.Extensions;
+using BetterModules.Core.Infrastructure.Commands;
 using BetterModules.Core.Modules;
 using BetterModules.Core.Modules.Registration;
 using BetterModules.Core.Web.Modules.Registration;
-using BetterModules.Core.Web.Mvc.Commands;
 using BetterModules.Core.Web.Mvc.Extensions;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Framework.DependencyInjection;
@@ -116,8 +116,7 @@ namespace BetterModules.Core.Web.Modules
         {
             Assembly assembly = GetType().Assembly;
 
-            Type[] commandTypes = new[]
-                {
+            Type[] commandTypes = {
                     typeof(ICommand),
                     typeof(ICommandIn<>),
                     typeof(ICommandOut<>),

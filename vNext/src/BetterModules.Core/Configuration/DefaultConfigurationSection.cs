@@ -1,9 +1,7 @@
 ﻿namespace BetterModules.Core.Configuration
 {
-    public class DefaultConfigurationSection: IConfiguration
+    public class DefaultConfigurationSection
     {
         public DatabaseConfigurationElement Database { get; set; }
-
-        IDatabaseConfiguration IConfiguration.Database => Database;
     }
 }

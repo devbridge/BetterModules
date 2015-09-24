@@ -10,7 +10,6 @@ using BetterModules.Core.Modules.Registration;
 using BetterModules.Core.Security;
 using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Logging;
-using Microsoft.Framework.OptionsModel;
 using IConfiguration = Microsoft.Framework.Configuration.IConfiguration;
 
 namespace BetterModules.Core.Extensions
@@ -58,13 +57,6 @@ namespace BetterModules.Core.Extensions
         public static void LoadConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<DefaultConfigurationSection>(configuration);
-            var provider = services.BuildServiceProvider();
-            var config = provider.GetService<IOptions<DefaultConfigurationSection>>().Options;
-            if (config?.Database != null)
-            {
-                config.Database.ConnectionString = configuration[config.Database.ConnectionStringName];
-            }
-            services.AddInstance<Configuration.IConfiguration>(config);
         }
 
         public static void LoadAssemblies(this IServiceCollection services)

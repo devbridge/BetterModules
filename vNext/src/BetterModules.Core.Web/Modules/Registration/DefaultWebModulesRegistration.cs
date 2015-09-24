@@ -57,22 +57,6 @@ namespace BetterModules.Core.Web.Modules.Registration
         }
 
         /// <summary>
-        /// Register all modules routes
-        /// </summary>
-        /// <param name="routes"></param>
-        public void RegisterKnownModuleRoutes(RouteCollection routes)
-        {
-            foreach (var context in knownModules)
-            {
-                var webModuleContext = context.Value as WebModuleRegistrationContext;
-                if (webModuleContext != null)
-                {
-                    routes.Add(webModuleContext.Routes);
-                }
-            }
-        }
-
-        /// <summary>
         /// Registers the types.
         /// </summary>
         /// <param name="registrationContext">The registration context.</param>

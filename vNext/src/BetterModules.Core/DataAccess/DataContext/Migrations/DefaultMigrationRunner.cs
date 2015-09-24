@@ -46,7 +46,7 @@ namespace BetterModules.Core.DataAccess.DataContext.Migrations
         /// <summary>
         /// The configuration.
         /// </summary>
-        private readonly IConfiguration configuration;
+        private readonly DefaultConfigurationSection configuration;
 
         /// <summary>
         /// The version checker
@@ -59,13 +59,13 @@ namespace BetterModules.Core.DataAccess.DataContext.Migrations
         /// <param name="assemblyLoader">The assembly loader.</param>
         /// <param name="configurationAccessor">The configuration accessor.</param>
         /// <param name="versionChecker">The version checker.</param>
-        public DefaultMigrationRunner(IAssemblyLoader assemblyLoader, 
-            IConfiguration configuration, 
+        public DefaultMigrationRunner(IAssemblyLoader assemblyLoader,
+            IOptions<DefaultConfigurationSection> configuration, 
             IVersionChecker versionChecker,
             ILoggerFactory loggerFactory)
         {
             this.assemblyLoader = assemblyLoader;
-            this.configuration = configuration;
+            this.configuration = configuration.Options;
             this.versionChecker = versionChecker;
             logger = loggerFactory.CreateLogger(typeof (DefaultMigrationRunner).FullName);
         }

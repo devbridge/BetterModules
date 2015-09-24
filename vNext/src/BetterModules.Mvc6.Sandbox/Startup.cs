@@ -78,7 +78,7 @@ namespace BetterModules.Mvc6.Sandbox
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            app.UseBetterModulesCore();
+            //app.UseBetterModules();
         }
     }
 }

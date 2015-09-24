@@ -1,6 +1,6 @@
 ﻿namespace BetterModules.Core.Configuration
 {
-    public class DatabaseConfigurationElement: IDatabaseConfiguration
+    public class DatabaseConfigurationElement
     {
         public string SchemaName { get; set; }
 

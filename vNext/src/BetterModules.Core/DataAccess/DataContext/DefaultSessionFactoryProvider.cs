@@ -10,6 +10,7 @@ using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Conventions.Helpers;
 using Microsoft.Framework.Logging;
+using Microsoft.Framework.OptionsModel;
 using NHibernate;
 using NHibernate.Event;
 using ILoggerFactory = Microsoft.Framework.Logging.ILoggerFactory;
@@ -21,7 +22,7 @@ namespace BetterModules.Core.DataAccess.DataContext
         private static readonly object lockObject = new object();
         private readonly IMappingResolver mappingResolver;
         private volatile ISessionFactory sessionFactory;
-        private readonly IConfiguration configuration;
+        private readonly DefaultConfigurationSection configuration;
         private readonly IPrincipalProvider principalProvider;
 
         /// <summary>
@@ -30,12 +31,12 @@ namespace BetterModules.Core.DataAccess.DataContext
         private readonly ILogger logger;
 
         public DefaultSessionFactoryProvider(IMappingResolver mappingResolver,
-            IConfiguration configuration, 
+            IOptions<DefaultConfigurationSection> configuration, 
             IPrincipalProvider principalProvider, 
             ILoggerFactory loggerFactory)
         {
             this.mappingResolver = mappingResolver;
-            this.configuration = configuration;
+            this.configuration = configuration.Options;
             this.principalProvider = principalProvider;
             logger = loggerFactory.CreateLogger(typeof (DefaultSessionFactoryProvider).FullName);
         }

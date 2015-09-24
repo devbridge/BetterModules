@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
-using System.Web.Mvc;
 using BetterModules.Core.Infrastructure;
 using BetterModules.Core.Infrastructure.Commands;
 using BetterModules.Core.Web.Models;
 using BetterModules.Core.Web.Mvc.Extensions;
+using Microsoft.AspNet.Mvc;
 
 namespace BetterModules.Core.Web.Mvc
 {
@@ -163,7 +163,7 @@ namespace BetterModules.Core.Web.Mvc
         /// Called before the action method is invoked.
         /// </summary>
         /// <param name="filterContext">Information about the current request and action.</param>
-        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             UpdateModelStateErrors();
 

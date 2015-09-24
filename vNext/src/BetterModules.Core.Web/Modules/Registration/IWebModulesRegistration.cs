@@ -23,11 +23,5 @@ namespace BetterModules.Core.Web.Modules.Registration
         /// <c>true</c> if module by area name is registered; otherwise, <c>false</c>.
         /// </returns>
         bool IsModuleRegisteredByAreaName(string areaName);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="routes"></param>
-        void RegisterKnownModuleRoutes(RouteCollection routes);
     }
 }

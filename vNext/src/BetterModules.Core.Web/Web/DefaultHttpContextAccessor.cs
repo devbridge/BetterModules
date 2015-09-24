@@ -2,38 +2,43 @@
 using System.IO;
 using System.Reflection;
 using BetterModules.Core.Web.Configuration;
+using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Http;
-using Microsoft.AspNet.Http.Extensions;
+using Microsoft.AspNet.Http.Internal;
 using Microsoft.AspNet.Mvc;
+using Microsoft.AspNet.Mvc.Core;
 using Microsoft.AspNet.Mvc.Rendering.Expressions;
+using Microsoft.Framework.OptionsModel;
+using Microsoft.Framework.WebEncoders;
 
 namespace BetterModules.Core.Web.Web
 {
     /// <summary>
     /// Default implementation of http context accessor. Provides HttpContext.Current context wrapper.
     /// </summary>
-    public class DefaultHttpContextAccessor : IHttpContextAccessor
+    public class DefaultHttpContextAccessor : HttpContextAccessor, IHttpContextAccessor
     {
         /// <summary>
         /// The web configuration
         /// </summary>
-        private readonly IWebConfiguration configuration;
+        private readonly DefaultWebConfigurationSection configuration;
+
+        /// <summary>
+        /// The hosting environment
+        /// </summary>
+        private readonly IHostingEnvironment hostingEnvironment;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultHttpContextAccessor" /> class.
         /// </summary>
         /// <param name="configuration">The application configuration.</param>
-        public DefaultHttpContextAccessor(IWebConfiguration configuration)
+        public DefaultHttpContextAccessor(IOptions<DefaultWebConfigurationSection> configuration, IHostingEnvironment hostingEnvironment)
         {
-            this.configuration = configuration;
+            this.hostingEnvironment = hostingEnvironment;
+            this.configuration = configuration.Options;
         }
 
         // TBD: create a DefaultControllerContextAccessor service to get current controller views and etc. 
-
-        public HttpContext GetCurrent()
-        {
-            throw new NotImplementedException();
-        }
 
         /// <summary>
         /// Returns the physical file path that corresponds to the specified virtual path on the Web server.
@@ -44,13 +49,7 @@ namespace BetterModules.Core.Web.Web
         /// </returns>
         public string MapPath(string path)
         {
-            var current = GetCurrent();
-            if (current != null)
-            {
-                return current.Server.MapPath(path);
-            }
-            
-            return Path.Combine(GetExecutingAssemblyPath(), path);
+            return hostingEnvironment.MapPath(path);
         }
 
         /// <summary>
@@ -60,7 +59,7 @@ namespace BetterModules.Core.Web.Web
         /// <returns>The absolute path that corresponds to path.</returns>
         public string MapPublicPath(string path)
         {
-            return string.Concat(GetServerUrl(GetCurrent().Request).TrimEnd('/'), VirtualPathUtility.ToAbsolute(path));
+            return string.Concat(GetServerUrl(HttpContext.Request).TrimEnd('/'), VirtualPathUtility.ToAbsolute(path));
         }
 
         /// <summary>
@@ -74,22 +73,23 @@ namespace BetterModules.Core.Web.Web
         public string ResolveActionUrl<TController>(System.Linq.Expressions.Expression<Action<TController>> expression, bool fullUrl = false) 
             where TController : Controller
         {
-            var routeValuesFromExpression = ExpressionHelper.GetRouteValuesFromExpression(expression);
-            var action = routeValuesFromExpression["Action"].ToString();
-            var controller = routeValuesFromExpression["Controller"].ToString();
-            var current = GetCurrent();
-            if (current != null)
-            {
-                string url = new UrlHelper(null, null).Action(action, controller, routeValuesFromExpression);
-                if (fullUrl)
-                {
-                    url = string.Concat(GetServerUrl(current.Request).TrimEnd('/'), url);
-                }
+            //TODO: Find another way to resolve action url
+            //var routeValuesFromExpression = ExpressionHelper.GetRouteValuesFromExpression(expression);
+            
+            //var action = routeValuesFromExpression["Action"].ToString();
+            //var controller = routeValuesFromExpression["Controller"].ToString();
+            //if (HttpContext != null)
+            //{
                 
-                url = HttpUtility.UrlDecode(url);
-
-                return url;
-            }
+            //    string url = new UrlHelper(null, null).Action(action, controller, routeValuesFromExpression);
+            //    if (fullUrl)
+            //    {
+            //        url = string.Concat(GetServerUrl(HttpContext.Request).TrimEnd('/'), url);
+            //    }
+                
+            //    url = HttpUtility.UrlDecode(url);
+            //    return url;
+            //}
 
             return null;
         }

@@ -8,14 +8,8 @@ namespace BetterModules.Core.Web.Web
     /// <summary>
     /// Defines the contract to access current http context.
     /// </summary>
-    public interface IHttpContextAccessor
+    public interface IHttpContextAccessor: Microsoft.AspNet.Http.IHttpContextAccessor
     {
-        /// <summary>
-        /// Gets the current http context.
-        /// </summary>
-        /// <returns>Current http context instance.</returns>
-        HttpContext GetCurrent();
-
         /// <summary>
         /// Returns the physical file path that corresponds to the specified virtual path on the Web server.
         /// </summary>
