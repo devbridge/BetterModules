@@ -1,15 +1,13 @@
 ﻿using System;
 using System.IO;
+using System.Linq.Expressions;
 using System.Reflection;
 using BetterModules.Core.Web.Configuration;
 using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Http.Internal;
 using Microsoft.AspNet.Mvc;
-using Microsoft.AspNet.Mvc.Core;
-using Microsoft.AspNet.Mvc.Rendering.Expressions;
 using Microsoft.Framework.OptionsModel;
-using Microsoft.Framework.WebEncoders;
 
 namespace BetterModules.Core.Web.Web
 {
@@ -59,7 +57,7 @@ namespace BetterModules.Core.Web.Web
         /// <returns>The absolute path that corresponds to path.</returns>
         public string MapPublicPath(string path)
         {
-            return string.Concat(GetServerUrl(HttpContext.Request).TrimEnd('/'), VirtualPathUtility.ToAbsolute(path));
+            return string.Concat(GetServerUrl(HttpContext.Request).TrimEnd('/'), Path.GetFullPath(path));
         }
 
         /// <summary>
@@ -70,7 +68,7 @@ namespace BetterModules.Core.Web.Web
         /// <param name="fullUrl">if set to <c>true</c> retrieve full URL.</param>
         /// <returns></returns>
         /// <exception cref="System.NotImplementedException"></exception>
-        public string ResolveActionUrl<TController>(System.Linq.Expressions.Expression<Action<TController>> expression, bool fullUrl = false) 
+        public string ResolveActionUrl<TController>(Expression<Action<TController>> expression, bool fullUrl = false) 
             where TController : Controller
         {
             //TODO: Find another way to resolve action url

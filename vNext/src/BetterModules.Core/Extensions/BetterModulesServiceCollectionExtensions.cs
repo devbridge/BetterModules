@@ -8,9 +8,9 @@ using BetterModules.Core.Environment.Assemblies;
 using BetterModules.Core.Environment.FileSystem;
 using BetterModules.Core.Modules.Registration;
 using BetterModules.Core.Security;
+using Microsoft.Framework.Configuration;
 using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Logging;
-using IConfiguration = Microsoft.Framework.Configuration.IConfiguration;
 
 namespace BetterModules.Core.Extensions
 {

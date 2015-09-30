@@ -7,7 +7,7 @@
             ModuleDescriptor = moduleDescriptor;
         }
 
-        public virtual ModuleDescriptor ModuleDescriptor { get; private set; }
+        public virtual ModuleDescriptor ModuleDescriptor { get; }
 
         public virtual string GetRegistrationName()
         {
