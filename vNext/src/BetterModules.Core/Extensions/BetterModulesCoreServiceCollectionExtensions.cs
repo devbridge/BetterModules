@@ -7,6 +7,7 @@ using BetterModules.Core.DataAccess.DataContext.Fetching;
 using BetterModules.Core.DataAccess.DataContext.Migrations;
 using BetterModules.Core.Environment.Assemblies;
 using BetterModules.Core.Environment.FileSystem;
+using BetterModules.Core.Infrastructure.Commands;
 using BetterModules.Core.Modules.Registration;
 using BetterModules.Core.Security;
 using Microsoft.Framework.Configuration;
@@ -53,6 +54,7 @@ namespace BetterModules.Core.Extensions
             services.AddSingleton<IVersionChecker, DefaultVersionChecker>();
             services.AddSingleton<IMigrationRunner, DefaultMigrationRunner>();
 
+            services.AddScoped<ICommandResolver, DefaultCommandResolver>();
             services.AddScoped<IUnitOfWork, DefaultUnitOfWork>();
             services.AddScoped<IRepository, DefaultRepository>();
         }

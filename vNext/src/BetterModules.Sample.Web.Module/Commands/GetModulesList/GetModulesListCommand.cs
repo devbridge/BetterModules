@@ -1,7 +1,7 @@
 ﻿using System.Linq;
+using BetterModules.Core.Infrastructure.Commands;
 using BetterModules.Core.Modules.Registration;
 using BetterModules.Core.Web.Modules;
-using BetterModules.Core.Web.Mvc.Commands;
 using BetterModules.Sample.Web.Module.Models;
 
 namespace BetterModules.Sample.Web.Module.Commands.GetModulesList

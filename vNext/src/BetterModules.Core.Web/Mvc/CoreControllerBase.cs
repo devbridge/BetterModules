@@ -50,14 +50,9 @@ namespace BetterModules.Core.Web.Mvc
         /// <value>
         /// The current command principal.
         /// </value>
-        IPrincipal ICommandContext.Principal
-        {
-            get
-            {
-                return User;
-            }
-        }
+        IPrincipal ICommandContext.Principal => User;
 
+        [FromServices]
         public virtual ICommandResolver CommandResolver { get; set; }
 
         /// <summary>

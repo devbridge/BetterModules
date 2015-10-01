@@ -6,6 +6,8 @@
     "projectUrl": "",
     "licenseUrl": "",
 
+    "resource": "**/*.cshtml",
+
     "dependencies": {
         "BetterModules.Core.Web": "1.0.0-*"
     },

@@ -4,20 +4,8 @@ namespace BetterModules.Sample.Web.Module
 {
     public class SampleWebModuleDescriptor : WebModuleDescriptor
     {
-        public override string Description
-        {
-            get
-            {
-                return "Sample BetterModules Web Module";
-            }
-        }
+        public override string Description => "Sample BetterModules Web Module";
 
-        public override string Name
-        {
-            get
-            {
-                return "BetterModulesWebSample";
-            }
-        }
+        public override string Name => "BetterModulesWebSample";
     }
 }

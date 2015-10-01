@@ -1,22 +1,23 @@
-﻿using System.Web.Mvc;
-using BetterModules.Core.Web.Mvc;
+﻿using BetterModules.Core.Web.Mvc;
 using BetterModules.Sample.Web.Module.Commands.GetModulesList;
+using Microsoft.AspNet.Mvc;
 
 namespace BetterModules.Sample.Web.Module.Controllers
 {
+    [Area("module-bettermoduleswebsample")]
     public class SampleWebController : CoreControllerBase
     {
-        public ActionResult Index()
+        public IActionResult Index()
         {
             return Content("Hello World From Sample Controller!");
         }
         
-        public ActionResult Test()
+        public IActionResult Test()
         {
             return View();
         }
 
-        public ActionResult ModulesList()
+        public IActionResult ModulesList()
         {
             var command = GetCommand<GetModulesListCommand>();
             var model = command.Execute();

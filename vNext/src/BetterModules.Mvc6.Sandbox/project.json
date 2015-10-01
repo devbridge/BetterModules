@@ -21,7 +21,8 @@
         "Microsoft.Framework.Logging.EventLog": "1.0.0-beta7",
         "Microsoft.Framework.Logging.Console": "1.0.0-beta7",
         "Microsoft.Framework.Configuration.Xml": "1.0.0-beta7",
-        "BetterModules.Core.Web": "1.0.0-*"
+        "BetterModules.Core.Web": "1.0.0-*",
+        "BetterModules.Sample.Web.Module": "1.0.0-*"
     },
 
     "commands": {

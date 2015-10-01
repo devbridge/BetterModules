@@ -5,6 +5,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using BetterModules.Core.Modules.Registration;
+using BetterModules.Core.Web.Modules;
 using Microsoft.AspNet.FileProviders;
 using Microsoft.Dnx.Runtime;
 using Microsoft.Framework.Caching;
@@ -50,21 +51,26 @@ namespace BetterModules.Core.Web.Web.EmbeddedResources
         {
             foreach (var module in modules)
             {
-                var assembly = Assembly.Load(module.ModuleDescriptor.AssemblyName);
-                var resourceNames = assembly.GetManifestResourceNames();
-
-                foreach (var resourceName in resourceNames)
+                var descriptor = module.ModuleDescriptor as WebModuleDescriptor;
+                if (descriptor != null)
                 {
-                    
-                    var subpathIndex = resourceName.IndexOf('.') + 1;
-                    var extensionIndex = resourceName.LastIndexOf('.');
-                    var builder = new StringBuilder($"Areas/{module.ModuleDescriptor.Name}/{resourceName.Substring(subpathIndex)}");
-                    builder.Replace("/", ".");
-                    builder.Remove(extensionIndex, 1);
-                    builder.Insert(extensionIndex, ".");
-                    var path = builder.ToString();
-                    var fileInfo = new EmbeddedResourceInfo(assembly, resourceName, Path.GetFileName(resourceName), lastModified);
-                    embeddedFileInfoCache.TryAdd(path, fileInfo);
+                    var assembly = Assembly.Load(descriptor.AssemblyName);
+                    var resourceNames = assembly.GetManifestResourceNames();
+                    var assemblyName = descriptor.AssemblyName.Name + ".";
+
+                    foreach (var resourceName in resourceNames)
+                    {
+                        var builder =
+                            new StringBuilder($"Areas/{descriptor.AreaName}/{resourceName.Replace(assemblyName, "")}");
+                        builder.Replace(".", "/");
+                        var extensionIndex = builder.ToString().LastIndexOf('/');
+                        builder.Remove(extensionIndex, 1);
+                        builder.Insert(extensionIndex, ".");
+                        var path = builder.ToString();
+                        var fileInfo = new EmbeddedResourceInfo(assembly, resourceName, Path.GetFileName(resourceName),
+                            lastModified);
+                        embeddedFileInfoCache.TryAdd(path, fileInfo);
+                    }
                 }
             }
         }

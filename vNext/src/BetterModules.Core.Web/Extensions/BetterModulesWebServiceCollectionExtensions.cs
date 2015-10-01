@@ -8,6 +8,7 @@ using BetterModules.Core.Web.Mvc.Extensions;
 using BetterModules.Core.Web.Security;
 using BetterModules.Core.Web.Web;
 using BetterModules.Core.Web.Web.EmbeddedResources;
+using Microsoft.AspNet.Mvc.Razor;
 using Microsoft.Framework.Configuration;
 using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Logging;
@@ -64,6 +65,10 @@ namespace BetterModules.Core.Web.Extensions
             var resourceProvider = ActivatorUtilities.CreateInstance<DefaultEmbeddedResourceProvider>(provider);
             resourceProvider.LoadEmbeddedResourcesFrom(modulesRegistration.GetModules());
             services.AddInstance<IEmbeddedResourceProvider>(resourceProvider);
+            services.Configure<RazorViewEngineOptions>(opt =>
+            {
+                opt.FileProvider = resourceProvider;
+            });
         }
     }
 }
