@@ -2,70 +2,52 @@
 using System.IO;
 using System.Linq;
 using BetterModules.Core.Environment.FileSystem;
-using NUnit.Framework;
+using Microsoft.Framework.Logging;
+using Xunit;
 
 namespace BetterModules.Core.Tests.Environment.FileSystem
 {
-    [TestFixture]
-    public class DefaultWorkingDirectoryTests : TestBase
+    public class DefaultWorkingDirectoryTests
     {
-        private string OriginalFileName
-        {
-            get
-            {
-                return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Data", "TestModules", "test.dll");
-            }
-        }
-        
-        private string RuntimeFileName
-        {
-            get
-            {
-                return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "test.dll");
-            }
-        }
+        private string OriginalFileName => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Data", "TestModules", "test.dll");
 
-        private string ModuleFileName
-        {
-            get
-            {
-                return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Data", "Modules", "test.dll");
-            }
-        }
+        private string RuntimeFileName => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "test.dll");
 
-        [Test]
+        private string ModuleFileName => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Data", "Modules", "test.dll");
+
+        [Fact]
         public void ShouldReturn_Correct_WorkingDirectoryPath()
         {
-            var service = new DefaultWorkingDirectory();
+            var service = new DefaultWorkingDirectory(new LoggerFactory());
             var path = service.GetWorkingDirectoryPath();
 
-            Assert.IsNotNull(path);
-            Assert.IsTrue(path.Contains(AppDomain.CurrentDomain.BaseDirectory));
+            Assert.NotNull(path);
+            Assert.True(path.Contains(AppDomain.CurrentDomain.BaseDirectory));
         }
         
-        [Test]
+        [Fact]
         public void ShouldReturn_AvailableModules()
         {
             PrepareTestDll();
 
-            var service = new DefaultWorkingDirectory();
+            var service = new DefaultWorkingDirectory(new LoggerFactory());
             var modules = service.GetAvailableModules();
 
-            Assert.IsNotNull(modules);
-            Assert.AreEqual(modules.Count(), 1);
-            Assert.AreEqual(modules.First().Name, "test.dll");
+            Assert.NotNull(modules);
+            Assert.Equal(modules.Count(), 1);
+            Assert.Equal(modules.First().Name, "test.dll");
 
             RemoveTestDll();
         }
         
-        [Test]
+        [Fact]
         public void ShouldCopy_ModulesToRuntimeDirectory_Successfully()
         {
             PrepareTestDll();
 
-            var service = new DefaultWorkingDirectory();
+            var service = new DefaultWorkingDirectory(new LoggerFactory());
             service.RecopyModulesToRuntimeFolder(new FileInfo(ModuleFileName));
-            Assert.IsTrue(File.Exists(RuntimeFileName));
+            Assert.True(File.Exists(RuntimeFileName));
             
             RemoveTestDll();
         }

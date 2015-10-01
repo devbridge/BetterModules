@@ -1,56 +1,55 @@
 ﻿using System;
 using BetterModules.Core.Exceptions.DataTier;
 using BetterModules.Sample.Module.Models;
-using NUnit.Framework;
+using Xunit;
 
 namespace BetterModules.Core.Tests.Exceptions.DataTier
 {
-    [TestFixture]
     public class EntityNotFoundExceptionTests
     {
         private const string Message = "TestExcMessage";
 
-        [Test]
+        [Fact]
         public void Should_Create_Exception_With_Message()
         {
             var exception = new EntityNotFoundException(Message);
 
-            Assert.AreEqual(exception.Message, Message);
-            Assert.IsNull(exception.InnerException);
+            Assert.Equal(exception.Message, Message);
+            Assert.Null(exception.InnerException);
         }
 
-        [Test]
+        [Fact]
         public void Should_Create_Exception_With_Message_And_InnerException()
         {
             var innerException = new Exception(Message);
             var exception = new EntityNotFoundException(Message, innerException);
 
-            Assert.AreEqual(exception.Message, Message);
-            Assert.AreEqual(exception.InnerException, innerException);
+            Assert.Equal(exception.Message, Message);
+            Assert.Equal(exception.InnerException, innerException);
         }
 
-        [Test]
+        [Fact]
         public void Should_Create_Exception_With_Type_And_Id()
         {
             var guid = Guid.NewGuid();
             var exception = new EntityNotFoundException(typeof(TestItemModel), guid);
 
-            Assert.IsNotNull(exception.Message);
-            Assert.IsTrue(exception.Message.Contains(guid.ToString()));
-            Assert.IsTrue(exception.Message.Contains("TestItemModel"));
-            Assert.IsNull(exception.InnerException);
+            Assert.NotNull(exception.Message);
+            Assert.True(exception.Message.Contains(guid.ToString()));
+            Assert.True(exception.Message.Contains("TestItemModel"));
+            Assert.Null(exception.InnerException);
         }
         
-        [Test]
+        [Fact]
         public void Should_Create_Exception_With_Type_And_Filter()
         {
             var filter = "test filter";
             var exception = new EntityNotFoundException(typeof(TestItemModel), filter);
 
-            Assert.IsNotNull(exception.Message);
-            Assert.IsTrue(exception.Message.Contains(filter));
-            Assert.IsTrue(exception.Message.Contains("TestItemModel"));
-            Assert.IsNull(exception.InnerException);
+            Assert.NotNull(exception.Message);
+            Assert.True(exception.Message.Contains(filter));
+            Assert.True(exception.Message.Contains("TestItemModel"));
+            Assert.Null(exception.InnerException);
         }
     }
 }

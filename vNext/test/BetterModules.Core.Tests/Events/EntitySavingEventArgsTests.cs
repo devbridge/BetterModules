@@ -2,14 +2,13 @@
 using BetterModules.Events;
 using Moq;
 using NHibernate;
-using NUnit.Framework;
+using Xunit;
 
 namespace BetterModules.Core.Tests.Events
 {
-    [TestFixture]
-    public class EntitySavingEventArgsTests : TestBase
+    public class EntitySavingEventArgsTests
     {
-        [Test]
+        [Fact]
         public void Should_Assign_Correct_Session_Arg()
         {
             var session = new Mock<ISession>().Object;
@@ -17,8 +16,8 @@ namespace BetterModules.Core.Tests.Events
 
             var args = new EntitySavingEventArgs(entity, session);
 
-            Assert.AreEqual(args.Session, session);
-            Assert.AreEqual(args.Entity, entity);
+            Assert.Equal(args.Session, session);
+            Assert.Equal(args.Entity, entity);
         }
     }
 }

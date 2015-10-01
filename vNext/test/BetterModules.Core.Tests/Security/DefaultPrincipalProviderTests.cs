@@ -1,14 +1,13 @@
 ﻿using System.Security.Principal;
 using System.Threading;
 using BetterModules.Core.Security;
-using NUnit.Framework;
+using Xunit;
 
 namespace BetterModules.Core.Tests.Security
 {
-    [TestFixture]
-    public class DefaultPrincipalProviderTests : TestBase
+    public class DefaultPrincipalProviderTests
     {
-        [Test]
+        [Fact]
         public void Should_Return_CurrectPrincipal()
         {
             var origPrincipal = Thread.CurrentPrincipal;
@@ -18,12 +17,12 @@ namespace BetterModules.Core.Tests.Security
             var principalProvider = new DefaultPrincipalProvider();
             var retrievedPrincipal = principalProvider.GetCurrentPrincipal();
 
-            Assert.AreEqual(principal, retrievedPrincipal);
+            Assert.Equal(principal, retrievedPrincipal);
 
             Thread.CurrentPrincipal = origPrincipal;
         }
         
-        [Test]
+        [Fact]
         public void Should_Return_CurrectPrincipal_Name()
         {
             var origPrincipal = Thread.CurrentPrincipal;
@@ -33,12 +32,12 @@ namespace BetterModules.Core.Tests.Security
             var principalProvider = new DefaultPrincipalProvider();
             var name = principalProvider.CurrentPrincipalName;
 
-            Assert.AreEqual(name, "TestPrincipal2");
+            Assert.Equal(name, "TestPrincipal2");
 
             Thread.CurrentPrincipal = origPrincipal;
         }
         
-        [Test]
+        [Fact]
         public void Should_Return_Anonymous_Principal_Name()
         {
             var origPrincipal = Thread.CurrentPrincipal;
@@ -47,7 +46,7 @@ namespace BetterModules.Core.Tests.Security
             var principalProvider = new DefaultPrincipalProvider();
             var name = principalProvider.CurrentPrincipalName;
 
-            Assert.AreEqual(name, DefaultPrincipalProvider.AnonymousPrincipalName);
+            Assert.Equal(name, DefaultPrincipalProvider.AnonymousPrincipalName);
 
             Thread.CurrentPrincipal = origPrincipal;
         }

@@ -5,21 +5,22 @@ using System.Reflection;
 using BetterModules.Core.Environment.Assemblies;
 using BetterModules.Core.Modules.Registration;
 using BetterModules.Sample.Module;
+using Microsoft.Framework.DependencyInjection;
+using Microsoft.Framework.Logging;
 using Moq;
-using NUnit.Framework;
+using Xunit;
 
 namespace BetterModules.Core.Tests.Modules.Registration
 {
-    [TestFixture]
-    public class DefaultModulesRegistrationTests : TestBase
+    public class DefaultModulesRegistrationTests
     {
-        [Test]
+        [Fact]
         public void ShouldAddDescriptor_FromAssembly_Correctly()
         {
             AddAssembly<SampleModuleDescriptor>(1);
         }
 
-        [Test]
+        [Fact]
         public void ShouldNotAddDescriptor_FromAssembly_Correctly()
         {
             AddAssembly<DefaultModulesRegistration>(0);
@@ -32,14 +33,16 @@ namespace BetterModules.Core.Tests.Modules.Registration
                 .Setup(a => a.GetLoadableTypes(It.IsAny<Assembly>()))
                 .Returns<Assembly>(a => new List<Type> { typeof(TType) });
 
-            var registration = new DefaultModulesRegistration(assemblyLoaderMock.Object);
+            var registration = new DefaultModulesRegistration(assemblyLoaderMock.Object, new LoggerFactory());
             registration.AddModuleDescriptorTypeFromAssembly(typeof(TType).Assembly);
 
-            registration.InitializeModules();
+            var services = new ServiceCollection();
+
+            registration.InitializeModules(services);
             var modules = registration.GetModules();
 
-            Assert.IsNotNull(modules);
-            Assert.AreEqual(modules.Count(), expectedResult);
+            Assert.NotNull(modules);
+            Assert.Equal(modules.Count(), expectedResult);
         }
     }
 }

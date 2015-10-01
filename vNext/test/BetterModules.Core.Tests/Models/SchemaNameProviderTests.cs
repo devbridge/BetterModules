@@ -1,12 +1,11 @@
 ﻿using BetterModules.Core.Models;
-using NUnit.Framework;
+using Xunit;
 
 namespace BetterModules.Core.Tests.Models
 {
-    [TestFixture]
-    public class SchemaNameProviderTests : TestBase
+    public class SchemaNameProviderTests
     {
-        [Test]
+        [Fact]
         public void Should_Provide_Correct_Schema_Name()
         {
             var origPattern = SchemaNameProvider.SchemaNamePattern;
@@ -15,7 +14,7 @@ namespace BetterModules.Core.Tests.Models
             {
                 SchemaNameProvider.SchemaNamePattern = "test_{0}_test";
 
-                Assert.AreEqual(SchemaNameProvider.GetSchemaName("MoDuLe"), "test_module_test");
+                Assert.Equal(SchemaNameProvider.GetSchemaName("MoDuLe"), "test_module_test");
             }
             finally
             {

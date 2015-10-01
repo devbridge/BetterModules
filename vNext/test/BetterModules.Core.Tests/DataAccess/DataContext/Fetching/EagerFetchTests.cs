@@ -22,7 +22,7 @@
 //            new TestModel {Name = "Test2"},
 //        }.AsQueryable();
 
-//        [Test]
+//        [Fact]
 //        public void Should_Call_Fetch_Successfully()
 //        {
 //            using (var fakeProvider = new ContextScopeProviderHelper())
@@ -32,13 +32,13 @@
 
 //                var result = originalQuery.Fetch(s => s.Parent);
 
-//                Assert.IsNotNull(result);
+//                Assert.NotNull(result);
 //                Assert.Equal(result.Count(), 1);
-//                Assert.IsTrue(result.Any(r => r.Name == "Fetch_Result"));
+//                Assert.True(result.Any(r => r.Name == "Fetch_Result"));
 //            }
 //        }
         
-//        [Test]
+//        [Fact]
 //        public void Should_Call_FetchMany_Successfully()
 //        {
 //            using (var fakeProvider = new ContextScopeProviderHelper())
@@ -48,13 +48,13 @@
 
 //                var result = originalQuery.FetchMany(s => s.Children);
 
-//                Assert.IsNotNull(result);
+//                Assert.NotNull(result);
 //                Assert.Equal(result.Count(), 1);
-//                Assert.IsTrue(result.Any(r => r.Name == "FetchMany_Result"));
+//                Assert.True(result.Any(r => r.Name == "FetchMany_Result"));
 //            }
 //        }
         
-//        [Test]
+//        [Fact]
 //        public void Should_Call_ThenFetch_Successfully()
 //        {
 //            using (var fakeProvider = new ContextScopeProviderHelper())
@@ -64,13 +64,13 @@
 
 //                var result = originalQuery.Fetch(s => s.Parent).ThenFetch(s => s.Parent);
 
-//                Assert.IsNotNull(result);
+//                Assert.NotNull(result);
 //                Assert.Equal(result.Count(), 1);
-//                Assert.IsTrue(result.Any(r => r.Name == "ThenFetch_Result"));
+//                Assert.True(result.Any(r => r.Name == "ThenFetch_Result"));
 //            }
 //        }
         
-//        [Test]
+//        [Fact]
 //        public void Should_Call_ThenFetchMany_Successfully()
 //        {
 //            using (var fakeProvider = new ContextScopeProviderHelper())
@@ -80,9 +80,9 @@
 
 //                var result = originalQuery.FetchMany(s => s.Children).ThenFetchMany(s => s.Children);
 
-//                Assert.IsNotNull(result);
+//                Assert.NotNull(result);
 //                Assert.Equal(result.Count(), 1);
-//                Assert.IsTrue(result.Any(r => r.Name == "ThenFetchMany_Result"));
+//                Assert.True(result.Any(r => r.Name == "ThenFetchMany_Result"));
 //            }
 //        }
 
@@ -103,9 +103,9 @@
 //                .Setup(p => p.ThenFetch(It.IsAny<FetchRequestTest<TestModel, TestModel>>(), It.IsAny<Expression<Func<TestModel, TestModel>>>()))
 //                .Returns<FetchRequestTest<TestModel, TestModel>, Expression<Func<TestModel, TestModel>>>((query, expression) =>
 //                {
-//                    Assert.IsNotNull(query);
+//                    Assert.NotNull(query);
 //                    Assert.Equal(query.Count(), 1);
-//                    Assert.IsTrue(query.Any(r => r.Name == "Fetch_Result"));
+//                    Assert.True(query.Any(r => r.Name == "Fetch_Result"));
 
 //                    var result = new List<TestModel> {new TestModel {Name = "ThenFetch_Result"}}.AsQueryable();
 //                    return new FetchRequestTest<TestModel, TestModel>(result);
@@ -125,9 +125,9 @@
 //                .Setup(p => p.ThenFetchMany(It.IsAny<FetchRequestTest<TestModel, TestModel>>(), It.IsAny<Expression<Func<TestModel, IEnumerable<TestModel>>>>()))
 //                .Returns<FetchRequestTest<TestModel, TestModel>, Expression<Func<TestModel, IEnumerable<TestModel>>>>((query, expression) =>
 //                {
-//                    Assert.IsNotNull(query);
+//                    Assert.NotNull(query);
 //                    Assert.Equal(query.Count(), 1);
-//                    Assert.IsTrue(query.Any(r => r.Name == "FetchMany_Result"));
+//                    Assert.True(query.Any(r => r.Name == "FetchMany_Result"));
 
 //                    var result = new List<TestModel> {new TestModel {Name = "ThenFetchMany_Result"}}.AsQueryable();
 //                    return new FetchRequestTest<TestModel, TestModel>(result);

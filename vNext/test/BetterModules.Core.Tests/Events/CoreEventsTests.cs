@@ -2,19 +2,18 @@
 using BetterModules.Events;
 using Moq;
 using NHibernate;
-using NUnit.Framework;
+using Xunit;
 
 namespace BetterModules.Core.Tests.Events
 {
-    [TestFixture]
-    public class CoreEventsTests : TestBase
+    public class CoreEventsTests
     {
         private int firedDelete;
         private int firedSave;
         private IEntity entity;
         private ISession session;
 
-        [Test]
+        [Fact]
         public void Should_FireDeleteEvents_Correctly()
         {
             firedDelete = 0;
@@ -22,16 +21,16 @@ namespace BetterModules.Core.Tests.Events
             
             CoreEvents.Instance.EntityDeleting += Instance_EntityDeleting;
 
-            Assert.AreEqual(firedDelete, 0);
+            Assert.Equal(firedDelete, 0);
             CoreEvents.Instance.OnEntityDelete(entity);
-            Assert.AreEqual(firedDelete, 1);
+            Assert.Equal(firedDelete, 1);
             CoreEvents.Instance.OnEntityDelete(entity);
-            Assert.AreEqual(firedDelete, 2);
+            Assert.Equal(firedDelete, 2);
 
             CoreEvents.Instance.EntityDeleting -= Instance_EntityDeleting;
         }
         
-        [Test]
+        [Fact]
         public void Should_FireSaveEvents_Correctly()
         {
             firedSave = 0;
@@ -40,11 +39,11 @@ namespace BetterModules.Core.Tests.Events
 
             CoreEvents.Instance.EntitySaving += Instance_EntitySaving;
 
-            Assert.AreEqual(firedSave, 0);
+            Assert.Equal(firedSave, 0);
             CoreEvents.Instance.OnEntitySaving(entity, session);
-            Assert.AreEqual(firedSave, 1);
+            Assert.Equal(firedSave, 1);
             CoreEvents.Instance.OnEntitySaving(entity, session);
-            Assert.AreEqual(firedSave, 2);
+            Assert.Equal(firedSave, 2);
 
             CoreEvents.Instance.EntitySaving -= Instance_EntitySaving;
         }

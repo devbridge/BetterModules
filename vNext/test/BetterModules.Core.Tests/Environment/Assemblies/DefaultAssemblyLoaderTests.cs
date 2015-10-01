@@ -51,10 +51,10 @@ namespace BetterModules.Core.Tests.Environment.Assemblies
         //    var testBaseType = typeof(TestBase);
         //    var types = loader.GetLoadableTypes(assembly, testBaseType);
 
-        //    Assert.IsNotNull(types);
+        //    Assert.NotNull(types);
         //    Assert.Greater(types.Count(), 1);
-        //    Assert.IsTrue(types.Contains(GetType()));
-        //    Assert.IsTrue(types.All(testBaseType.IsAssignableFrom));
+        //    Assert.True(types.Contains(GetType()));
+        //    Assert.True(types.All(testBaseType.IsAssignableFrom));
         //}
     }
 }
