@@ -76,10 +76,8 @@ namespace BetterModules.Core.Extensions
             // ...then scan and register uploaded modules.
             assemblyManager.AddUploadedModules();
 
-            var moduleRegistration = provider.GetService<IModulesRegistration>();
-
+            var moduleRegistration = ActivatorUtilities.GetServiceOrCreateInstance<IModulesRegistration>(provider);
             moduleRegistration.InitializeModules(services);
-
             services.AddInstance(moduleRegistration);
 
             ModulesRegistrationSingleton.Instance = moduleRegistration;

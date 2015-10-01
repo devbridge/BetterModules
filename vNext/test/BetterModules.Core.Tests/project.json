@@ -6,14 +6,15 @@
   "projectUrl": "",
   "licenseUrl": "",
 
-  "dependencies": {
-    "System.Collections": "4.0.10-beta-23109",
-    "System.Linq": "4.0.0-beta-23109",
-    "System.Threading": "4.0.10-beta-23109",
-    "System.Runtime": "4.0.10-beta-23109",
-    "Microsoft.CSharp": "4.0.0-beta-23109",
-    "NUnit": "3.0.0-beta-4"
-  },
+    "dependencies": {
+        "System.Collections": "4.0.10-beta-23109",
+        "System.Linq": "4.0.0-beta-23109",
+        "System.Threading": "4.0.10-beta-23109",
+        "System.Runtime": "4.0.10-beta-23109",
+        "Microsoft.CSharp": "4.0.0-beta-23109",
+        "xunit": "2.1.0",
+        "xunit.runner.dnx": "2.1.0-beta5a-build188"
+    },
 
   "frameworks": {
     "dnx451": { }
