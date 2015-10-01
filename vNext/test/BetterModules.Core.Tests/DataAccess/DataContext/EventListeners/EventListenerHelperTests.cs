@@ -5,15 +5,14 @@ using BetterModules.Core.Security;
 using BetterModules.Sample.Module.Models;
 
 using Moq;
+using Xunit;
 
-using NUnit.Framework;
 
 namespace BetterModules.Core.Tests.DataAccess.DataContext.EventListeners
 {
-    [TestFixture]
-    public class EventListenerHelperTests : TestBase
+    public class EventListenerHelperTests
     {
-        [Test]
+        [Fact]
         public void Should_Update_Creation_Fields_Correctly()
         {
             var principalProvider = new Mock<IPrincipalProvider>();
@@ -25,13 +24,13 @@ namespace BetterModules.Core.Tests.DataAccess.DataContext.EventListeners
 
             EnsureDeletionPropertiesUntouched(entity);
 
-            Assert.IsTrue(entity.CreatedOn != DateTime.MinValue);
-            Assert.IsTrue(entity.ModifiedOn != DateTime.MinValue);
-            Assert.AreEqual(entity.CreatedByUser, "TestPrincipal");
-            Assert.AreEqual(entity.ModifiedByUser, "TestPrincipal");
+            Assert.True(entity.CreatedOn != DateTime.MinValue);
+            Assert.True(entity.ModifiedOn != DateTime.MinValue);
+            Assert.Equal(entity.CreatedByUser, "TestPrincipal");
+            Assert.Equal(entity.ModifiedByUser, "TestPrincipal");
         }
         
-        [Test]
+        [Fact]
         public void Should_Update_Modification_Fields_Correctly()
         {
             var principalProvider = new Mock<IPrincipalProvider>();
@@ -44,11 +43,11 @@ namespace BetterModules.Core.Tests.DataAccess.DataContext.EventListeners
             EnsureDeletionPropertiesUntouched(entity);
             EnsureCreationPropertiesUntouched(entity);
 
-            Assert.IsTrue(entity.ModifiedOn != DateTime.MinValue);
-            Assert.AreEqual(entity.ModifiedByUser, "TestPrincipal");
+            Assert.True(entity.ModifiedOn != DateTime.MinValue);
+            Assert.Equal(entity.ModifiedByUser, "TestPrincipal");
         }
         
-        [Test]
+        [Fact]
         public void Should_Update_Deletion_Fields_Correctly()
         {
             var principalProvider = new Mock<IPrincipalProvider>();
@@ -61,28 +60,28 @@ namespace BetterModules.Core.Tests.DataAccess.DataContext.EventListeners
             EnsureCreationPropertiesUntouched(entity);
             EnsureModificationPropertiesUntouched(entity);
 
-            Assert.IsTrue(entity.IsDeleted);
-            Assert.IsTrue(entity.DeletedOn != DateTime.MinValue);
-            Assert.AreEqual(entity.DeletedByUser, "TestPrincipal");
+            Assert.True(entity.IsDeleted);
+            Assert.True(entity.DeletedOn != DateTime.MinValue);
+            Assert.Equal(entity.DeletedByUser, "TestPrincipal");
         }
 
         private void EnsureCreationPropertiesUntouched(TestItemModel entity)
         {
-            Assert.AreEqual(entity.CreatedOn, DateTime.MinValue);
-            Assert.IsNull(entity.CreatedByUser);
+            Assert.Equal(entity.CreatedOn, DateTime.MinValue);
+            Assert.Null(entity.CreatedByUser);
         }
         
         private void EnsureDeletionPropertiesUntouched(TestItemModel entity)
         {
-            Assert.IsNull(entity.DeletedByUser);
-            Assert.IsNull(entity.DeletedOn);
-            Assert.IsFalse(entity.IsDeleted);
+            Assert.Null(entity.DeletedByUser);
+            Assert.Null(entity.DeletedOn);
+            Assert.False(entity.IsDeleted);
         }
         
         private void EnsureModificationPropertiesUntouched(TestItemModel entity)
         {
-            Assert.AreEqual(entity.ModifiedOn, DateTime.MinValue);
-            Assert.IsNull(entity.ModifiedByUser);
+            Assert.Equal(entity.ModifiedOn, DateTime.MinValue);
+            Assert.Null(entity.ModifiedByUser);
         }
 
         private TestItemModel CreateEntity()

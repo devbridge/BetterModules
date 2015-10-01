@@ -1,11 +1,10 @@
 ﻿using System.Linq;
 using BetterModules.Core.DataAccess;
-using NUnit.Framework;
+using Xunit;
 
 namespace BetterModules.Core.Tests.DataAccess
 {
-    [TestFixture]
-    public class PredicateBuilderTests : TestBase
+    public class PredicateBuilderTests
     {
         private static Fruit[] Values =
         {
@@ -15,7 +14,7 @@ namespace BetterModules.Core.Tests.DataAccess
             new Fruit {Name ="apple", IsCitrus = false}
         };
 
-        [Test]
+        [Fact]
         public void Should_Filter_False_Or_Correctly()
         {
             var predicateBuilder = PredicateBuilder.False<Fruit>();
@@ -23,13 +22,13 @@ namespace BetterModules.Core.Tests.DataAccess
             predicateBuilder = predicateBuilder.Or(p => p.Name == "apple");
 
             var result = Values.AsQueryable().Where(predicateBuilder).ToList();
-            Assert.IsNotNull(result);
-            Assert.AreEqual(result.Count, 2);
+            Assert.NotNull(result);
+            Assert.Equal(result.Count, 2);
             Assert.Contains(Values.First(v => v.Name == "orange"), result);
             Assert.Contains(Values.First(v => v.Name == "apple"), result);
         }
         
-        [Test]
+        [Fact]
         public void Should_Filter_True_And_Correctly()
         {
             var predicateBuilder = PredicateBuilder.True<Fruit>();
@@ -37,8 +36,8 @@ namespace BetterModules.Core.Tests.DataAccess
             predicateBuilder = predicateBuilder.And(p => p.IsCitrus);
 
             var result = Values.AsQueryable().Where(predicateBuilder).ToList();
-            Assert.IsNotNull(result);
-            Assert.AreEqual(result.Count, 1);
+            Assert.NotNull(result);
+            Assert.Equal(result.Count, 1);
             Assert.Contains(Values.First(v => v.Name == "lemon"), result);
         }
 

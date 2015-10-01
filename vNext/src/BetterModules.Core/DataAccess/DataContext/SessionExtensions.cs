@@ -37,7 +37,7 @@ namespace BetterModules.Core.DataAccess.DataContext
             }
 
             Object[] currentState = persister.GetPropertyValues(entity, sessionImpl.EntityMode);
-            Int32[] dirtyProps = oldState.Select((o, i) => ValuesAreEqual(oldState[i], currentState[i]) ? -1 : i).Where(x => x >= 0).ToArray();
+            Int32[] dirtyProps = oldState.Select((o, i) => ValuesEqual(oldState[i], currentState[i]) ? -1 : i).Where(x => x >= 0).ToArray();
 
             return (dirtyProps != null && dirtyProps.Length > 0);
         }
@@ -48,7 +48,7 @@ namespace BetterModules.Core.DataAccess.DataContext
         /// <param name="oldValue">The old value.</param>
         /// <param name="currentValue">The current value.</param>
         /// <returns><c>true</c>, if values are equal, else <c>false</c></returns>
-        private static bool ValuesAreEqual(object oldValue, object currentValue)
+        private static bool ValuesEqual(object oldValue, object currentValue)
         {
             // If property is not loaded, it has no changes
             if (!NHibernateUtil.IsInitialized(oldValue))
