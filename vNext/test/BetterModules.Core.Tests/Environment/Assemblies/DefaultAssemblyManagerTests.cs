@@ -6,20 +6,23 @@ using System.Reflection;
 using BetterModules.Core.Environment.Assemblies;
 using BetterModules.Core.Environment.FileSystem;
 using BetterModules.Core.Modules.Registration;
+using Microsoft.Dnx.Runtime;
+using Microsoft.Framework.Logging;
 using Moq;
-using NUnit.Framework;
+using Xunit;
+using IAssemblyLoader = BetterModules.Core.Environment.Assemblies.IAssemblyLoader;
 
 namespace BetterModules.Core.Tests.Environment.Assemblies
 {
-    [TestFixture]
-    public class DefaultAssemblyManagerTests : TestBase
+    public class DefaultAssemblyManagerTests
     {
-        [Test]
+        [Fact]
         public void ShouldAddReferencedModulesCorrectly()
         {
             var registrationMock = new Mock<IModulesRegistration>();
             var assemblyLoaderMock = new Mock<IAssemblyLoader>();
             var workingDirectoryMock = new Mock<IWorkingDirectory>();
+            var libraryManegerMock = new Mock<ILibraryManager>();
 
             var allAssemblies = new List<string>();
 
@@ -37,22 +40,23 @@ namespace BetterModules.Core.Tests.Environment.Assemblies
                     }
                 });
 
-            var manager = new DefaultAssemblyManager(workingDirectoryMock.Object, registrationMock.Object, assemblyLoaderMock.Object);
+            var manager = new DefaultAssemblyManager(workingDirectoryMock.Object, registrationMock.Object, assemblyLoaderMock.Object, libraryManegerMock.Object, new LoggerFactory());
             manager.AddReferencedModules();
 
-            Assert.IsTrue(allAssemblies.Any(a => a.Contains("BetterModules.Sample.Module")));
+            Assert.True(allAssemblies.Any(a => a.Contains("BetterModules.Sample.Module")));
         }
 
         /// <summary>
         /// Should retrieve the lists of modules from working directory, copy them to bin folder
         /// and load them using assembly loader
         /// </summary>
-        [Test]
+        [Fact]
         public void ShouldAddUploadedModulesCorrectly()
         {
             var registrationMock = new Mock<IModulesRegistration>();
             var assemblyLoaderMock = new Mock<IAssemblyLoader>();
             var workingDirectoryMock = new Mock<IWorkingDirectory>();
+            var libraryManegerMock = new Mock<ILibraryManager>();
 
             var assemblyLoaded = false;
             var assemblyCopied = false;
@@ -61,14 +65,14 @@ namespace BetterModules.Core.Tests.Environment.Assemblies
             workingDirectoryMock
                 .Setup(d => d.GetAvailableModules())
                 .Returns(() => files);
-            
+
             workingDirectoryMock
                 .Setup(d => d.RecopyModulesToRuntimeFolder(It.IsAny<FileInfo>()))
                 .Returns<FileInfo>(
                     file =>
                     {
                         assemblyCopied = true;
-                        Assert.AreEqual(files[0], file);
+                        Assert.Equal(files[0], file);
 
                         return file;
                     });
@@ -79,14 +83,14 @@ namespace BetterModules.Core.Tests.Environment.Assemblies
                     file =>
                     {
                         assemblyLoaded = true;
-                        Assert.AreEqual(file.Name, "ClassLibrary1");
-                    } );
+                        Assert.Equal(file.Name, "ClassLibrary1");
+                    });
 
-            var manager = new DefaultAssemblyManager(workingDirectoryMock.Object, registrationMock.Object, assemblyLoaderMock.Object);
+            var manager = new DefaultAssemblyManager(workingDirectoryMock.Object, registrationMock.Object, assemblyLoaderMock.Object, libraryManegerMock.Object, new LoggerFactory());
             manager.AddUploadedModules();
 
-            Assert.IsTrue(assemblyLoaded);
-            Assert.IsTrue(assemblyCopied);
+            Assert.True(assemblyLoaded);
+            Assert.True(assemblyCopied);
         }
     }
 }

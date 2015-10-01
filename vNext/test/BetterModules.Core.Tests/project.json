@@ -1,22 +1,24 @@
 ﻿{
-  "version": "1.0.0-*",
-  "description": "BetterModules.Core.Tests Class Library",
-  "authors": [ "user" ],
-  "tags": [ "" ],
-  "projectUrl": "",
-  "licenseUrl": "",
+    "version": "1.0.0-*",
+    "description": "BetterModules.Core.Tests Class Library",
+    "authors": [ "user" ],
+    "tags": [ "" ],
+    "projectUrl": "",
+    "licenseUrl": "",
 
     "dependencies": {
-        "System.Collections": "4.0.10-beta-23109",
-        "System.Linq": "4.0.0-beta-23109",
-        "System.Threading": "4.0.10-beta-23109",
-        "System.Runtime": "4.0.10-beta-23109",
-        "Microsoft.CSharp": "4.0.0-beta-23109",
         "xunit": "2.1.0",
-        "xunit.runner.dnx": "2.1.0-beta5a-build188"
+        "xunit.runner.dnx": "2.1.0-beta5a-build188",
+        "BetterModules.Core": "1.0.0-*",
+        "BetterModules.Sample.Module": "1.0.0-*",
+        "Moq": "4.2.1506.2515"
     },
 
-  "frameworks": {
-    "dnx451": { }
-  }
+    "commands": {
+        "test": "xunit.runner.dnx"
+    },
+
+    "frameworks": {
+        "dnx451": { }
+    }
 }
