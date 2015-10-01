@@ -1,29 +1,39 @@
-﻿using BetterModules.Core.Extensions;
+﻿using System;
+using BetterModules.Core.Extensions;
 using BetterModules.Core.Modules.Registration;
 using BetterModules.Core.Security;
 using BetterModules.Core.Web.Configuration;
 using BetterModules.Core.Web.Modules.Registration;
-using BetterModules.Core.Web.Mvc;
 using BetterModules.Core.Web.Mvc.Extensions;
 using BetterModules.Core.Web.Security;
 using BetterModules.Core.Web.Web;
 using BetterModules.Core.Web.Web.EmbeddedResources;
-using Microsoft.AspNet.Mvc;
 using Microsoft.Framework.Configuration;
 using Microsoft.Framework.DependencyInjection;
+using Microsoft.Framework.Logging;
 
 namespace BetterModules.Core.Web.Extensions
 {
-    public static class BetterModulesServiceCollectionExtensions
+    public static class BetterModulesWebServiceCollectionExtensions
     {
-        public static IServiceCollection AddBetterModules(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddBetterModulesWeb(this IServiceCollection services, IConfiguration configuration)
         {
             services.LoadWebConfiguration(configuration);
             services.ConfigureDefaultWebServices();
             services.LoadWebAssemblies();
-            
+            BetterModulesCoreServiceCollectionExtensions.RunDatabaseMigrations(services);
 
             return services;
+        }
+
+        public static IServiceCollection AddBetterModulesWeb(this IServiceCollection services, IConfiguration configuration, Action<ILoggerFactory> configureLoggers)
+        {
+            var provider = services.BuildServiceProvider();
+            var loggerFactory = provider.GetService<ILoggerFactory>();
+
+            configureLoggers(loggerFactory);
+
+            return services.AddBetterModulesWeb(configuration);
         }
 
         private static void ConfigureDefaultWebServices(this IServiceCollection services)
@@ -33,8 +43,6 @@ namespace BetterModules.Core.Web.Extensions
             services.AddSingleton<IModulesRegistration, DefaultWebModulesRegistration>();
             services.AddSingleton<IWebModulesRegistration, DefaultWebModulesRegistration>();
 
-            services.AddSingleton<IControllerFactory, DefaultWebControllerFactory>();
-
             services.AddSingleton<IHttpContextAccessor, DefaultHttpContextAccessor>();
             services.AddSingleton<IControllerExtensions, DefaultControllerExtensions>();
             services.AddSingleton<IPrincipalProvider, DefaultWebPrincipalProvider>();
@@ -42,6 +50,7 @@ namespace BetterModules.Core.Web.Extensions
 
         private static void LoadWebConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
+            services.LoadConfiguration(configuration);
             services.Configure<DefaultWebConfigurationSection>(configuration);
         }
 

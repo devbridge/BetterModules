@@ -1,4 +1,5 @@
 ﻿using BetterModules.Core.Extensions;
+using BetterModules.Core.Web.Extensions;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.Dnx.Runtime;
@@ -41,7 +42,13 @@ namespace BetterModules.Mvc6.Sandbox
             services.AddMvc();
             services.AddOptions();
             
-            services.AddBetterModulesCore(Configuration, loggerFactory =>
+            //services.AddBetterModulesCore(Configuration, loggerFactory =>
+            //{
+            //    loggerFactory.MinimumLevel = LogLevel.Verbose;
+            //    loggerFactory.AddEventLog(LogLevel.Verbose);
+            //    loggerFactory.AddConsole(LogLevel.Verbose);
+            //});
+            services.AddBetterModulesWeb(Configuration, loggerFactory =>
             {
                 loggerFactory.MinimumLevel = LogLevel.Verbose;
                 loggerFactory.AddEventLog(LogLevel.Verbose);
@@ -77,8 +84,6 @@ namespace BetterModules.Mvc6.Sandbox
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-
-            //app.UseBetterModules();
         }
     }
 }

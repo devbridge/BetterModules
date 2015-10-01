@@ -99,7 +99,6 @@ namespace BetterModules.Core.Modules.Registration
             var registrationContext = moduleDescriptor.CreateRegistrationContext();
 
             RegisterModuleDescriptor(registrationContext, services);
-            //ContextScopeProvider.RegisterTypes(containerBuilder);
 
             knownModules.Add(registrationContext.GetRegistrationName(), registrationContext);
         }

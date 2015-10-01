@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using BetterModules.Core.Configuration;
 using BetterModules.Core.DataAccess;
 using BetterModules.Core.DataAccess.DataContext;
@@ -14,7 +15,7 @@ using Microsoft.Framework.Logging;
 
 namespace BetterModules.Core.Extensions
 {
-    public static class BetterModulesServiceCollectionExtensions
+    public static class BetterModulesCoreServiceCollectionExtensions
     {
         public static IServiceCollection AddBetterModulesCore(this IServiceCollection services, IConfiguration configuration)
         {
@@ -22,6 +23,8 @@ namespace BetterModules.Core.Extensions
             services.ConfigureDefaultServices();
 
             services.LoadAssemblies();
+
+            RunDatabaseMigrations(services);
 
             return services;
         }
@@ -78,6 +81,16 @@ namespace BetterModules.Core.Extensions
             services.AddInstance(moduleRegistration);
 
             ModulesRegistrationSingleton.Instance = moduleRegistration;
+        }
+
+        public static void RunDatabaseMigrations(IServiceCollection services)
+        {
+            var provider = services.BuildServiceProvider();
+            var migrationRunner = provider.GetService<IMigrationRunner>();
+            var modulesRegistration = provider.GetService<IModulesRegistration>();
+
+            var descriptors = modulesRegistration.GetModules().Select(x => x.ModuleDescriptor).ToList();
+            migrationRunner.MigrateStructure(descriptors);
         }
     }
 }

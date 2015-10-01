@@ -1,7 +1,5 @@
 ﻿using BetterModules.Core.Environment.Assemblies;
 using BetterModules.Core.Modules.Registration;
-using BetterModules.Core.Web.Mvc.Extensions;
-using Microsoft.AspNet.Routing;
 using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Logging;
 
@@ -12,21 +10,13 @@ namespace BetterModules.Core.Web.Modules.Registration
     /// </summary>
     public class DefaultWebModulesRegistration : DefaultModulesRegistration, IWebModulesRegistration
     {
-        /// <summary>
-        /// The controller extensions
-        /// </summary>
-        private readonly IControllerExtensions controllerExtensions;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultWebModulesRegistration" /> class.
         /// </summary>
         /// <param name="assemblyLoader">The assembly loader.</param>
-        /// <param name="controllerExtensions">The controller extensions.</param>
-        public DefaultWebModulesRegistration(IAssemblyLoader assemblyLoader, IControllerExtensions controllerExtensions, ILoggerFactory loggerFactory)
-            : base(assemblyLoader, loggerFactory)
-        {
-            this.controllerExtensions = controllerExtensions;
-        }
+        public DefaultWebModulesRegistration(IAssemblyLoader assemblyLoader, ILoggerFactory loggerFactory)
+            : base(assemblyLoader, loggerFactory) { }
 
         /// <summary>
         /// Finds the module by area name.
@@ -68,8 +58,6 @@ namespace BetterModules.Core.Web.Modules.Registration
             {
                 var webDescriptor = (WebModuleDescriptor)webContext.ModuleDescriptor;
                 webDescriptor.RegisterModuleCommands(webContext, services);
-                webDescriptor.RegisterModuleControllers(webContext, services, controllerExtensions);
-                webDescriptor.RegisterCustomRoutes(webContext, services);
             }
 
             base.RegisterModuleDescriptor(registrationContext, services);

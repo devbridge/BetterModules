@@ -1,40 +1,18 @@
-﻿using System;
-using System.Linq;
-using BetterModules.Core.DataAccess.DataContext.Migrations;
-using BetterModules.Core.Modules.Registration;
+﻿using BetterModules.Core.Web.Web.EmbeddedResources;
 using Microsoft.AspNet.Builder;
-using Microsoft.AspNet.Hosting;
+using Microsoft.AspNet.StaticFiles;
 using Microsoft.Framework.DependencyInjection;
 
 namespace BetterModules.Core.Web.Extensions
 {
     public static class BetterModulesApplicationBuilderExtensions
     {
-        public static IApplicationBuilder UseBetterModules(this IApplicationBuilder app, IHostingEnvironment env)
+        public static IApplicationBuilder UseBetterStaticFiles(this IApplicationBuilder app)
         {
-            RunDatabaseMigrations(app.ApplicationServices);
-            if (env.IsDevelopment())
+            return app.UseStaticFiles(new StaticFileOptions
             {
-                app.Use(async (context, next) =>
-                {
-                    if (context.Request.Query["restart"] == "1")
-                    {
-                        //find a way to restart a server
-                        return;
-                    }
-                    await next.Invoke();
-                });
-            }
-            return app;
-        }
-
-        private static void RunDatabaseMigrations(IServiceProvider provider)
-        {
-            var migrationRunner = provider.GetService<IMigrationRunner>();
-            var modulesRegistration = provider.GetService<IModulesRegistration>();
-
-            var descriptors = modulesRegistration.GetModules().Select(x => x.ModuleDescriptor).ToList();
-            migrationRunner.MigrateStructure(descriptors);
+                FileProvider = app.ApplicationServices.GetService<IEmbeddedResourceProvider>()
+            });
         }
     }
 }

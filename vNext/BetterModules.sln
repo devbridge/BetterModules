@@ -34,6 +34,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{46ED6C76-1
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BetterModules.Core.Tests", "test\BetterModules.Core.Tests\BetterModules.Core.Tests.xproj", "{00B11517-DAEB-43AA-B826-B2AA545AE166}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BetterModules.Sample.Web.Module", "src\BetterModules.Sample.Web.Module\BetterModules.Sample.Web.Module.xproj", "{AD8BA351-BC65-4894-B42F-9AC6618A2998}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,6 +62,10 @@ Global
 		{00B11517-DAEB-43AA-B826-B2AA545AE166}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00B11517-DAEB-43AA-B826-B2AA545AE166}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00B11517-DAEB-43AA-B826-B2AA545AE166}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD8BA351-BC65-4894-B42F-9AC6618A2998}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD8BA351-BC65-4894-B42F-9AC6618A2998}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD8BA351-BC65-4894-B42F-9AC6618A2998}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD8BA351-BC65-4894-B42F-9AC6618A2998}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -73,5 +79,6 @@ Global
 		{39A05B8E-5254-4E78-A03B-2014CDAA29A3} = {1E51A74B-E932-4933-AA00-AAF788D2A2DC}
 		{431BEF5E-502D-4B21-B13C-6E917EACC532} = {E97ED681-48EA-4EF1-97F2-EE7E1EEC516B}
 		{00B11517-DAEB-43AA-B826-B2AA545AE166} = {46ED6C76-1BCC-4177-9A67-492424080985}
+		{AD8BA351-BC65-4894-B42F-9AC6618A2998} = {E97ED681-48EA-4EF1-97F2-EE7E1EEC516B}
 	EndGlobalSection
 EndGlobal
