@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Dnx.Runtime;
 using Microsoft.Framework.Logging;
 
 namespace BetterModules.Core.Environment.Assemblies
@@ -17,6 +18,8 @@ namespace BetterModules.Core.Environment.Assemblies
         /// Current class logger.
         /// </summary>
         private readonly ILogger logger;
+
+
 
         /// <summary>
         /// Loaded assemblies container.

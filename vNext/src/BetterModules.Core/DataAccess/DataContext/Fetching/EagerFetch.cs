@@ -2,37 +2,42 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using NHibernate.Linq;
 
 namespace BetterModules.Core.DataAccess.DataContext.Fetching
 {
     public static class EagerFetch
     {
-        private static IFetchingProvider FetchingProvider { get; }
-
         public static IFetchRequest<TOriginating, TRelated> Fetch<TOriginating, TRelated>(
             this IQueryable<TOriginating> query, Expression<Func<TOriginating, TRelated>> relatedObjectSelector)
         {
-            return FetchingProvider.Fetch(query, relatedObjectSelector);
+            var fetch = EagerFetchingExtensionMethods.Fetch(query, relatedObjectSelector);
+            return new FetchRequest<TOriginating, TRelated>(fetch);
         }
 
         public static IFetchRequest<TOriginating, TRelated> FetchMany<TOriginating, TRelated>(
             this IQueryable<TOriginating> query,
             Expression<Func<TOriginating, IEnumerable<TRelated>>> relatedObjectSelector)
         {
-            return FetchingProvider.FetchMany(query, relatedObjectSelector);
+            var fetch = EagerFetchingExtensionMethods.FetchMany(query, relatedObjectSelector);
+            return new FetchRequest<TOriginating, TRelated>(fetch);
         }
 
         public static IFetchRequest<TQueried, TRelated> ThenFetch<TQueried, TFetch, TRelated>(
             this IFetchRequest<TQueried, TFetch> query, Expression<Func<TFetch, TRelated>> relatedObjectSelector)
         {
-            return FetchingProvider.ThenFetch(query, relatedObjectSelector);
+            var impl = query as FetchRequest<TQueried, TFetch>;
+            var fetch = impl.NhFetchRequest.ThenFetch(relatedObjectSelector);
+            return new FetchRequest<TQueried, TRelated>(fetch);
         }
 
         public static IFetchRequest<TQueried, TRelated> ThenFetchMany<TQueried, TFetch, TRelated>(
             this IFetchRequest<TQueried, TFetch> query,
             Expression<Func<TFetch, IEnumerable<TRelated>>> relatedObjectSelector)
         {
-            return FetchingProvider.ThenFetchMany(query, relatedObjectSelector);
+            var impl = query as FetchRequest<TQueried, TFetch>;
+            var fetch = impl.NhFetchRequest.ThenFetchMany(relatedObjectSelector);
+            return new FetchRequest<TQueried, TRelated>(fetch);
         }
     }
 }

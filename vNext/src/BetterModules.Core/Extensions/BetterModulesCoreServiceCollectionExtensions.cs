@@ -3,7 +3,6 @@ using System.Linq;
 using BetterModules.Core.Configuration;
 using BetterModules.Core.DataAccess;
 using BetterModules.Core.DataAccess.DataContext;
-using BetterModules.Core.DataAccess.DataContext.Fetching;
 using BetterModules.Core.DataAccess.DataContext.Migrations;
 using BetterModules.Core.Environment.Assemblies;
 using BetterModules.Core.Environment.FileSystem;
@@ -48,7 +47,6 @@ namespace BetterModules.Core.Extensions
             services.AddSingleton<IUnitOfWorkFactory, DefaultUnitOfWorkFactory>();
             services.AddSingleton<IMappingResolver, DefaultMappingResolver>();
             services.AddSingleton<IWorkingDirectory, DefaultWorkingDirectory>();
-            services.AddSingleton<IFetchingProvider, DefaultFetchingProvider>();
             services.AddSingleton<IPrincipalProvider, DefaultPrincipalProvider>();
             services.AddSingleton<IAssemblyManager, DefaultAssemblyManager>();
             services.AddSingleton<IVersionChecker, DefaultVersionChecker>();

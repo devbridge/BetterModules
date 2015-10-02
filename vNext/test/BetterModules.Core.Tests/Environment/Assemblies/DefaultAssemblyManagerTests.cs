@@ -40,6 +40,20 @@ namespace BetterModules.Core.Tests.Environment.Assemblies
                     }
                 });
 
+            libraryManegerMock
+                .Setup(r => r.GetReferencingLibraries("BetterModules.Core"))
+                .Returns(new List<Library>
+                {
+                    new Library(
+                        "BetterModules.Sample.Module", 
+                        "1.0.0", "", "", 
+                        new List<string> { "BetterModules.Core" }, 
+                        new List<AssemblyName>
+                        {
+                            new AssemblyName("BetterModules.Sample.Module")
+                        })
+                });
+
             var manager = new DefaultAssemblyManager(workingDirectoryMock.Object, registrationMock.Object, assemblyLoaderMock.Object, libraryManegerMock.Object, new LoggerFactory());
             manager.AddReferencedModules();
 

@@ -1,4 +1,5 @@
-﻿using BetterModules.Sample.Module.Models;
+﻿using System;
+using BetterModules.Sample.Module.Models;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
 
@@ -16,6 +17,7 @@ namespace BetterModules.Mvc6.Sandbox.Controllers
         public IActionResult Index()
         {
             var result = _calculator.FindRoots(1, 4, 4);
+            var path = Environment.CurrentDirectory;
             return View();
         }
     }

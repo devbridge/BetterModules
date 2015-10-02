@@ -10,43 +10,25 @@ namespace BetterModules.Core.DataAccess.DataContext.Fetching
     {
         public IEnumerator<TQueried> GetEnumerator()
         {
-            return this.NhFetchRequest.GetEnumerator();
+            return NhFetchRequest.GetEnumerator();
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return this.NhFetchRequest.GetEnumerator();
+            return NhFetchRequest.GetEnumerator();
         }
 
-        public Type ElementType
-        {
-            get
-            {
-                return this.NhFetchRequest.ElementType;
-            }
-        }
+        public Type ElementType => NhFetchRequest.ElementType;
 
-        public Expression Expression
-        {
-            get
-            {
-                return this.NhFetchRequest.Expression;
-            }
-        }
+        public Expression Expression => NhFetchRequest.Expression;
 
-        public IQueryProvider Provider
-        {
-            get
-            {
-                return this.NhFetchRequest.Provider;
-            }
-        }
+        public IQueryProvider Provider => NhFetchRequest.Provider;
 
         public FetchRequest(INhFetchRequest<TQueried, TFetch> nhFetchRequest)
         {
-            this.NhFetchRequest = nhFetchRequest;
+            NhFetchRequest = nhFetchRequest;
         }
 
-        public INhFetchRequest<TQueried, TFetch> NhFetchRequest { get; private set; }
+        public INhFetchRequest<TQueried, TFetch> NhFetchRequest { get; }
     }
 }
