@@ -1,9 +1,9 @@
 ﻿{
     "version": "1.0.0-*",
-    "description": "BetterModules.Sample.Web.Module Class Library",
-    "authors": [ "user" ],
+    "description": "BetterModules sample web module.",
+    "authors": [ "Devbridge Group" ],
     "tags": [ "" ],
-    "projectUrl": "",
+    "projectUrl": "https://github.com/devbridge/BetterModules",
     "licenseUrl": "",
 
     "resource": "**/*.cshtml",

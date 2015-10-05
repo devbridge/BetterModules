@@ -8,7 +8,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
     [TestFixture]
     public class RestrictionsExtensionsIntegrationTests : DatabaseTestBase
     {
-        [Test]
+        [Fact]
         public void Should_Filter_Null_Or_Whitespace_Column_Correctly()
         {
             var category = DatabaseTestDataProvider.ProvideRandomTestItemCategory();
@@ -25,7 +25,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
                 .SingleOrDefault<TestItemCategory>();
 
             Assert.IsNotNull(loadedCategory);
-            Assert.AreEqual(category.Id, loadedCategory.Id);
+            Assert.Equal(category.Id, loadedCategory.Id);
         }
     }
 }

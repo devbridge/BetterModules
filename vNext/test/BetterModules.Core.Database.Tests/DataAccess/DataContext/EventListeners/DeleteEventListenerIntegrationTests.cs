@@ -8,7 +8,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.EventListener
     [TestFixture]
     public class DeleteEventListenerIntegrationTests : DatabaseTestBase
     {
-        [Test]
+        [Fact]
         public void Should_Mark_Entity_As_Deleted()
         {
             var entity = DatabaseTestDataProvider.ProvideRandomTestItemModel();
@@ -21,9 +21,9 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.EventListener
 
             var principalProvider = Container.Resolve<IPrincipalProvider>();
 
-            Assert.IsTrue(entity.IsDeleted);
+            Assert.True(entity.IsDeleted);
             Assert.IsNotNull(entity.DeletedOn);
-            Assert.AreEqual(entity.DeletedByUser, principalProvider.CurrentPrincipalName);
+            Assert.Equal(entity.DeletedByUser, principalProvider.CurrentPrincipalName);
         }
     }
 }

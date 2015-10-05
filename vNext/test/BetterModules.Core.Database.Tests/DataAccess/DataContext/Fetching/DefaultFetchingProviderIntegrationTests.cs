@@ -11,7 +11,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.Fetching
     [TestFixture]
     public class DefaultFetchingProviderIntegrationTests : DatabaseTestBase
     {
-        [Test]
+        [Fact]
         public void Should_Call_Fetch_Successfully()
         {
             using (var container = ContextScopeProvider.CreateChildContainer())
@@ -23,13 +23,13 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.Fetching
                 var result = query.ToList();
 
                 Assert.IsNotNull(result);
-                Assert.AreEqual(result.Count, 1);
+                Assert.Equal(result.Count, 1);
                 Assert.IsNotNull(result[0].Category);
-                Assert.AreEqual(result[0].Category.Name, "ItemCategory1");
+                Assert.Equal(result[0].Category.Name, "ItemCategory1");
             }
         }
         
-        [Test]
+        [Fact]
         public void Should_Call_FetchMany_Successfully()
         {
             using (var container = ContextScopeProvider.CreateChildContainer())
@@ -41,15 +41,15 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.Fetching
                 var result = query.ToList();
 
                 Assert.IsNotNull(result);
-                Assert.AreEqual(result.Count, 1);
+                Assert.Equal(result.Count, 1);
                 Assert.IsNotNull(result[0].Children);
-                Assert.AreEqual(result[0].Children.Count, 2);
-                Assert.IsTrue(result[0].Children.Any(c => c.Name == "Item1 Child1"));
-                Assert.IsTrue(result[0].Children.Any(c => c.Name == "Item1 Child2"));
+                Assert.Equal(result[0].Children.Count, 2);
+                Assert.True(result[0].Children.Any(c => c.Name == "Item1 Child1"));
+                Assert.True(result[0].Children.Any(c => c.Name == "Item1 Child2"));
             }
         }
         
-        [Test]
+        [Fact]
         public void Should_Call_ThenFetch_Successfully()
         {
             using (var container = ContextScopeProvider.CreateChildContainer())
@@ -64,15 +64,15 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.Fetching
                 var result = query.ToList();
 
                 Assert.IsNotNull(result);
-                Assert.AreEqual(result.Count, 1);
+                Assert.Equal(result.Count, 1);
                 Assert.IsNotNull(result[0].Item);
-                Assert.AreEqual(result[0].Item.Name, "Item1");
+                Assert.Equal(result[0].Item.Name, "Item1");
                 Assert.IsNotNull(result[0].Item.Category);
-                Assert.AreEqual(result[0].Item.Category.Name, "ItemCategory1");
+                Assert.Equal(result[0].Item.Category.Name, "ItemCategory1");
             }
         }
         
-        [Test]
+        [Fact]
         public void Should_Call_ThenFetchMany_Successfully()
         {
             using (var container = ContextScopeProvider.CreateChildContainer())
@@ -87,13 +87,13 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.Fetching
                 var result = query.ToList();
 
                 Assert.IsNotNull(result);
-                Assert.AreEqual(result.Count, 1);
+                Assert.Equal(result.Count, 1);
                 Assert.IsNotNull(result[0].Item);
-                Assert.AreEqual(result[0].Item.Name, "Item1");
+                Assert.Equal(result[0].Item.Name, "Item1");
                 Assert.IsNotNull(result[0].Item.Children);
-                Assert.AreEqual(result[0].Item.Children.Count, 2);
-                Assert.IsTrue(result[0].Item.Children.Any(c => c.Name == "Item1 Child1"));
-                Assert.IsTrue(result[0].Item.Children.Any(c => c.Name == "Item1 Child2"));
+                Assert.Equal(result[0].Item.Children.Count, 2);
+                Assert.True(result[0].Item.Children.Any(c => c.Name == "Item1 Child1"));
+                Assert.True(result[0].Item.Children.Any(c => c.Name == "Item1 Child2"));
             }
         }
     }

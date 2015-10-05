@@ -6,50 +6,50 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.Interceptors
     [TestFixture]
     public class StaleInterceptorIntegrationTests : DatabaseTestBase
     {   
-        [Test]
+        [Fact]
         public void Should_Create_Version()
         {
             var model = DatabaseTestDataProvider.ProvideRandomTestItemModel();
             
-            Assert.AreEqual(model.Version, 0);
+            Assert.Equal(model.Version, 0);
 
             Repository.Save(model);
             UnitOfWork.Commit();
 
-            Assert.AreEqual(model.Version, 1);
+            Assert.Equal(model.Version, 1);
         }
         
-        [Test]
+        [Fact]
         public void Should_Increase_Version_If_Dirty()
         {
             var model = DatabaseTestDataProvider.ProvideRandomTestItemModel();
 
-            Assert.AreEqual(model.Version, 0);
+            Assert.Equal(model.Version, 0);
 
             Repository.Save(model);
             UnitOfWork.Commit();
 
-            Assert.AreEqual(model.Version, 1);
+            Assert.Equal(model.Version, 1);
 
             Repository.Save(model);
             UnitOfWork.Commit();
 
-            Assert.AreEqual(model.Version, 1);
+            Assert.Equal(model.Version, 1);
 
             model.Name = TestDataProvider.ProvideRandomString();
             Repository.Save(model);
             UnitOfWork.Commit();
 
-            Assert.AreEqual(model.Version, 2);
+            Assert.Equal(model.Version, 2);
         }
 
-        [Test]
+        [Fact]
         [ExpectedException(typeof (ConcurrentDataException))]
         public void Should_Throw_Concurrent_Data_Exception_Saving()
         {
             var model = DatabaseTestDataProvider.ProvideRandomTestItemModel();
 
-            Assert.AreEqual(model.Version, 0);
+            Assert.Equal(model.Version, 0);
 
             Repository.Save(model);
             UnitOfWork.Commit();
@@ -61,13 +61,13 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.Interceptors
             UnitOfWork.Commit();
         }
         
-        [Test]
+        [Fact]
         [ExpectedException(typeof (ConcurrentDataException))]
         public void Should_Throw_Concurrent_Data_Exception_Deleting()
         {
             var model = DatabaseTestDataProvider.ProvideRandomTestItemModel();
 
-            Assert.AreEqual(model.Version, 0);
+            Assert.Equal(model.Version, 0);
 
             Repository.Save(model);
             UnitOfWork.Commit();

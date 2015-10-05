@@ -10,16 +10,16 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
     [TestFixture]
     public class QueryableExtensionsIntegrationTests : DatabaseTestBase
     {
-        [Test]
+        [Fact]
         public void Should_Return_Correct_Items_FutureWrapper_Count()
         {
             var list = new List<string> { "First", "Second", "Third" }.AsQueryable();
             var count = list.ToRowCountFutureValue().Value;
 
-            Assert.AreEqual(count, 3);
+            Assert.Equal(count, 3);
         }
 
-        [Test]
+        [Fact]
         public void Should_Return_Correct_Items_Future_Count()
         {
             var category1 = DatabaseTestDataProvider.ProvideRandomTestItemCategory();
@@ -38,8 +38,8 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
             var countFuture = query.ToRowCountFutureValue();
             var future = query.ToFuture();
 
-            Assert.AreEqual(future.ToList().Count, 3);
-            Assert.AreEqual(countFuture.Value, 3);
+            Assert.Equal(future.ToList().Count, 3);
+            Assert.Equal(countFuture.Value, 3);
         }
     }
 }

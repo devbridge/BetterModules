@@ -51,20 +51,20 @@ namespace BetterModules.Core.Database.Tests.DataAccess
             }
         }
 
-        [Test]
+        [Fact]
         public void Should_UnProxy_Entity()
         {
             var proxy = Repository.AsProxy<TestItemModel>(SampleModuleDescriptor.TestItemModelId);
             Assert.IsNotNull(proxy);
-            Assert.IsTrue(proxy is IProxy);
+            Assert.True(proxy is IProxy);
 
             var unproxy = Repository.UnProxy(proxy);
             Assert.IsNotNull(unproxy);
-            Assert.AreEqual(unproxy.Id, SampleModuleDescriptor.TestItemModelId);
+            Assert.Equal(unproxy.Id, SampleModuleDescriptor.TestItemModelId);
             Assert.IsFalse(unproxy is IProxy);
         }
         
-        [Test]
+        [Fact]
         public void Should_Return_Same_Entity_When_UnProxying_Entity()
         {
             var proxy = Repository.AsProxy<TestItemModel>(model1.Id);
@@ -73,44 +73,44 @@ namespace BetterModules.Core.Database.Tests.DataAccess
             var unproxy = Repository.UnProxy(proxy);
             Assert.IsNotNull(unproxy);
             
-            Assert.AreEqual(unproxy, proxy);
+            Assert.Equal(unproxy, proxy);
         }
         
-        [Test]
+        [Fact]
         public void Should_Load_Entity_AsProxy()
         {
             var proxy = Repository.AsProxy<TestItemModel>(Guid.NewGuid());
 
             Assert.IsNotNull(proxy);
-            Assert.IsTrue(proxy is IProxy);
+            Assert.True(proxy is IProxy);
         }
         
-        [Test]
+        [Fact]
         public void Should_Retrieve_First_Entity_By_Id()
         {
             var entity = Repository.First<TestItemModel>(model1.Id);
 
             Assert.IsNotNull(entity);
-            Assert.AreEqual(entity.Id, model1.Id);
+            Assert.Equal(entity.Id, model1.Id);
         }
         
-        [Test]
+        [Fact]
         [ExpectedException(typeof(EntityNotFoundException))]
         public void Should_Throw_Exception_Retrieving_First_Entity_By_Id()
         {
             Repository.First<TestItemModel>(Guid.NewGuid());
         }
 
-        [Test]
+        [Fact]
         public void Should_Retrieve_First_Entity_By_Filter()
         {
             var entity = Repository.First<TestItemModel>(m => m.Id == model1.Id);
 
             Assert.IsNotNull(entity);
-            Assert.AreEqual(entity.Id, model1.Id);
+            Assert.Equal(entity.Id, model1.Id);
         }
 
-        [Test]
+        [Fact]
         [ExpectedException(typeof(EntityNotFoundException))]
         public void Should_Throw_Exception_Retrieving_First_Entity_By_Filter()
         {
@@ -118,25 +118,25 @@ namespace BetterModules.Core.Database.Tests.DataAccess
             Repository.First<TestItemModel>(m => m.Id == guid);
         }
 
-        [Test]
+        [Fact]
         public void Should_Retrieve_FirstOrDefault_Entity_By_Id()
         {
             var entity = Repository.FirstOrDefault<TestItemModel>(model1.Id);
 
             Assert.IsNotNull(entity);
-            Assert.AreEqual(entity.Id, model1.Id);
+            Assert.Equal(entity.Id, model1.Id);
         }
         
-        [Test]
+        [Fact]
         public void Should_Retrieve_FirstOrDefault_Entity_By_Filter()
         {
             var entity = Repository.FirstOrDefault<TestItemModel>(m => m.Id == model1.Id);
 
             Assert.IsNotNull(entity);
-            Assert.AreEqual(entity.Id, model1.Id);
+            Assert.Equal(entity.Id, model1.Id);
         }
         
-        [Test]
+        [Fact]
         public void Should_Retrieve_Null_Retrieving_FirstOrDefault_Entity_By_Id()
         {
             var guid = Guid.NewGuid();
@@ -145,7 +145,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess
             Assert.IsNull(entity);
         }
         
-        [Test]
+        [Fact]
         public void Should_Retrieve_Null_Retrieving_FirstOrDefault_Entity_By_Filter()
         {
             var guid = Guid.NewGuid();
@@ -154,7 +154,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess
             Assert.IsNull(entity);
         }
 
-        [Test]
+        [Fact]
         public void Should_Return_QueryOver_Without_Deleted_Generic()
         {
             var list = Repository
@@ -163,13 +163,13 @@ namespace BetterModules.Core.Database.Tests.DataAccess
                 .List<TestItemModel>();
 
             Assert.IsNotNull(list);
-            Assert.AreEqual(list.Count, 3);
-            Assert.AreEqual(list[0].Id, model1.Id);
-            Assert.AreEqual(list[1].Id, model2.Id);
-            Assert.AreEqual(list[2].Id, model3.Id);
+            Assert.Equal(list.Count, 3);
+            Assert.Equal(list[0].Id, model1.Id);
+            Assert.Equal(list[1].Id, model2.Id);
+            Assert.Equal(list[2].Id, model3.Id);
         }
 
-        [Test]
+        [Fact]
         public void Should_Return_QueryOver_Without_Deleted_By_Alias()
         {
             TestItemModel alias = null;
@@ -180,13 +180,13 @@ namespace BetterModules.Core.Database.Tests.DataAccess
                 .List<TestItemModel>();
 
             Assert.IsNotNull(list);
-            Assert.AreEqual(list.Count, 3);
-            Assert.AreEqual(list[0].Id, model1.Id);
-            Assert.AreEqual(list[1].Id, model2.Id);
-            Assert.AreEqual(list[2].Id, model3.Id);
+            Assert.Equal(list.Count, 3);
+            Assert.Equal(list[0].Id, model1.Id);
+            Assert.Equal(list[1].Id, model2.Id);
+            Assert.Equal(list[2].Id, model3.Id);
         }
         
-        [Test]
+        [Fact]
         public void Should_Return_QueryOver_Without_Deleted_By_Null_Alias()
         {
             TestItemModel alias = null;
@@ -197,13 +197,13 @@ namespace BetterModules.Core.Database.Tests.DataAccess
                 .List<TestItemModel>();
 
             Assert.IsNotNull(list);
-            Assert.AreEqual(list.Count, 3);
-            Assert.AreEqual(list[0].Id, model1.Id);
-            Assert.AreEqual(list[1].Id, model2.Id);
-            Assert.AreEqual(list[2].Id, model3.Id);
+            Assert.Equal(list.Count, 3);
+            Assert.Equal(list[0].Id, model1.Id);
+            Assert.Equal(list[1].Id, model2.Id);
+            Assert.Equal(list[2].Id, model3.Id);
         }
 
-        [Test]
+        [Fact]
         public void Should_Return_Queryable_By_Filter()
         {
             var list = Repository
@@ -212,13 +212,13 @@ namespace BetterModules.Core.Database.Tests.DataAccess
                 .ToList();
 
             Assert.IsNotNull(list);
-            Assert.AreEqual(list.Count, 3);
-            Assert.AreEqual(list[0].Id, model1.Id);
-            Assert.AreEqual(list[1].Id, model2.Id);
-            Assert.AreEqual(list[2].Id, model3.Id);
+            Assert.Equal(list.Count, 3);
+            Assert.Equal(list[0].Id, model1.Id);
+            Assert.Equal(list[1].Id, model2.Id);
+            Assert.Equal(list[2].Id, model3.Id);
         }
         
-        [Test]
+        [Fact]
         public void Should_Return_Queryable_Without_Deleted()
         {
             var list = Repository
@@ -228,21 +228,21 @@ namespace BetterModules.Core.Database.Tests.DataAccess
                 .ToList();
 
             Assert.IsNotNull(list);
-            Assert.AreEqual(list.Count, 3);
-            Assert.AreEqual(list[0].Id, model1.Id);
-            Assert.AreEqual(list[1].Id, model2.Id);
-            Assert.AreEqual(list[2].Id, model3.Id);
+            Assert.Equal(list.Count, 3);
+            Assert.Equal(list[0].Id, model1.Id);
+            Assert.Equal(list[1].Id, model2.Id);
+            Assert.Equal(list[2].Id, model3.Id);
         }
 
-        [Test]
+        [Fact]
         public void Should_Check_If_Record_Exists()
         {
             var exists = Repository.Any<TestItemModel>(q => q.Name == model1.Name);
 
-            Assert.IsTrue(exists);
+            Assert.True(exists);
         }
         
-        [Test]
+        [Fact]
         public void Should_Check_If_Deleted_Record_Not_Exists()
         {
             var exists = Repository.Any<TestItemModel>(q => q.Name == deletedModel.Name);
@@ -250,7 +250,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess
             Assert.IsFalse(exists);
         }
 
-        [Test]
+        [Fact]
         public void Should_Save_Entity()
         {
             var model = DatabaseTestDataProvider.ProvideRandomTestItemModel();
@@ -258,10 +258,10 @@ namespace BetterModules.Core.Database.Tests.DataAccess
             Repository.Save(model);
             UnitOfWork.Commit();
 
-            Assert.IsTrue(model.Id != default(Guid));
+            Assert.True(model.Id != default(Guid));
         }
 
-        [Test]
+        [Fact]
         public void Should_Delete_Entity_By_Id_NotAsProxy()
         {
             var model = DatabaseTestDataProvider.ProvideRandomTestItemModel();
@@ -269,7 +269,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess
             Repository.Save(model);
             UnitOfWork.Commit();
 
-            Assert.IsTrue(model.Id != default(Guid));
+            Assert.True(model.Id != default(Guid));
 
             Repository.Delete<TestItemModel>(model.Id, model.Version, false);
             UnitOfWork.Commit();
@@ -278,7 +278,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess
             Assert.IsFalse(exists);
         }
         
-        [Test]
+        [Fact]
         public void Should_Delete_Entity_By_Id_AsProxy()
         {
             var model = DatabaseTestDataProvider.ProvideRandomTestItemModel();
@@ -286,7 +286,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess
             Repository.Save(model);
             UnitOfWork.Commit();
 
-            Assert.IsTrue(model.Id != default(Guid));
+            Assert.True(model.Id != default(Guid));
 
             Repository.Delete<TestItemModel>(model.Id, model.Version, true);
             UnitOfWork.Commit();
@@ -295,7 +295,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess
             Assert.IsFalse(exists);
         }
 
-        [Test]
+        [Fact]
         public void Should_Delete_Entity()
         {
             var model = DatabaseTestDataProvider.ProvideRandomTestItemModel();
@@ -303,7 +303,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess
             Repository.Save(model);
             UnitOfWork.Commit();
 
-            Assert.IsTrue(model.Id != default(Guid));
+            Assert.True(model.Id != default(Guid));
 
             Repository.Delete(model);
             UnitOfWork.Commit();
@@ -312,7 +312,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess
             Assert.IsFalse(exists);
         }
 
-        [Test]
+        [Fact]
         public void Should_Attach_Entity()
         {
             // Create entity
@@ -330,7 +330,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess
             detachedModel.Name = TestDataProvider.ProvideRandomString();
             UnitOfWork.Commit();
 
-            Assert.AreEqual(detachedModel.Version, version);
+            Assert.Equal(detachedModel.Version, version);
 
             // Attach and save again
             Repository.Attach(detachedModel);
@@ -340,7 +340,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess
             Assert.AreNotEqual(detachedModel.Version, version);
         }
 
-        [Test]
+        [Fact]
         public void Should_Detach_Entity()
         {
             // Create entity
@@ -364,10 +364,10 @@ namespace BetterModules.Core.Database.Tests.DataAccess
             detachedModel.Name = TestDataProvider.ProvideRandomString();
             UnitOfWork.Commit();
 
-            Assert.AreEqual(detachedModel.Version, version);
+            Assert.Equal(detachedModel.Version, version);
         }
 
-        [Test]
+        [Fact]
         public void Should_Refresh_Entity()
         {
             // Create entity
@@ -391,7 +391,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess
                 unitOfWork2.Commit();
             }
 
-            Assert.AreEqual(detachedModel.Version, version);
+            Assert.Equal(detachedModel.Version, version);
 
             // Refresh detached entity - version should be updated
             Repository.Refresh(detachedModel);

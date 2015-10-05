@@ -9,7 +9,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
     [TestFixture]
     public class DefaultUnitOfWorkTests : DatabaseTestBase
     {
-        [Test]
+        [Fact]
         public void Should_Create_UoW_With_Session_Successfully()
         {
             var sessionFactoryProvider = Container.Resolve<ISessionFactoryProvider>();
@@ -22,7 +22,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
             }
         }
         
-        [Test]
+        [Fact]
         public void Should_Create_UoW_With_SessionFactoryprovider_Successfully()
         {
             using (var unitOfWork = new DefaultUnitOfWork(Container.Resolve<ISessionFactoryProvider>()))
@@ -31,18 +31,18 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
             }
         }
 
-        [Test]
+        [Fact]
         public void Should_Create_Transaction_Successfuly()
         {
             using (var unitOfWork = new DefaultUnitOfWork(Container.Resolve<ISessionFactoryProvider>()))
             {
                 Assert.IsFalse(unitOfWork.IsActiveTransaction);
                 unitOfWork.BeginTransaction();
-                Assert.IsTrue(unitOfWork.IsActiveTransaction);
+                Assert.True(unitOfWork.IsActiveTransaction);
             }
         }
         
-        [Test]
+        [Fact]
         [ExpectedException(typeof(DataException))]
         public void Should_Throw_Exception_Creating_Multiple_Transactions()
         {
@@ -53,7 +53,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
             }
         }
 
-        [Test]
+        [Fact]
         public void Should_Rollback_Transaction_Successfully()
         {
             var model1 = DatabaseTestDataProvider.ProvideRandomTestItemModel();
@@ -80,7 +80,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
             Assert.IsNull(loadedModel2);
         }
         
-        [Test]
+        [Fact]
         public void Should_Commit_And_Rollback_Transactions_Successfully()
         {
             var model1 = DatabaseTestDataProvider.ProvideRandomTestItemModel();

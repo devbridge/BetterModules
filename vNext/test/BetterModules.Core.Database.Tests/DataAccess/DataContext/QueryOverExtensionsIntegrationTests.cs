@@ -40,17 +40,17 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
             }
         }
 
-        [Test]
+        [Fact]
         public void Should_Return_First_Element_Successfully()
         {
             var query = Repository.AsQueryOver<TestItemModel>().Where(t => t.Id == model1.Id);
             var item = query.First<TestItemModel, TestItemModel>();
 
             Assert.IsNotNull(item);
-            Assert.AreEqual(item.Name, model1.Name);
+            Assert.Equal(item.Name, model1.Name);
         }
         
-        [Test]
+        [Fact]
         [ExpectedException(typeof(EntityNotFoundException))]
         public void Should_Throw_EntityNotFound_Exception_Retrieving_First()
         {
@@ -61,7 +61,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
                 .First<TestItemModel, TestItemModel>();
         }
 
-        [Test]
+        [Fact]
         public void Should_Add_Default_Paging()
         {
             var list = Repository
@@ -72,13 +72,13 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
                 .List<TestItemModel>()
                 .ToList();
 
-            Assert.AreEqual(list.Count, 3);
-            Assert.AreEqual(model1.Name, list[0].Name);
-            Assert.AreEqual(model2.Name, list[1].Name);
-            Assert.AreEqual(model3.Name, list[2].Name);
+            Assert.Equal(list.Count, 3);
+            Assert.Equal(model1.Name, list[0].Name);
+            Assert.Equal(model2.Name, list[1].Name);
+            Assert.Equal(model3.Name, list[2].Name);
         }
 
-        [Test]
+        [Fact]
         public void Should_Return_First_Page_Of_Items()
         {
             var list = Repository
@@ -89,12 +89,12 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
                 .List<TestItemModel>()
                 .ToList();
 
-            Assert.AreEqual(list.Count, 2);
-            Assert.AreEqual(model1.Name, list[0].Name);
-            Assert.AreEqual(model2.Name, list[1].Name);
+            Assert.Equal(list.Count, 2);
+            Assert.Equal(model1.Name, list[0].Name);
+            Assert.Equal(model2.Name, list[1].Name);
         }
 
-        [Test]
+        [Fact]
         public void Should_Return_Second_Page_Of_Items()
         {
             var list = Repository
@@ -105,11 +105,11 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
                 .List<TestItemModel>()
                 .ToList();
 
-            Assert.AreEqual(list.Count, 1);
-            Assert.AreEqual(model3.Name, list[0].Name);
+            Assert.Equal(list.Count, 1);
+            Assert.Equal(model3.Name, list[0].Name);
         }
 
-        [Test]
+        [Fact]
         public void Should_Apply_Filter_Order_Asc_Paging_Correctly()
         {
             var list = Repository
@@ -118,12 +118,12 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
                 .List<TestItemModel>()
                 .ToList();
 
-            Assert.AreEqual(list.Count, 2);
-            Assert.AreEqual(model1.Name, list[0].Name);
-            Assert.AreEqual(model2.Name, list[1].Name);
+            Assert.Equal(list.Count, 2);
+            Assert.Equal(model1.Name, list[0].Name);
+            Assert.Equal(model2.Name, list[1].Name);
         }
         
-        [Test]
+        [Fact]
         public void Should_Apply_Filter_Order_Desc_Paging_Correctly()
         {
             var list = Repository
@@ -132,12 +132,12 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
                 .List<TestItemModel>()
                 .ToList();
 
-            Assert.AreEqual(list.Count, 2);
-            Assert.AreEqual(model3.Name, list[0].Name);
-            Assert.AreEqual(model2.Name, list[1].Name);
+            Assert.Equal(list.Count, 2);
+            Assert.Equal(model3.Name, list[0].Name);
+            Assert.Equal(model2.Name, list[1].Name);
         }
         
-        [Test]
+        [Fact]
         public void Should_Apply_Filter_Order_Desc_No_Paging_Correctly()
         {
             var list = Repository
@@ -146,13 +146,13 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
                 .List<TestItemModel>()
                 .ToList();
 
-            Assert.AreEqual(list.Count, 3);
-            Assert.AreEqual(model3.Name, list[0].Name);
-            Assert.AreEqual(model2.Name, list[1].Name);
-            Assert.AreEqual(model1.Name, list[2].Name);
+            Assert.Equal(list.Count, 3);
+            Assert.Equal(model3.Name, list[0].Name);
+            Assert.Equal(model2.Name, list[1].Name);
+            Assert.Equal(model1.Name, list[2].Name);
         }
 
-        [Test]
+        [Fact]
         public void Should_Apply_SubQuery_Filter_Order_Desc_Paging_Correctly()
         {
             var list = Repository
@@ -161,12 +161,12 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
                 .List<TestItemModel>()
                 .ToList();
 
-            Assert.AreEqual(list.Count, 2);
-            Assert.AreEqual(model3.Name, list[0].Name);
-            Assert.AreEqual(model2.Name, list[1].Name);
+            Assert.Equal(list.Count, 2);
+            Assert.Equal(model3.Name, list[0].Name);
+            Assert.Equal(model2.Name, list[1].Name);
         }
         
-        [Test]
+        [Fact]
         public void Should_Apply_SubQuery_Filter_Order_Desc_No_Paging_Correctly()
         {
             var list = Repository
@@ -175,10 +175,10 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
                 .List<TestItemModel>()
                 .ToList();
 
-            Assert.AreEqual(list.Count, 3);
-            Assert.AreEqual(model3.Name, list[0].Name);
-            Assert.AreEqual(model2.Name, list[1].Name);
-            Assert.AreEqual(model1.Name, list[2].Name);
+            Assert.Equal(list.Count, 3);
+            Assert.Equal(model3.Name, list[0].Name);
+            Assert.Equal(model2.Name, list[1].Name);
+            Assert.Equal(model1.Name, list[2].Name);
         }
     }
 }

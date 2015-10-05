@@ -1,9 +1,9 @@
 ﻿{
     "version": "1.0.0-*",
-    "description": "Sample Module",
-    "authors": [ "Sample Author" ],
+    "description": "BetterModules sample module",
+    "authors": [ "Devbridge Group" ],
     "tags": [ "" ],
-    "projectUrl": "",
+    "projectUrl": "https://github.com/devbridge/BetterModules",
     "licenseUrl": "",
 
     "dependencies": {

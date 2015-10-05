@@ -45,7 +45,5 @@
         "**.xproj",
         "**.user",
         "**.vspscc"
-    ],
-    "scripts": {
-    }
+    ]
 }

@@ -1,9 +1,9 @@
 ﻿{
     "version": "1.0.0-*",
-    "description": "BetterModules.Core.Database.Tests Class Library",
-    "authors": [ "user" ],
+    "description": "Tests for BetterModules.Core Database logic",
+    "authors": [ "Devbridge Group" ],
     "tags": [ "" ],
-    "projectUrl": "",
+    "projectUrl": "https://github.com/devbridge/BetterModules",
     "licenseUrl": "",
 
     "dependencies": {

@@ -1,9 +1,9 @@
 {
     "version": "1.0.0-*",
-    "description": "",
-    "authors": [ "" ],
+    "description": "Core logic that implements modular architecture supporting web based and business logic modules.",
+    "authors": [ "Devbridge Group" ],
     "tags": [ "" ],
-    "projectUrl": "",
+    "projectUrl": "https://github.com/devbridge/BetterModules",
     "licenseUrl": "",
 
     "dependencies": {

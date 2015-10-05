@@ -1,9 +1,9 @@
 ﻿{
     "version": "1.0.0-*",
-    "description": "BetterModules.Core.Web.Tests Class Library",
-    "authors": [ "user" ],
+    "description": "Tests for BetterModules.Core.Web logic.",
+    "authors": [ "Devbridge Group" ],
     "tags": [ "" ],
-    "projectUrl": "",
+    "projectUrl": "https://github.com/devbridge/BetterModules",
     "licenseUrl": "",
 
     "dependencies": {
