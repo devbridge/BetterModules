@@ -42,10 +42,10 @@ namespace BetterModules.Core.Models
         /// Initializes a new instance of the <see cref="EntityMapBase{TEntity}" /> class.
         /// </summary>
         /// <param name="moduleName">Name of the module.</param>
-        protected EntityMapBase(string moduleName, IModulesRegistration modulesRegistration)
+        protected EntityMapBase(string moduleName)
         {
             this.moduleName = moduleName;
-            var currentModule = modulesRegistration.GetModules()
+            var currentModule = ModulesRegistrationSingleton.Instance.GetModules()
                 .FirstOrDefault(
                     module => module.ModuleDescriptor != null && module.ModuleDescriptor.Name == moduleName);
             if (currentModule != null)

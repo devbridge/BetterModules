@@ -1,23 +1,22 @@
 ﻿using System.Data;
-using Autofac;
 using BetterModules.Core.DataAccess.DataContext;
 using BetterModules.Sample.Module.Models;
-using NUnit.Framework;
+using Microsoft.Framework.DependencyInjection;
+using Xunit;
 
 namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
 {
-    [TestFixture]
     public class DefaultUnitOfWorkTests : DatabaseTestBase
     {
         [Fact]
         public void Should_Create_UoW_With_Session_Successfully()
         {
-            var sessionFactoryProvider = Container.Resolve<ISessionFactoryProvider>();
+            var sessionFactoryProvider = Provider.GetService<ISessionFactoryProvider>();
             using (var session = sessionFactoryProvider.OpenSession())
             {
                 using (var unitOfWork = new DefaultUnitOfWork(session))
                 {
-                    Assert.IsNotNull(unitOfWork.Session);
+                    Assert.NotNull(unitOfWork.Session);
                 }
             }
         }
@@ -25,32 +24,34 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
         [Fact]
         public void Should_Create_UoW_With_SessionFactoryprovider_Successfully()
         {
-            using (var unitOfWork = new DefaultUnitOfWork(Container.Resolve<ISessionFactoryProvider>()))
+            using (var unitOfWork = new DefaultUnitOfWork(Provider.GetService<ISessionFactoryProvider>()))
             {
-                Assert.IsNotNull(unitOfWork.Session);
+                Assert.NotNull(unitOfWork.Session);
             }
         }
 
         [Fact]
         public void Should_Create_Transaction_Successfuly()
         {
-            using (var unitOfWork = new DefaultUnitOfWork(Container.Resolve<ISessionFactoryProvider>()))
+            using (var unitOfWork = new DefaultUnitOfWork(Provider.GetService<ISessionFactoryProvider>()))
             {
-                Assert.IsFalse(unitOfWork.IsActiveTransaction);
+                Assert.False(unitOfWork.IsActiveTransaction);
                 unitOfWork.BeginTransaction();
                 Assert.True(unitOfWork.IsActiveTransaction);
             }
         }
         
         [Fact]
-        [ExpectedException(typeof(DataException))]
         public void Should_Throw_Exception_Creating_Multiple_Transactions()
         {
-            using (var unitOfWork = new DefaultUnitOfWork(Container.Resolve<ISessionFactoryProvider>()))
+            Assert.Throws<DataException>(() =>
             {
-                unitOfWork.BeginTransaction();
-                unitOfWork.BeginTransaction();
-            }
+                using (var unitOfWork = new DefaultUnitOfWork(Provider.GetService<ISessionFactoryProvider>()))
+                {
+                    unitOfWork.BeginTransaction();
+                    unitOfWork.BeginTransaction();
+                }
+            });
         }
 
         [Fact]
@@ -76,8 +77,8 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
             var loadedModel1 = Repository.FirstOrDefault<TestItemModel>(model1.Id);
             var loadedModel2 = Repository.FirstOrDefault<TestItemModel>(model2.Id);
 
-            Assert.IsNull(loadedModel1);
-            Assert.IsNull(loadedModel2);
+            Assert.Null(loadedModel1);
+            Assert.Null(loadedModel2);
         }
         
         [Fact]
@@ -104,8 +105,8 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
             var loadedModel1 = Repository.FirstOrDefault<TestItemModel>(model1.Id);
             var loadedModel2 = Repository.FirstOrDefault<TestItemModel>(model2.Id);
 
-            Assert.IsNotNull(loadedModel1);
-            Assert.IsNull(loadedModel2);
+            Assert.NotNull(loadedModel1);
+            Assert.Null(loadedModel2);
         }
     }
 }

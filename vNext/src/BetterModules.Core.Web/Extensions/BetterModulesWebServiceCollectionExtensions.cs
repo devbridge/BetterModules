@@ -53,6 +53,10 @@ namespace BetterModules.Core.Web.Extensions
         {
             services.LoadConfiguration(configuration);
             services.Configure<DefaultWebConfigurationSection>(configuration);
+            services.Configure<DefaultWebConfigurationSection>(opt =>
+            {
+                opt.Database.ConnectionString = configuration[opt.Database.ConnectionStringName];
+            });
         }
 
         private static void LoadWebAssemblies(this IServiceCollection services)

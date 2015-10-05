@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
-using Autofac;
 using BetterModules.Core.Configuration;
 using BetterModules.Core.DataAccess.DataContext.Migrations;
-using BetterModules.Core.Dependencies;
+using BetterModules.Core.Database.Tests.TestHelpers.Migrations;
 using BetterModules.Core.Environment.Assemblies;
 using BetterModules.Core.Modules;
+using Microsoft.Framework.DependencyInjection;
+using Microsoft.Framework.Logging;
+using Microsoft.Framework.OptionsModel;
 using Moq;
 
 namespace BetterModules.Core.Database.Tests.TestHelpers
@@ -19,6 +21,7 @@ namespace BetterModules.Core.Database.Tests.TestHelpers
         private string basePath;
 
         private readonly string connectionString;
+        private readonly IServiceProvider serviceProvider;
 
         private SqlConnection sqlConnection;
 
@@ -40,16 +43,17 @@ namespace BetterModules.Core.Database.Tests.TestHelpers
             }
         }
 
-        public LocalDatabase()
+        public LocalDatabase(IServiceProvider serviceProvider)
         {
-            basePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Data");
+            this.serviceProvider = serviceProvider;
+            basePath = Path.Combine(System.Environment.CurrentDirectory, "App_Data");
             tempDir = Path.Combine(basePath, "Temp");
 
             TryDeleteOldTemporaryFiles();
 
             var originalFile = Path.Combine(basePath, "BetterModulesTestsDataSet.mdf");
 
-            tempFile = Path.Combine(tempDir, string.Format("BetterModulesTestsDataSet_{0}.mdf", Guid.NewGuid().ToString()));
+            tempFile = Path.Combine(tempDir, $"BetterModulesTestsDataSet_{Guid.NewGuid().ToString()}.mdf");
 
             if (!Directory.Exists(tempDir))
             {
@@ -57,7 +61,8 @@ namespace BetterModules.Core.Database.Tests.TestHelpers
             }
             File.Copy(originalFile, tempFile);
 
-            connectionString = string.Format("Data Source=(LocalDb)\\v11.0; Initial Catalog=BetterModulesTestsDataSet; Integrated Security=SSPI; AttachDBFilename={0}", tempFile.TrimEnd('\\'));
+            connectionString =
+                $"Data Source=(LocalDb)\\v11.0; Initial Catalog=BetterModulesTestsDataSet; Integrated Security=SSPI; AttachDBFilename={tempFile.TrimEnd('\\')}";
         }
 
         public void Dispose()
@@ -109,9 +114,7 @@ namespace BetterModules.Core.Database.Tests.TestHelpers
 
         public void RunMigrations(List<ModuleDescriptor> descriptors, IVersionChecker versionChecker = null)
         {
-            using (var container = ContextScopeProvider.CreateChildContainer())
-            {
-                var assemblyLoader = container.Resolve<IAssemblyLoader>();
+                var assemblyLoader = serviceProvider.GetService<IAssemblyLoader>();
 
                 if (versionChecker == null)
                 {
@@ -122,17 +125,19 @@ namespace BetterModules.Core.Database.Tests.TestHelpers
                     versionChecker = mock.Object;
                 }
 
-                var configuration = new Mock<IConfiguration>();
+                var configuration = new Mock<IOptions<DefaultConfigurationSection>>();
                 configuration
-                    .Setup(c => c.Database)
-                    .Returns(() => new DatabaseConfigurationElement
+                    .Setup(c => c.Options)
+                    .Returns(() => new DefaultConfigurationSection
                     {
-                        ConnectionString = connectionString
+                        Database = new DatabaseConfigurationElement
+                        {
+                            ConnectionString = connectionString
+                        }
                     });
 
-                var migrationRunner = new DefaultMigrationRunner(assemblyLoader, configuration.Object, versionChecker);
+                var migrationRunner = new DefaultMigrationRunner(assemblyLoader, configuration.Object, versionChecker, new LoggerFactory());
                 migrationRunner.MigrateStructure(descriptors);
-            }
         }
     }
 }

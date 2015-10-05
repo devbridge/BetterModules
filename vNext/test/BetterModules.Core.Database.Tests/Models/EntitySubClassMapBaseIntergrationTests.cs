@@ -1,11 +1,10 @@
 ﻿using System;
 using BetterModules.Sample.Module;
 using BetterModules.Sample.Module.Models;
-using NUnit.Framework;
+using Xunit;
 
 namespace BetterModules.Core.Database.Tests.Models
 {
-    [TestFixture]
     public class EntitySubClassMapBaseIntergrationTests : DatabaseTestBase
     {
         [Fact]
@@ -14,8 +13,8 @@ namespace BetterModules.Core.Database.Tests.Models
             var category = Repository.FirstOrDefault<TestItemCategory>(c => c.Name == "ItemCategory1");
             var item = Repository.FirstOrDefault<InheritedTestItemModel>(SampleModuleDescriptor.TestItemModelId);
 
-            Assert.IsNotNull(item);
-            Assert.IsNotNull(category);
+            Assert.NotNull(item);
+            Assert.NotNull(category);
 
             // Base properties
             Assert.Equal(item.Id, SampleModuleDescriptor.TestItemModelId);

@@ -3,11 +3,10 @@ using System.Linq;
 using BetterModules.Core.DataAccess.DataContext;
 using BetterModules.Core.Exceptions.DataTier;
 using BetterModules.Sample.Module.Models;
-using NUnit.Framework;
+using Xunit;
 
 namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
 {
-    [TestFixture]
     public class QueryOverExtensionsIntegrationTests : DatabaseTestBase
     {
         private TestItemCategory category1;
@@ -16,8 +15,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
         private TestItemModel model3;
         private bool isSet;
 
-        [SetUp]
-        public void SetUp()
+        public QueryOverExtensionsIntegrationTests()
         {
             if (!isSet)
             {
@@ -46,19 +44,21 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
             var query = Repository.AsQueryOver<TestItemModel>().Where(t => t.Id == model1.Id);
             var item = query.First<TestItemModel, TestItemModel>();
 
-            Assert.IsNotNull(item);
+            Assert.NotNull(item);
             Assert.Equal(item.Name, model1.Name);
         }
         
         [Fact]
-        [ExpectedException(typeof(EntityNotFoundException))]
         public void Should_Throw_EntityNotFound_Exception_Retrieving_First()
         {
-            var guid = Guid.NewGuid();
-            Repository
-                .AsQueryOver<TestItemModel>()
-                .Where(t => t.Id == guid)
-                .First<TestItemModel, TestItemModel>();
+            Assert.Throws<EntityNotFoundException>(() =>
+            {
+                var guid = Guid.NewGuid();
+                Repository
+                    .AsQueryOver<TestItemModel>()
+                    .Where(t => t.Id == guid)
+                    .First<TestItemModel, TestItemModel>();
+            });
         }
 
         [Fact]

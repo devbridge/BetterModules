@@ -5,8 +5,8 @@ namespace BetterModules.Sample.Module.Models.Maps
 {
     public class TestItemCategoryMap : EntityMapBase<TestItemCategory>
     {
-        public TestItemCategoryMap(IModulesRegistration modulesRegistration)
-            : base(SampleModuleDescriptor.ModuleName, modulesRegistration)
+        public TestItemCategoryMap()
+            : base(SampleModuleDescriptor.ModuleName)
         {
             Table("TestItemCategories");
             

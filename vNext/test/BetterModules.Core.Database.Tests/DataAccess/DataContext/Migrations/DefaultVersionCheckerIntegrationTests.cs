@@ -1,18 +1,14 @@
 ﻿using System.IO;
-
-using Autofac;
-
 using BetterModules.Core.DataAccess.DataContext.Migrations;
 using BetterModules.Core.Environment.FileSystem;
 using BetterModules.Core.Modules.Registration;
-
 using BetterModules.Sample.Module;
-
-using NUnit.Framework;
+using Microsoft.Framework.DependencyInjection;
+using Microsoft.Framework.Logging;
+using Xunit;
 
 namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.Migrations
 {
-    [TestFixture]
     public class DefaultVersionCheckerTests : DatabaseTestBase
     {
         [Fact]
@@ -29,8 +25,8 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.Migrations
             Assert.True(checker.VersionExists(SampleModuleDescriptor.ModuleName, 201502181430));
             Assert.True(checker.VersionExists(SampleModuleDescriptor.ModuleName, 201502181440));
 
-            Assert.IsFalse(checker.VersionExists(SampleModuleDescriptor.ModuleName, 123456));
-            Assert.IsFalse(checker.VersionExists("Tests", 201502181430));
+            Assert.False(checker.VersionExists(SampleModuleDescriptor.ModuleName, 123456));
+            Assert.False(checker.VersionExists("Tests", 201502181430));
         }
 
         [Fact]
@@ -47,8 +43,8 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.Migrations
             Assert.True(checker.VersionExists(SampleModuleDescriptor.ModuleName, 201502181430));
             Assert.True(checker.VersionExists(SampleModuleDescriptor.ModuleName, 201502181440));
 
-            Assert.IsFalse(checker.VersionExists(SampleModuleDescriptor.ModuleName, 123456));
-            Assert.IsFalse(checker.VersionExists("Tests", 201502181430));
+            Assert.False(checker.VersionExists(SampleModuleDescriptor.ModuleName, 123456));
+            Assert.False(checker.VersionExists("Tests", 201502181430));
         }
 
         [Fact]
@@ -67,7 +63,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.Migrations
                 File.Move(checker.CacheFilePath, tempFile);
             }
 
-            Assert.IsFalse(checker.VersionExists("TestModule", 123456));
+            Assert.False(checker.VersionExists("TestModule", 123456));
             checker.AddVersion("TestModule", 123456);
             Assert.True(checker.VersionExists("TestModule", 123456));
 
@@ -87,10 +83,10 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.Migrations
 
         private DefaultVersionChecker GetVersionCheckerImplementation()
         {
-            var modulesRegistration = Container.Resolve<IModulesRegistration>();
-            var workingDirectory = Container.Resolve<IWorkingDirectory>();
+            var modulesRegistration = Provider.GetService<IModulesRegistration>();
+            var workingDirectory = Provider.GetService<IWorkingDirectory>();
 
-            var versionChecker = new DefaultVersionChecker(UnitOfWork, modulesRegistration, workingDirectory);
+            var versionChecker = new DefaultVersionChecker(UnitOfWork, modulesRegistration, workingDirectory, new LoggerFactory());
 
             return versionChecker;
         }

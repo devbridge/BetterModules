@@ -1,11 +1,10 @@
 ﻿using System;
-using Autofac;
+using Microsoft.Framework.DependencyInjection;
 using BetterModules.Core.Security;
-using NUnit.Framework;
+using Xunit;
 
 namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.EventListeners
 {
-    [TestFixture]
     public class DeleteEventListenerIntegrationTests : DatabaseTestBase
     {
         [Fact]
@@ -15,14 +14,14 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.EventListener
             Repository.Save(entity);
             UnitOfWork.Commit();
 
-            Assert.AreNotSame(entity.Id.ToString(), Guid.Empty.ToString());
+            Assert.NotSame(entity.Id.ToString(), Guid.Empty.ToString());
             Repository.Delete(entity);
             UnitOfWork.Commit();
 
-            var principalProvider = Container.Resolve<IPrincipalProvider>();
+            var principalProvider = Provider.GetService<IPrincipalProvider>();
 
             Assert.True(entity.IsDeleted);
-            Assert.IsNotNull(entity.DeletedOn);
+            Assert.NotNull(entity.DeletedOn);
             Assert.Equal(entity.DeletedByUser, principalProvider.CurrentPrincipalName);
         }
     }

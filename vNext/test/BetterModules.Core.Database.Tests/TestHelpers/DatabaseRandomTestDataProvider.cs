@@ -6,19 +6,20 @@ namespace BetterModules.Core.Database.Tests.TestHelpers
     {
         public TestItemModel ProvideRandomTestItemModel(TestItemCategory category = null)
         {
-            var model = new TestItemModel();
-            model.Name = ProvideRandomString();
+            var model = new TestItemModel
+            {
+                Name = ProvideRandomString(),
+                Category = category ?? ProvideRandomTestItemCategory()
+            };
 
-            model.Category = category ?? ProvideRandomTestItemCategory();
 
             return model;
         }
 
         public TestItemCategory ProvideRandomTestItemCategory()
         {
-            var model = new TestItemCategory();
-            model.Name = ProvideRandomString();
-            
+            var model = new TestItemCategory {Name = ProvideRandomString()};
+
             return model;
         }
     }

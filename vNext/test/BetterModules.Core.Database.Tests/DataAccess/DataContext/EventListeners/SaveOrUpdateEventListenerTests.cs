@@ -1,11 +1,10 @@
-﻿using Autofac;
-using BetterModules.Core.Security;
+﻿using BetterModules.Core.Security;
 using BetterModules.Sample.Module.Models;
-using NUnit.Framework;
+using Microsoft.Framework.DependencyInjection;
+using Xunit;
 
 namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.EventListeners
 {
-    [TestFixture]
     public class SaveOrUpdateEventListenerTests : DatabaseTestBase
     {
         [Fact]
@@ -15,11 +14,11 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.EventListener
             Repository.Save(entity);
             UnitOfWork.Commit();
 
-            var principalProvider = Container.Resolve<IPrincipalProvider>();
+            var principalProvider = Provider.GetService<IPrincipalProvider>();
 
-            Assert.IsNotNull(entity.CreatedOn);
+            Assert.NotNull(entity.CreatedOn);
             Assert.Equal(entity.CreatedByUser, principalProvider.CurrentPrincipalName);
-            Assert.IsNotNull(entity.ModifiedOn);
+            Assert.NotNull(entity.ModifiedOn);
             Assert.Equal(entity.ModifiedByUser, principalProvider.CurrentPrincipalName);
         }
         
@@ -30,11 +29,11 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.EventListener
             Repository.Save(entity);
             UnitOfWork.Commit();
 
-            var principalProvider = Container.Resolve<IPrincipalProvider>();
+            var principalProvider = Provider.GetService<IPrincipalProvider>();
 
-            Assert.IsNotNull(entity.CreatedOn);
+            Assert.NotNull(entity.CreatedOn);
             Assert.Equal(entity.CreatedByUser, principalProvider.CurrentPrincipalName);
-            Assert.IsNotNull(entity.ModifiedOn);
+            Assert.NotNull(entity.ModifiedOn);
             Assert.Equal(entity.ModifiedByUser, principalProvider.CurrentPrincipalName);
 
             var modified = entity.ModifiedOn;
@@ -44,13 +43,13 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.EventListener
             Repository.Save(loadedEntity);
             UnitOfWork.Commit();
 
-            Assert.IsNotNull(loadedEntity.CreatedOn);
+            Assert.NotNull(loadedEntity.CreatedOn);
             Assert.Equal(loadedEntity.CreatedByUser, principalProvider.CurrentPrincipalName);
-            Assert.IsNotNull(loadedEntity.ModifiedOn);
+            Assert.NotNull(loadedEntity.ModifiedOn);
             Assert.Equal(loadedEntity.ModifiedByUser, principalProvider.CurrentPrincipalName);
 
             Assert.Equal(loadedEntity.CreatedOn, entity.CreatedOn);
-            Assert.AreNotEqual(loadedEntity.ModifiedOn, modified);
+            Assert.NotEqual(loadedEntity.ModifiedOn, modified);
         }
     }
 }

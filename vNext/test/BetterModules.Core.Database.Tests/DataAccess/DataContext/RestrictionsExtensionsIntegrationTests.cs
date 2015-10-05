@@ -1,11 +1,10 @@
 ﻿using BetterModules.Core.DataAccess.DataContext;
 using BetterModules.Sample.Module.Models;
 using NHibernate.Criterion;
-using NUnit.Framework;
+using Xunit;
 
 namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
 {
-    [TestFixture]
     public class RestrictionsExtensionsIntegrationTests : DatabaseTestBase
     {
         [Fact]
@@ -24,7 +23,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
                 .And(() => alias.Id == category.Id)
                 .SingleOrDefault<TestItemCategory>();
 
-            Assert.IsNotNull(loadedCategory);
+            Assert.NotNull(loadedCategory);
             Assert.Equal(category.Id, loadedCategory.Id);
         }
     }

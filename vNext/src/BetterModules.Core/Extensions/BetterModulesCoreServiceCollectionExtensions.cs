@@ -60,6 +60,10 @@ namespace BetterModules.Core.Extensions
         public static void LoadConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<DefaultConfigurationSection>(configuration);
+            services.Configure<DefaultConfigurationSection>(options =>
+            {
+                options.Database.ConnectionString = configuration[options.Database.ConnectionStringName];
+            });
         }
 
         public static void LoadAssemblies(this IServiceCollection services)

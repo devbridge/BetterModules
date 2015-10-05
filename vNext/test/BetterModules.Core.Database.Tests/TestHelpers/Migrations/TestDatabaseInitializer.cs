@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using BetterModules.Core.DataAccess.DataContext.Migrations;
 using BetterModules.Core.Modules;
@@ -10,9 +11,9 @@ namespace BetterModules.Core.Database.Tests.TestHelpers.Migrations
 {
     public class TestDatabaseInitializer
     {
-        public static LocalDatabase RunDatabaseMigrationTests()
+        public static LocalDatabase RunDatabaseMigrationTests(IServiceProvider serviceProvider)
         {
-            var database = new LocalDatabase();
+            var database = new LocalDatabase(serviceProvider);
             
             var versionUpdateCount = 0;
             var versionChecker = new Mock<IVersionChecker>();

@@ -1,9 +1,8 @@
 ﻿using BetterModules.Core.Exceptions.DataTier;
-using NUnit.Framework;
+using Xunit;
 
 namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.Interceptors
 {
-    [TestFixture]
     public class StaleInterceptorIntegrationTests : DatabaseTestBase
     {   
         [Fact]
@@ -44,39 +43,43 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.Interceptors
         }
 
         [Fact]
-        [ExpectedException(typeof (ConcurrentDataException))]
         public void Should_Throw_Concurrent_Data_Exception_Saving()
         {
-            var model = DatabaseTestDataProvider.ProvideRandomTestItemModel();
+            Assert.Throws<ConcurrentDataException>(() =>
+            {
+                var model = DatabaseTestDataProvider.ProvideRandomTestItemModel();
 
-            Assert.Equal(model.Version, 0);
+                Assert.Equal(model.Version, 0);
 
-            Repository.Save(model);
-            UnitOfWork.Commit();
+                Repository.Save(model);
+                UnitOfWork.Commit();
 
-            model.Name = TestDataProvider.ProvideRandomString();
-            model.Version = 3;
+                model.Name = TestDataProvider.ProvideRandomString();
+                model.Version = 3;
 
-            Repository.Save(model);
-            UnitOfWork.Commit();
+                Repository.Save(model);
+                UnitOfWork.Commit();
+            });
         }
         
         [Fact]
-        [ExpectedException(typeof (ConcurrentDataException))]
         public void Should_Throw_Concurrent_Data_Exception_Deleting()
         {
-            var model = DatabaseTestDataProvider.ProvideRandomTestItemModel();
+            Assert.Throws<ConcurrentDataException>(() =>
+            {
+                var model = DatabaseTestDataProvider.ProvideRandomTestItemModel();
 
-            Assert.Equal(model.Version, 0);
+                Assert.Equal(model.Version, 0);
 
-            Repository.Save(model);
-            UnitOfWork.Commit();
+                Repository.Save(model);
+                UnitOfWork.Commit();
 
-            model.Name = TestDataProvider.ProvideRandomString();
-            model.Version = 3;
+                model.Name = TestDataProvider.ProvideRandomString();
+                model.Version = 3;
 
-            Repository.Delete(model);
-            UnitOfWork.Commit();
+                Repository.Delete(model);
+                UnitOfWork.Commit();
+            });
         }
     }
 }

@@ -3,11 +3,10 @@ using System.Linq;
 using BetterModules.Core.DataAccess.DataContext;
 using BetterModules.Sample.Module.Models;
 using NHibernate.Linq;
-using NUnit.Framework;
+using Xunit;
 
 namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
 {
-    [TestFixture]
     public class QueryableExtensionsIntegrationTests : DatabaseTestBase
     {
         [Fact]

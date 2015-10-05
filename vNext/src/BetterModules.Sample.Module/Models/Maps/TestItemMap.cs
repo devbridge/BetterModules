@@ -5,8 +5,8 @@ namespace BetterModules.Sample.Module.Models.Maps
 {
     public class TestItemMap : EntityMapBase<TestItemModel>
     {
-        public TestItemMap(IModulesRegistration modulesRegistration)
-            : base(SampleModuleDescriptor.ModuleName, modulesRegistration)
+        public TestItemMap()
+            : base(SampleModuleDescriptor.ModuleName)
         {
             Table("TestItems");
             
