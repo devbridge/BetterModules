@@ -1,5 +1,6 @@
 ﻿using BetterModules.Core.DataAccess.DataContext.Migrations;
 using BetterModules.Core.Exceptions;
+using Microsoft.Framework.DependencyInjection;
 using Xunit;
 
 namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.Migrations

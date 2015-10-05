@@ -1,5 +1,6 @@
 ﻿using BetterModules.Core.DataAccess.DataContext;
 using BetterModules.Sample.Module.Models;
+using Microsoft.Framework.DependencyInjection;
 using NHibernate.Criterion;
 using Xunit;
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using BetterModules.Sample.Module;
 using BetterModules.Sample.Module.Models;
+using Microsoft.Framework.DependencyInjection;
 using Xunit;
 
 namespace BetterModules.Core.Database.Tests.Models

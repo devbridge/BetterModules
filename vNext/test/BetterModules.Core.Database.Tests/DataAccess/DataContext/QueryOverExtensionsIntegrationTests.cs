@@ -3,6 +3,7 @@ using System.Linq;
 using BetterModules.Core.DataAccess.DataContext;
 using BetterModules.Core.Exceptions.DataTier;
 using BetterModules.Sample.Module.Models;
+using Microsoft.Framework.DependencyInjection;
 using Xunit;
 
 namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
@@ -15,7 +16,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
         private TestItemModel model3;
         private bool isSet;
 
-        public QueryOverExtensionsIntegrationTests()
+        public QueryOverExtensionsIntegrationTests(IServiceCollection services)
         {
             if (!isSet)
             {

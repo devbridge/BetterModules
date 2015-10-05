@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Reflection;
 using BetterModules.Core.Configuration;
 using BetterModules.Core.DataAccess;
 using BetterModules.Core.DataAccess.DataContext;
@@ -7,39 +9,47 @@ using BetterModules.Core.Database.Tests.TestHelpers;
 using BetterModules.Core.Database.Tests.TestHelpers.Migrations;
 using BetterModules.Core.Extensions;
 using BetterModules.Core.Tests.TestHelpers;
+using BetterModules.Sample.Module;
 using Microsoft.Dnx.Runtime;
 using Microsoft.Framework.Configuration;
 using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Logging;
 using Microsoft.Framework.OptionsModel;
+using Moq;
 
 namespace BetterModules.Core.Database.Tests
 {
-    public abstract class DatabaseTestBase: IDisposable
+    public class DatabaseTestBase: IDisposable
     {
         private DatabaseRandomTestDataProvider dbTestDataProvider;
 
         private RandomTestDataProvider testDataProvider;
 
-        private static LocalDatabase database;
-        
+        private LocalDatabase database;
+
+        private bool started;
+
         private IRepository repository;
 
         private IUnitOfWork unitOfWork;
 
-        protected IServiceCollection Services { get; set; }
+        public IServiceCollection Services { get; set; }
 
-        protected IServiceProvider Provider { get; set; }
+        public IServiceProvider Provider { get; set; }
 
-        protected SqlConnection SqlConnection => database.SqlConnection;
+        public SqlConnection SqlConnection => database.SqlConnection;
 
-        protected IRepository Repository => repository ?? (repository = Provider.GetService<IRepository>());
+        public IRepository Repository => repository ?? (repository = Provider.GetService<IRepository>());
 
-        protected IUnitOfWork UnitOfWork => unitOfWork ?? (unitOfWork = Provider.GetService<IUnitOfWork>());
+        public IUnitOfWork UnitOfWork => unitOfWork ?? (unitOfWork = Provider.GetService<IUnitOfWork>());
 
-        protected DatabaseTestBase()
+        public DatabaseTestBase()
         {
-            InitializeServices();
+            if (!started)
+            {
+                InitializeServices();
+                started = true;
+            }
             if (database == null)
             {
                 InitializeDatabase();
@@ -48,9 +58,18 @@ namespace BetterModules.Core.Database.Tests
 
         private void InitializeServices()
         {
+            var manager = new Mock<ILibraryManager>();
+            manager.Setup(m => m.GetReferencingLibraries("BetterModules.Core"))
+                .Returns(new[]
+                {
+                    new Library("SampleModule", "", "", "", new[] {"BetterModules.Core"}, new List<AssemblyName>
+                    {
+                        Assembly.GetAssembly(typeof(SampleModuleDescriptor)).GetName()
+                    })
+                });
             var services = new ServiceCollection();
             services.AddSingleton<ILoggerFactory, LoggerFactory>();
-            services.AddSingleton<ILibraryManager, LibraryManager>();
+            services.AddInstance(manager.Object);
             services.AddOptions();
             var builder = new ConfigurationBuilder(System.Environment.CurrentDirectory)
                 .AddJsonFile("Config/modules.json")

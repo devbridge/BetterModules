@@ -1,4 +1,5 @@
 ﻿using BetterModules.Core.Exceptions.DataTier;
+using Microsoft.Framework.DependencyInjection;
 using Xunit;
 
 namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.Interceptors
