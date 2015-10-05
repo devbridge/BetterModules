@@ -1,16 +1,17 @@
-{
+﻿{
     "version": "1.0.0-*",
-    "description": "BetterModules.Core.Tests Class Library",
+    "description": "BetterModules.Core.Database.Tests Class Library",
     "authors": [ "user" ],
     "tags": [ "" ],
     "projectUrl": "",
     "licenseUrl": "",
 
     "dependencies": {
+        "BetterModules.Core": "1.0.0-*",
+        "BetterModules.Core.Tests": "1.0.0-*",
+        "BetterModules.Sample.Module": "1.0.0-*",
         "xunit": "2.1.0",
         "xunit.runner.dnx": "2.1.0-beta5a-build188",
-        "BetterModules.Core": "1.0.0-*",
-        "BetterModules.Sample.Module": "1.0.0-*",
         "Moq": "4.2.1506.2515"
     },
 

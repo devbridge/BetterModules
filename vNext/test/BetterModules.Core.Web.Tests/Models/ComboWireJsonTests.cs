@@ -1,13 +1,12 @@
 ﻿using System.Linq;
 using BetterModules.Core.Web.Models;
-using NUnit.Framework;
+using Xunit;
 
 namespace BetterModules.Core.Web.Tests.Models
 {
-    [TestFixture]
-    public class ComboWireJsonTests : TestBase
+    public class ComboWireJsonTests
     {
-        [Test]
+        [Fact]
         public void Should_Initialize_Properties_Correctly()
         {
             dynamic data = new { Test = 1 };
@@ -17,13 +16,13 @@ namespace BetterModules.Core.Web.Tests.Models
 
             var json = new ComboWireJson(true, html, data, message1, message2);
 
-            Assert.AreEqual(json.Success, true);
-            Assert.AreEqual(json.Html, html);
-            Assert.AreEqual(json.Data, data);
-            Assert.IsNotNull(json.Messages);
-            Assert.AreEqual(json.Messages.Length, 2);
-            Assert.IsTrue(json.Messages.Any(m => m == message1));
-            Assert.IsTrue(json.Messages.Any(m => m == message2));
+            Assert.Equal(json.Success, true);
+            Assert.Equal(json.Html, html);
+            Assert.Equal(json.Data, data);
+            Assert.NotNull(json.Messages);
+            Assert.Equal(json.Messages.Length, 2);
+            Assert.True(json.Messages.Any(m => m == message1));
+            Assert.True(json.Messages.Any(m => m == message2));
         }
     }
 }

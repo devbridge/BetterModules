@@ -1,35 +1,34 @@
 ﻿using System.Linq;
 using BetterModules.Core.Web.Models;
-using NUnit.Framework;
+using Xunit;
 
 namespace BetterModules.Core.Web.Tests.Models
 {
-    [TestFixture]
-    public class WireJsonTests : TestBase
+    public class WireJsonTests
     {
-        [Test]
+        [Fact]
         public void Should_Initialize_Empty_Constructor()
         {
             var json = new WireJson();
 
-            Assert.IsFalse(json.Success);
-            Assert.AreEqual(json.DataType, "html");
-            Assert.IsNull(json.Data);
-            Assert.IsNull(json.Messages);
+            Assert.False(json.Success);
+            Assert.Equal(json.DataType, "html");
+            Assert.Null(json.Data);
+            Assert.Null(json.Messages);
         }
         
-        [Test]
+        [Fact]
         public void Should_Initialize_Success()
         {
             var json = new WireJson(true);
 
-            Assert.IsTrue(json.Success);
-            Assert.AreEqual(json.DataType, "html");
-            Assert.IsNull(json.Data);
-            Assert.IsEmpty(json.Messages);
+            Assert.True(json.Success);
+            Assert.Equal(json.DataType, "html");
+            Assert.Null(json.Data);
+            Assert.Empty(json.Messages);
         }
         
-        [Test]
+        [Fact]
         public void Should_Initialize_Success_And_Messages()
         {
             const string message1 = "Message1";
@@ -37,16 +36,16 @@ namespace BetterModules.Core.Web.Tests.Models
 
             var json = new WireJson(true, new[] { message1, message2 });
 
-            Assert.IsTrue(json.Success);
-            Assert.AreEqual(json.DataType, "html");
-            Assert.IsNull(json.Data);
-            Assert.IsNotNull(json.Messages);
-            Assert.AreEqual(json.Messages.Length, 2);
-            Assert.IsTrue(json.Messages.Any(m => m == message1));
-            Assert.IsTrue(json.Messages.Any(m => m == message2));
+            Assert.True(json.Success);
+            Assert.Equal(json.DataType, "html");
+            Assert.Null(json.Data);
+            Assert.NotNull(json.Messages);
+            Assert.Equal(json.Messages.Length, 2);
+            Assert.True(json.Messages.Any(m => m == message1));
+            Assert.True(json.Messages.Any(m => m == message2));
         }
         
-        [Test]
+        [Fact]
         public void Should_Initialize_Success_Html_And_Messages()
         {
             const string html = "html";
@@ -55,16 +54,16 @@ namespace BetterModules.Core.Web.Tests.Models
 
             var json = new WireJson(true, html, message1, message2);
 
-            Assert.IsTrue(json.Success);
-            Assert.AreEqual(json.DataType, "html");
-            Assert.AreEqual(json.Data, html);
-            Assert.IsNotNull(json.Messages);
-            Assert.AreEqual(json.Messages.Length, 2);
-            Assert.IsTrue(json.Messages.Any(m => m == message1));
-            Assert.IsTrue(json.Messages.Any(m => m == message2));
+            Assert.True(json.Success);
+            Assert.Equal(json.DataType, "html");
+            Assert.Equal(json.Data, html);
+            Assert.NotNull(json.Messages);
+            Assert.Equal(json.Messages.Length, 2);
+            Assert.True(json.Messages.Any(m => m == message1));
+            Assert.True(json.Messages.Any(m => m == message2));
         }
         
-        [Test]
+        [Fact]
         public void Should_Initialize_Success_DataType_And_Messages()
         {
             const string data = "html";
@@ -74,26 +73,26 @@ namespace BetterModules.Core.Web.Tests.Models
 
             var json = new WireJson(true, dataType, data, new[] { message1, message2 });
 
-            Assert.IsTrue(json.Success);
-            Assert.AreEqual(json.DataType, dataType);
-            Assert.AreEqual(json.Data, data);
-            Assert.IsNotNull(json.Messages);
-            Assert.AreEqual(json.Messages.Length, 2);
-            Assert.IsTrue(json.Messages.Any(m => m == message1));
-            Assert.IsTrue(json.Messages.Any(m => m == message2));
+            Assert.True(json.Success);
+            Assert.Equal(json.DataType, dataType);
+            Assert.Equal(json.Data, data);
+            Assert.NotNull(json.Messages);
+            Assert.Equal(json.Messages.Length, 2);
+            Assert.True(json.Messages.Any(m => m == message1));
+            Assert.True(json.Messages.Any(m => m == message2));
         }
 
-        [Test]
+        [Fact]
         public void Should_Initialize_Success_And_Object()
         {
             dynamic data = new { Test = 1 };
 
             var json = new WireJson(true, data);
 
-            Assert.IsTrue(json.Success);
-            Assert.IsNull(json.DataType);
-            Assert.AreEqual(json.Data, data);
-            Assert.IsNull(json.Messages);
+            Assert.True(json.Success);
+            Assert.Null(json.DataType);
+            Assert.Equal(json.Data, data);
+            Assert.Null(json.Messages);
         }
     }
 }

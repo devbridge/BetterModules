@@ -1,67 +1,65 @@
 ﻿using System.Linq;
 using System.Reflection;
-using System.Web.Mvc;
-using System.Web.Routing;
 using BetterModules.Core.Environment.Assemblies;
 using BetterModules.Core.Web.Mvc.Extensions;
+using Microsoft.AspNet.Mvc;
 using Moq;
-using NUnit.Framework;
+using Xunit;
 
 namespace BetterModules.Core.Web.Tests.Mvc.Extensions
 {
-    [TestFixture]
-    public class DefaultControllerExtensionsTests : TestBase
+    public class DefaultControllerExtensionsTests
     {
-        [Test]
+        [Fact]
         public void ShouldReturn_ControllerTypesList_Correctly()
         {
             var controllerExt = GetControllerTExtensions();
             var controllers = controllerExt.GetControllerTypes(GetType().Assembly);
 
-            Assert.IsNotNull(controllers);
+            Assert.NotNull(controllers);
             var controllersList = controllers.ToList();
-            Assert.AreEqual(controllersList.Count, 1);
-            Assert.AreEqual(controllersList[0], typeof(PublicTestController));
+            Assert.Equal(controllersList.Count, 1);
+            Assert.Equal(controllersList[0], typeof(PublicTestController));
         }
 
-        [Test]
+        [Fact]
         public void ShouldReturn_Correct_ControllerName()
         {
             var controllerExt = GetControllerTExtensions();
             var controllerName = controllerExt.GetControllerName(typeof(PublicNestedTestController));
 
-            Assert.AreEqual(controllerName, "PublicNestedTest");
+            Assert.Equal(controllerName, "PublicNestedTest");
         }
-        
-        [Test]
+
+        [Fact]
         public void ShouldReturn_Correct_NonControllerName()
         {
             var controllerExt = GetControllerTExtensions();
             var controllerName = controllerExt.GetControllerName(typeof(int));
 
-            Assert.IsNull(controllerName);
+            Assert.Null(controllerName);
         }
 
-        [Test]
+        [Fact]
         public void ShouldReturn_Correct_Controller_Actions()
         {
             var controllerExt = GetControllerTExtensions();
             var actions = controllerExt.GetControllerActions(typeof(WebTestController));
 
-            Assert.IsNotNull(actions);
-            Assert.AreEqual(actions.Count(), 1);
-            Assert.AreEqual(actions.First().Name, "TestAction");
+            Assert.NotNull(actions);
+            Assert.Equal(1, actions.Count());
+            Assert.Equal("TestAction", actions.First().Name);
         }
-        
-        [Test]
+
+        [Fact]
         public void ShouldReturn_Correct_GenericController_Actions()
         {
             var controllerExt = GetControllerTExtensions();
             var actions = controllerExt.GetControllerActions<WebTestController>();
 
-            Assert.IsNotNull(actions);
-            Assert.AreEqual(actions.Count(), 1);
-            Assert.AreEqual(actions.First().Name, "TestAction");
+            Assert.NotNull(actions);
+            Assert.Equal(1, actions.Count());
+            Assert.Equal("TestAction", actions.First().Name);
         }
 
         private DefaultControllerExtensions GetControllerTExtensions()
@@ -72,7 +70,7 @@ namespace BetterModules.Core.Web.Tests.Mvc.Extensions
                 typeof (PrivateTestController),
                 typeof (PublicTestController),
                 typeof (PublicNestedTestController),
-                typeof (IController),
+                typeof (Controller),
                 typeof (DefaultControllerExtensionsTests)
             };
 
@@ -84,44 +82,39 @@ namespace BetterModules.Core.Web.Tests.Mvc.Extensions
             return controllerExt;
         }
 
-        private class PrivateTestController : IController
+        private class PrivateTestController : Controller
         {
-            public void Execute(RequestContext requestContext)
+            public void Execute(ActionContext actionContext)
             {
             }
         }
 
-        public class PublicNestedTestController : IController
+        public class PublicNestedTestController : Controller
         {
-            public void Execute(RequestContext requestContext)
+            public void Execute(ActionContext actionContext)
             {
             }
         }
-        
-        public class WebTestController : ControllerBase
-        {
-            protected override void ExecuteCore()
-            {
-                throw new System.NotImplementedException();
-            }
 
-            public ActionResult TestAction()
+        public class WebTestController : Controller
+        {
+            public IActionResult TestAction()
             {
                 throw new System.NotImplementedException();
             }
         }
     }
 
-    public abstract class AbstractTestController : IController
+    public abstract class AbstractTestController : Controller
     {
-        public void Execute(RequestContext requestContext)
+        public void Execute(ActionContext actionContext)
         {
         }
     }
 
-    public class PublicTestController : IController
+    public class PublicTestController : Controller
     {
-        public void Execute(RequestContext requestContext)
+        public void Execute(ActionContext actionContext)
         {
         }
     }

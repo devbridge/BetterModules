@@ -115,7 +115,10 @@ namespace BetterModules.Core.Web.Mvc.Extensions
             var actions = new List<MethodInfo>();
             foreach (var method in methods)
             {
-                if (method.IsPublic && method.ReturnParameter != null && typeof(ActionResult).IsAssignableFrom(method.ReturnParameter.ParameterType) && !actions.Any(f => f.Name == method.Name))
+                if (method.IsPublic && method.ReturnParameter != null
+                    && method.DeclaringType == controllerType
+                    && typeof(IActionResult).IsAssignableFrom(method.ReturnParameter.ParameterType)
+                    && actions.All(f => f.Name != method.Name))
                 {
                     actions.Add(method);
                 }

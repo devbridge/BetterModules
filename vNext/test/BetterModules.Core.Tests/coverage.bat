@@ -1,0 +1,2 @@
+C:\Users\user\AppData\Local\Apps\OpenCover\OpenCover.Console.exe -target:"C:\Users\user\.dnx\runtimes\dnx-clr-win-x86.1.0.0-beta7\bin\dnx.exe" -targetargs:"--lib C:\DevBridge\source\BetterModules\vNext\artifacts\bin\BetterModules.Core\Debug\dnx451 test" -output:coverage.xml -filter:"+[*]*"
+pause

@@ -1,26 +1,25 @@
 ﻿using BetterModules.Core.Web.Mvc.Extensions;
-using NUnit.Framework;
+using Xunit;
 
 namespace BetterModules.Core.Web.Tests.Mvc.Extensions
 {
-    [TestFixture]
     public class VirtualPathTests
     {
-        [Test]
+        [Fact]
         public void Should_Combine_Path_Correctly()
         {
             var path = VirtualPath.Combine("c:\\a", "b", "f");
 
-            Assert.AreEqual(path, "c:/a/b/f");
+            Assert.Equal(path, "c:/a/b/f");
         }
         
-        [Test]
+        [Fact]
         public void Should_Resolve_Local_Path_Correctly()
         {
-            Assert.IsTrue(VirtualPath.IsLocalPath("local"));
-            Assert.IsTrue(VirtualPath.IsLocalPath("(local)"));
-            Assert.IsFalse(VirtualPath.IsLocalPath("http://www.google.com"));
-            Assert.IsFalse(VirtualPath.IsLocalPath("other"));
+            Assert.True(VirtualPath.IsLocalPath("local"));
+            Assert.True(VirtualPath.IsLocalPath("(local)"));
+            Assert.False(VirtualPath.IsLocalPath("http://www.google.com"));
+            Assert.False(VirtualPath.IsLocalPath("other"));
         }
     }
 }

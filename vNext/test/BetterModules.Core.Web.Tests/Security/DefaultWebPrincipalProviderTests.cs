@@ -4,29 +4,28 @@ using BetterModules.Core.Web.Security;
 using BetterModules.Core.Web.Tests.TestHelpers;
 using BetterModules.Core.Web.Web;
 using Moq;
-using NUnit.Framework;
+using Xunit;
 
 namespace BetterModules.Core.Web.Tests.Security
 {
-    [TestFixture]
-    public class DefaultWebPrincipalProviderTests : TestBase
+    public class DefaultWebPrincipalProviderTests
     {
-        [Test]
+        [Fact]
         public void Should_Return_Current_Principal()
         {
             var accessor = new Mock<IHttpContextAccessor>();
             var contextMock = new HttpContextMoq();
             var fakePrincipal = new GenericPrincipal(new GenericIdentity("TEST"), null);
             contextMock.MockContext.Setup(r => r.User).Returns(() => fakePrincipal);
-            accessor.Setup(r => r.GetCurrent()).Returns(() => contextMock.MockContext.Object);
+            accessor.Setup(r => r.HttpContext).Returns(() => contextMock.MockContext.Object);
 
             var provider = new DefaultWebPrincipalProvider(accessor.Object);
             var principal = provider.GetCurrentPrincipal();
 
-            Assert.AreEqual(principal, fakePrincipal);
+            Assert.Equal(principal, fakePrincipal);
         }
 
-        [Test]
+        [Fact]
         public void Should_Return_Base_Principal()
         {
             var currentPrincipal = Thread.CurrentPrincipal;
@@ -38,8 +37,8 @@ namespace BetterModules.Core.Web.Tests.Security
 
             var principal = provider.GetCurrentPrincipal();
 
-            Assert.IsNotNull(principal);
-            Assert.AreEqual(principal, fakePrincipal);
+            Assert.NotNull(principal);
+            Assert.Equal(principal, fakePrincipal);
 
             Thread.CurrentPrincipal = currentPrincipal;
         }
