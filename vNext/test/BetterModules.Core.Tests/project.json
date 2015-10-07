@@ -11,11 +11,12 @@
         "xunit.runner.dnx": "2.1.0-beta5a-build188",
         "BetterModules.Core": "1.0.0-*",
         "BetterModules.Sample.Module": "1.0.0-*",
-        "Moq": "4.2.1506.2515"
+        "Moq": "4.2.1506.2515",
+        "Microsoft.Framework.Configuration.EnvironmentVariables": "1.0.0-beta7"
     },
 
     "commands": {
-        "test": "xunit.runner.dnx"
+        "test": "xunit.runner.dnx --isTestMode=true"
     },
 
     "frameworks": {

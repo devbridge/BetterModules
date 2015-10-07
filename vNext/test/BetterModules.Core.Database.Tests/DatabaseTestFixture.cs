@@ -19,7 +19,7 @@ using Moq;
 
 namespace BetterModules.Core.Database.Tests
 {
-    public class DatabaseTestBase: IDisposable
+    public class DatabaseTestFixture: IDisposable
     {
         private DatabaseRandomTestDataProvider dbTestDataProvider;
 
@@ -43,7 +43,9 @@ namespace BetterModules.Core.Database.Tests
 
         public IUnitOfWork UnitOfWork => unitOfWork ?? (unitOfWork = Provider.GetService<IUnitOfWork>());
 
-        public DatabaseTestBase()
+        public string ConnectionString => database?.ConnectionString;
+
+        public DatabaseTestFixture()
         {
             if (!started)
             {
@@ -73,7 +75,11 @@ namespace BetterModules.Core.Database.Tests
             services.AddOptions();
             var builder = new ConfigurationBuilder(System.Environment.CurrentDirectory)
                 .AddJsonFile("Config/modules.json")
-                .AddJsonFile("Config/connectionStrings.json");
+                .AddJsonFile("Config/connectionStrings.json")
+                .AddInMemoryCollection(new List<KeyValuePair<string, string>>
+                {
+                    new KeyValuePair<string, string>("isTestMode", true.ToString())
+                });
             services.AddBetterModulesCore(builder.Build());
             Services = services;
             Provider = services.BuildServiceProvider();

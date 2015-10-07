@@ -5,20 +5,28 @@ using Xunit;
 
 namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.EventListeners
 {
-    public class DeleteEventListenerIntegrationTests : DatabaseTestBase
+    [Collection("Database test collection")]
+    public class DeleteEventListenerIntegrationTests
     {
+        private DatabaseTestFixture fixture;
+
+        public DeleteEventListenerIntegrationTests(DatabaseTestFixture fixture)
+        {
+            this.fixture = fixture;
+        }
+
         [Fact]
         public void Should_Mark_Entity_As_Deleted()
         {
-            var entity = DatabaseTestDataProvider.ProvideRandomTestItemModel();
-            Repository.Save(entity);
-            UnitOfWork.Commit();
+            var entity = fixture.DatabaseTestDataProvider.ProvideRandomTestItemModel();
+            fixture.Repository.Save(entity);
+            fixture.UnitOfWork.Commit();
 
             Assert.NotSame(entity.Id.ToString(), Guid.Empty.ToString());
-            Repository.Delete(entity);
-            UnitOfWork.Commit();
+            fixture.Repository.Delete(entity);
+            fixture.UnitOfWork.Commit();
 
-            var principalProvider = Provider.GetService<IPrincipalProvider>();
+            var principalProvider = fixture.Provider.GetService<IPrincipalProvider>();
 
             Assert.True(entity.IsDeleted);
             Assert.NotNull(entity.DeletedOn);

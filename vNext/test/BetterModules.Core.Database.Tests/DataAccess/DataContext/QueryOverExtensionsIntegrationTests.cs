@@ -8,41 +8,44 @@ using Xunit;
 
 namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
 {
-    public class QueryOverExtensionsIntegrationTests : DatabaseTestBase
+    [Collection("Database test collection")]
+    public class QueryOverExtensionsIntegrationTests
     {
+        private DatabaseTestFixture fixture;
         private TestItemCategory category1;
         private TestItemModel model1;
         private TestItemModel model2;
         private TestItemModel model3;
         private bool isSet;
 
-        public QueryOverExtensionsIntegrationTests(IServiceCollection services)
+        public QueryOverExtensionsIntegrationTests(DatabaseTestFixture fixture)
         {
+            this.fixture = fixture;
             if (!isSet)
             {
                 isSet = true;
 
-                category1 = DatabaseTestDataProvider.ProvideRandomTestItemCategory();
+                category1 = fixture.DatabaseTestDataProvider.ProvideRandomTestItemCategory();
 
-                model1 = DatabaseTestDataProvider.ProvideRandomTestItemModel(category1);
+                model1 = fixture.DatabaseTestDataProvider.ProvideRandomTestItemModel(category1);
                 model1.Name = "QVO_01";
-                model2 = DatabaseTestDataProvider.ProvideRandomTestItemModel(category1);
+                model2 = fixture.DatabaseTestDataProvider.ProvideRandomTestItemModel(category1);
                 model2.Name = "QVO_02";
-                model3 = DatabaseTestDataProvider.ProvideRandomTestItemModel(category1);
+                model3 = fixture.DatabaseTestDataProvider.ProvideRandomTestItemModel(category1);
                 model3.Name = "QVO_03";
 
-                Repository.Save(model3);
-                Repository.Save(model2);
-                Repository.Save(model1);
-                
-                UnitOfWork.Commit();
+                fixture.Repository.Save(model3);
+                fixture.Repository.Save(model2);
+                fixture.Repository.Save(model1);
+
+                fixture.UnitOfWork.Commit();
             }
         }
 
         [Fact]
         public void Should_Return_First_Element_Successfully()
         {
-            var query = Repository.AsQueryOver<TestItemModel>().Where(t => t.Id == model1.Id);
+            var query = fixture.Repository.AsQueryOver<TestItemModel>().Where(t => t.Id == model1.Id);
             var item = query.First<TestItemModel, TestItemModel>();
 
             Assert.NotNull(item);
@@ -55,7 +58,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
             Assert.Throws<EntityNotFoundException>(() =>
             {
                 var guid = Guid.NewGuid();
-                Repository
+                fixture.Repository
                     .AsQueryOver<TestItemModel>()
                     .Where(t => t.Id == guid)
                     .First<TestItemModel, TestItemModel>();
@@ -65,7 +68,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
         [Fact]
         public void Should_Add_Default_Paging()
         {
-            var list = Repository
+            var list = fixture.Repository
                 .AsQueryOver<TestItemModel>()
                 .Where(t => t.Category == category1)
                 .AddPaging(null, null)
@@ -82,7 +85,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
         [Fact]
         public void Should_Return_First_Page_Of_Items()
         {
-            var list = Repository
+            var list = fixture.Repository
                 .AsQueryOver<TestItemModel>()
                 .Where(t => t.Category == category1)
                 .AddPaging(1, 2)
@@ -98,7 +101,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
         [Fact]
         public void Should_Return_Second_Page_Of_Items()
         {
-            var list = Repository
+            var list = fixture.Repository
                 .AsQueryOver<TestItemModel>()
                 .Where(t => t.Category == category1)
                 .AddPaging(2, 2)
@@ -113,7 +116,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
         [Fact]
         public void Should_Apply_Filter_Order_Asc_Paging_Correctly()
         {
-            var list = Repository
+            var list = fixture.Repository
                 .AsQueryOver<TestItemModel>()
                 .ApplyFilters(t => t.Category == category1, t => t.Name, false, 1, 2)
                 .List<TestItemModel>()
@@ -127,7 +130,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
         [Fact]
         public void Should_Apply_Filter_Order_Desc_Paging_Correctly()
         {
-            var list = Repository
+            var list = fixture.Repository
                 .AsQueryOver<TestItemModel>()
                 .ApplyFilters(t => t.Category == category1, t => t.Name, true, 1, 2)
                 .List<TestItemModel>()
@@ -141,7 +144,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
         [Fact]
         public void Should_Apply_Filter_Order_Desc_No_Paging_Correctly()
         {
-            var list = Repository
+            var list = fixture.Repository
                 .AsQueryOver<TestItemModel>()
                 .ApplyFilters(t => t.Category == category1, t => t.Name, true)
                 .List<TestItemModel>()
@@ -156,7 +159,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
         [Fact]
         public void Should_Apply_SubQuery_Filter_Order_Desc_Paging_Correctly()
         {
-            var list = Repository
+            var list = fixture.Repository
                 .AsQueryOver<TestItemModel>()
                 .ApplySubQueryFilters(t => t.Category == category1, t => t.Name, true, 1, 2)
                 .List<TestItemModel>()
@@ -170,7 +173,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
         [Fact]
         public void Should_Apply_SubQuery_Filter_Order_Desc_No_Paging_Correctly()
         {
-            var list = Repository
+            var list = fixture.Repository
                 .AsQueryOver<TestItemModel>()
                 .ApplySubQueryFilters(t => t.Category == category1, t => t.Name, true)
                 .List<TestItemModel>()

@@ -8,8 +8,16 @@ using Xunit;
 
 namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
 {
-    public class QueryableExtensionsIntegrationTests : DatabaseTestBase
+    [Collection("Database test collection")]
+    public class QueryableExtensionsIntegrationTests
     {
+        private DatabaseTestFixture fixture;
+
+        public QueryableExtensionsIntegrationTests(DatabaseTestFixture fixture)
+        {
+            this.fixture = fixture;
+        }
+
         [Fact]
         public void Should_Return_Correct_Items_FutureWrapper_Count()
         {
@@ -22,19 +30,19 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
         [Fact]
         public void Should_Return_Correct_Items_Future_Count()
         {
-            var category1 = DatabaseTestDataProvider.ProvideRandomTestItemCategory();
-            var category2 = DatabaseTestDataProvider.ProvideRandomTestItemCategory();
-            var category3 = DatabaseTestDataProvider.ProvideRandomTestItemCategory();
+            var category1 = fixture.DatabaseTestDataProvider.ProvideRandomTestItemCategory();
+            var category2 = fixture.DatabaseTestDataProvider.ProvideRandomTestItemCategory();
+            var category3 = fixture.DatabaseTestDataProvider.ProvideRandomTestItemCategory();
             category1.Name = "QEIT_" + category1.Name.Substring(10);
             category2.Name = "QEIT_" + category1.Name.Substring(10);
             category3.Name = "QEIT_" + category1.Name.Substring(10);
 
-            Repository.Save(category1);
-            Repository.Save(category2);
-            Repository.Save(category3);
-            UnitOfWork.Commit();
+            fixture.Repository.Save(category1);
+            fixture.Repository.Save(category2);
+            fixture.Repository.Save(category3);
+            fixture.UnitOfWork.Commit();
 
-            var query = Repository.AsQueryable<TestItemCategory>().Where(c => c.Name.StartsWith("QEIT_"));
+            var query = fixture.Repository.AsQueryable<TestItemCategory>().Where(c => c.Name.StartsWith("QEIT_"));
             var countFuture = query.ToRowCountFutureValue();
             var future = query.ToFuture();
 

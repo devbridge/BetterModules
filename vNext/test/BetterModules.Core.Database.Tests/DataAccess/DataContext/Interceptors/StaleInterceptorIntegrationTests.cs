@@ -4,17 +4,25 @@ using Xunit;
 
 namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.Interceptors
 {
-    public class StaleInterceptorIntegrationTests : DatabaseTestBase
-    {   
+    [Collection("Database test collection")]
+    public class StaleInterceptorIntegrationTests
+    {
+        private DatabaseTestFixture fixture;
+
+        public StaleInterceptorIntegrationTests(DatabaseTestFixture fixture)
+        {
+            this.fixture = fixture;
+        }
+
         [Fact]
         public void Should_Create_Version()
         {
-            var model = DatabaseTestDataProvider.ProvideRandomTestItemModel();
+            var model = fixture.DatabaseTestDataProvider.ProvideRandomTestItemModel();
             
             Assert.Equal(model.Version, 0);
 
-            Repository.Save(model);
-            UnitOfWork.Commit();
+            fixture.Repository.Save(model);
+            fixture.UnitOfWork.Commit();
 
             Assert.Equal(model.Version, 1);
         }
@@ -22,23 +30,23 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.Interceptors
         [Fact]
         public void Should_Increase_Version_If_Dirty()
         {
-            var model = DatabaseTestDataProvider.ProvideRandomTestItemModel();
+            var model = fixture.DatabaseTestDataProvider.ProvideRandomTestItemModel();
 
             Assert.Equal(model.Version, 0);
 
-            Repository.Save(model);
-            UnitOfWork.Commit();
+            fixture.Repository.Save(model);
+            fixture.UnitOfWork.Commit();
 
             Assert.Equal(model.Version, 1);
 
-            Repository.Save(model);
-            UnitOfWork.Commit();
+            fixture.Repository.Save(model);
+            fixture.UnitOfWork.Commit();
 
             Assert.Equal(model.Version, 1);
 
-            model.Name = TestDataProvider.ProvideRandomString();
-            Repository.Save(model);
-            UnitOfWork.Commit();
+            model.Name = fixture.TestDataProvider.ProvideRandomString();
+            fixture.Repository.Save(model);
+            fixture.UnitOfWork.Commit();
 
             Assert.Equal(model.Version, 2);
         }
@@ -48,18 +56,18 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.Interceptors
         {
             Assert.Throws<ConcurrentDataException>(() =>
             {
-                var model = DatabaseTestDataProvider.ProvideRandomTestItemModel();
+                var model = fixture.DatabaseTestDataProvider.ProvideRandomTestItemModel();
 
                 Assert.Equal(model.Version, 0);
 
-                Repository.Save(model);
-                UnitOfWork.Commit();
+                fixture.Repository.Save(model);
+                fixture.UnitOfWork.Commit();
 
-                model.Name = TestDataProvider.ProvideRandomString();
+                model.Name = fixture.TestDataProvider.ProvideRandomString();
                 model.Version = 3;
 
-                Repository.Save(model);
-                UnitOfWork.Commit();
+                fixture.Repository.Save(model);
+                fixture.UnitOfWork.Commit();
             });
         }
         
@@ -68,18 +76,18 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.Interceptors
         {
             Assert.Throws<ConcurrentDataException>(() =>
             {
-                var model = DatabaseTestDataProvider.ProvideRandomTestItemModel();
+                var model = fixture.DatabaseTestDataProvider.ProvideRandomTestItemModel();
 
                 Assert.Equal(model.Version, 0);
 
-                Repository.Save(model);
-                UnitOfWork.Commit();
+                fixture.Repository.Save(model);
+                fixture.UnitOfWork.Commit();
 
-                model.Name = TestDataProvider.ProvideRandomString();
+                model.Name = fixture.TestDataProvider.ProvideRandomString();
                 model.Version = 3;
 
-                Repository.Delete(model);
-                UnitOfWork.Commit();
+                fixture.Repository.Delete(model);
+                fixture.UnitOfWork.Commit();
             });
         }
     }

@@ -9,8 +9,16 @@ using Xunit;
 
 namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.Migrations
 {
-    public class DefaultVersionCheckerTests : DatabaseTestBase
+    [Collection("Database test collection")]
+    public class DefaultVersionCheckerTests
     {
+        private DatabaseTestFixture fixture;
+
+        public DefaultVersionCheckerTests(DatabaseTestFixture fixture)
+        {
+            this.fixture = fixture;
+        }
+
         [Fact]
         public void Should_Check_In_The_Database()
         {
@@ -83,10 +91,10 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.Migrations
 
         private DefaultVersionChecker GetVersionCheckerImplementation()
         {
-            var modulesRegistration = Provider.GetService<IModulesRegistration>();
-            var workingDirectory = Provider.GetService<IWorkingDirectory>();
+            var modulesRegistration = fixture.Provider.GetService<IModulesRegistration>();
+            var workingDirectory = fixture.Provider.GetService<IWorkingDirectory>();
 
-            var versionChecker = new DefaultVersionChecker(UnitOfWork, modulesRegistration, workingDirectory, new LoggerFactory());
+            var versionChecker = new DefaultVersionChecker(fixture.UnitOfWork, modulesRegistration, workingDirectory, new LoggerFactory());
 
             return versionChecker;
         }

@@ -5,8 +5,17 @@ using Xunit;
 
 namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.Migrations
 {
-    public class DefaultMigrationTests: DatabaseTestBase
+    [Collection("Database test collection")]
+    public class DefaultMigrationTests
     {
+        // TODO: Use Mocking instead of Fixture
+        private DatabaseTestFixture fixture;
+
+        public DefaultMigrationTests(DatabaseTestFixture fixture)
+        {
+            this.fixture = fixture;
+        }
+
         [Fact]
         public void Should_Throw_Core_Exception_Migrating_Down()
         {

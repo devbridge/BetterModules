@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "test": {
+      "commandName": "test",
+      "environmentVariables": {
+        "ENV_IS_TEST_MODE": "true"
+      }
+    }
+  }
+}

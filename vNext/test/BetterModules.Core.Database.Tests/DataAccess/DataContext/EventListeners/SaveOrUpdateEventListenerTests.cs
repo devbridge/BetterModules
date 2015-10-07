@@ -5,16 +5,24 @@ using Xunit;
 
 namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.EventListeners
 {
-    public class SaveOrUpdateEventListenerTests : DatabaseTestBase
+    [Collection("Database test collection")]
+    public class SaveOrUpdateEventListenerTests
     {
+        private DatabaseTestFixture fixture;
+
+        public SaveOrUpdateEventListenerTests(DatabaseTestFixture fixture)
+        {
+            this.fixture = fixture;
+        }
+
         [Fact]
         public void Should_Update_Entity_Properties_When_Creating()
         {
-            var entity = DatabaseTestDataProvider.ProvideRandomTestItemModel();
-            Repository.Save(entity);
-            UnitOfWork.Commit();
+            var entity = fixture.DatabaseTestDataProvider.ProvideRandomTestItemModel();
+            fixture.Repository.Save(entity);
+            fixture.UnitOfWork.Commit();
 
-            var principalProvider = Provider.GetService<IPrincipalProvider>();
+            var principalProvider = fixture.Provider.GetService<IPrincipalProvider>();
 
             Assert.NotNull(entity.CreatedOn);
             Assert.Equal(entity.CreatedByUser, principalProvider.CurrentPrincipalName);
@@ -25,11 +33,11 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.EventListener
         [Fact]
         public void Should_Update_Entity_Properties_When_Updating()
         {
-            var entity = DatabaseTestDataProvider.ProvideRandomTestItemModel();
-            Repository.Save(entity);
-            UnitOfWork.Commit();
+            var entity = fixture.DatabaseTestDataProvider.ProvideRandomTestItemModel();
+            fixture.Repository.Save(entity);
+            fixture.UnitOfWork.Commit();
 
-            var principalProvider = Provider.GetService<IPrincipalProvider>();
+            var principalProvider = fixture.Provider.GetService<IPrincipalProvider>();
 
             Assert.NotNull(entity.CreatedOn);
             Assert.Equal(entity.CreatedByUser, principalProvider.CurrentPrincipalName);
@@ -38,10 +46,10 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.EventListener
 
             var modified = entity.ModifiedOn;
 
-            var loadedEntity = Repository.FirstOrDefault<TestItemModel>(entity.Id);
-            loadedEntity.Name = TestDataProvider.ProvideRandomString(100);
-            Repository.Save(loadedEntity);
-            UnitOfWork.Commit();
+            var loadedEntity = fixture.Repository.FirstOrDefault<TestItemModel>(entity.Id);
+            loadedEntity.Name = fixture.TestDataProvider.ProvideRandomString(100);
+            fixture.Repository.Save(loadedEntity);
+            fixture.UnitOfWork.Commit();
 
             Assert.NotNull(loadedEntity.CreatedOn);
             Assert.Equal(loadedEntity.CreatedByUser, principalProvider.CurrentPrincipalName);

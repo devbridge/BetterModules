@@ -24,7 +24,11 @@ namespace BetterModules.Core.Extensions
 
             services.LoadAssemblies();
 
-            RunDatabaseMigrations(services);
+            // Do not run migrations when running tests
+            if (configuration["isTestMode"] != true.ToString())
+            {
+                RunDatabaseMigrations(services);
+            }
 
             return services;
         }

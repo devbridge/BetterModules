@@ -6,13 +6,21 @@ using Xunit;
 
 namespace BetterModules.Core.Database.Tests.Models
 {
-    public class EntitySubClassMapBaseIntergrationTests : DatabaseTestBase
+    [Collection("Database test collection")]
+    public class EntitySubClassMapBaseIntergrationTests
     {
+        private DatabaseTestFixture fixture;
+
+        public EntitySubClassMapBaseIntergrationTests(DatabaseTestFixture fixture)
+        {
+            this.fixture = fixture;
+        }
+
         [Fact]
         public void Should_Load_And_Map_BaseEntity_Correctly()
         {
-            var category = Repository.FirstOrDefault<TestItemCategory>(c => c.Name == "ItemCategory1");
-            var item = Repository.FirstOrDefault<InheritedTestItemModel>(SampleModuleDescriptor.TestItemModelId);
+            var category = fixture.Repository.FirstOrDefault<TestItemCategory>(c => c.Name == "ItemCategory1");
+            var item = fixture.Repository.FirstOrDefault<InheritedTestItemModel>(SampleModuleDescriptor.TestItemModelId);
 
             Assert.NotNull(item);
             Assert.NotNull(category);

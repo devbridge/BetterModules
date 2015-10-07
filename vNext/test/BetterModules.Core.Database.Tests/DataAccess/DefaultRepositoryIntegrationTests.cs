@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Linq;
+using BetterModules.Core.Configuration;
 using BetterModules.Core.DataAccess;
 using BetterModules.Core.DataAccess.DataContext;
 using BetterModules.Core.Exceptions.DataTier;
 using BetterModules.Sample.Module;
 using BetterModules.Sample.Module.Models;
 using Microsoft.Framework.DependencyInjection;
+using Microsoft.Framework.OptionsModel;
 using NHibernate.Proxy.DynamicProxy;
 using Xunit;
 
 namespace BetterModules.Core.Database.Tests.DataAccess
 {
-    public class DefaultRepositoryIntegrationTests : IClassFixture<DatabaseTestBase>
+    [Collection("Database test collection")]
+    public class DefaultRepositoryIntegrationTests
     {
         private TestItemCategory category1;
         private TestItemModel model1;
@@ -19,8 +22,8 @@ namespace BetterModules.Core.Database.Tests.DataAccess
         private TestItemModel model3;
         private TestItemModel deletedModel;
         private bool isSet;
-        private DatabaseTestBase fixture;
-        public DefaultRepositoryIntegrationTests(DatabaseTestBase fixture)
+        private DatabaseTestFixture fixture;
+        public DefaultRepositoryIntegrationTests(DatabaseTestFixture fixture)
         {
             this.fixture = fixture;
             if (!isSet)
@@ -385,6 +388,8 @@ namespace BetterModules.Core.Database.Tests.DataAccess
 
             // Open another session
             var provider = fixture.Services.BuildServiceProvider();
+            var configuration = provider.GetService<IOptions<DefaultConfigurationSection>>().Options;
+            configuration.Database.ConnectionString = fixture.ConnectionString;
             var repository2 = provider.GetService<IRepository>();
             var unitOfWork2 = provider.GetService<IUnitOfWork>();
 

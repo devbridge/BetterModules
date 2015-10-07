@@ -6,19 +6,27 @@ using Xunit;
 
 namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
 {
-    public class RestrictionsExtensionsIntegrationTests : DatabaseTestBase
+    [Collection("Database test collection")]
+    public class RestrictionsExtensionsIntegrationTests
     {
+        private DatabaseTestFixture fixture;
+
+        public RestrictionsExtensionsIntegrationTests(DatabaseTestFixture fixture)
+        {
+            this.fixture = fixture;
+        }
+
         [Fact]
         public void Should_Filter_Null_Or_Whitespace_Column_Correctly()
         {
-            var category = DatabaseTestDataProvider.ProvideRandomTestItemCategory();
+            var category = fixture.DatabaseTestDataProvider.ProvideRandomTestItemCategory();
             category.Name = "   ";
 
-            Repository.Save(category);
-            UnitOfWork.Commit();
+            fixture.Repository.Save(category);
+            fixture.UnitOfWork.Commit();
 
             TestItemCategory alias = null;
-            var loadedCategory = Repository
+            var loadedCategory = fixture.Repository
                 .AsQueryOver(() => alias)
                 .Where(RestrictionsExtensions.IsNullOrWhiteSpace(Projections.Property(() => alias.Name)))
                 .And(() => alias.Id == category.Id)
