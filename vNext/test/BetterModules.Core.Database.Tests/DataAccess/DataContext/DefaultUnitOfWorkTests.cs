@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using BetterModules.Core.DataAccess;
 using BetterModules.Core.DataAccess.DataContext;
 using BetterModules.Sample.Module.Models;
 using Microsoft.Framework.DependencyInjection;
@@ -10,9 +11,14 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
     public class DefaultUnitOfWorkTests
     {
         private DatabaseTestFixture fixture;
+        private readonly IRepository repository;
+        private readonly IUnitOfWork unitOfWork;
 
         public DefaultUnitOfWorkTests(DatabaseTestFixture fixture)
         {
+            var provider = fixture.Services.BuildServiceProvider();
+            repository = provider.GetService<IRepository>();
+            unitOfWork = provider.GetService<IUnitOfWork>();
             this.fixture = fixture;
         }
 
@@ -70,20 +76,20 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
 
             try
             {
-                fixture.UnitOfWork.BeginTransaction();
+                unitOfWork.BeginTransaction();
 
-                fixture.Repository.Save(model1);
-                fixture.Repository.Save(model2);
+                repository.Save(model1);
+                repository.Save(model2);
 
-                fixture.UnitOfWork.Rollback();
+                unitOfWork.Rollback();
             }
             catch
             {
                 // Do nothing here
             }
 
-            var loadedModel1 = fixture.Repository.FirstOrDefault<TestItemModel>(model1.Id);
-            var loadedModel2 = fixture.Repository.FirstOrDefault<TestItemModel>(model2.Id);
+            var loadedModel1 = repository.FirstOrDefault<TestItemModel>(model1.Id);
+            var loadedModel2 = repository.FirstOrDefault<TestItemModel>(model2.Id);
 
             Assert.Null(loadedModel1);
             Assert.Null(loadedModel2);
@@ -97,21 +103,21 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
 
             try
             {
-                fixture.UnitOfWork.BeginTransaction();
-                fixture.Repository.Save(model1);
-                fixture.UnitOfWork.Commit();
+                unitOfWork.BeginTransaction();
+                repository.Save(model1);
+                unitOfWork.Commit();
 
-                fixture.UnitOfWork.BeginTransaction();
-                fixture.Repository.Save(model2);
-                fixture.UnitOfWork.Rollback();
+                unitOfWork.BeginTransaction();
+                repository.Save(model2);
+                unitOfWork.Rollback();
             }
             catch
             {
                 // Do nothing here
             }
 
-            var loadedModel1 = fixture.Repository.FirstOrDefault<TestItemModel>(model1.Id);
-            var loadedModel2 = fixture.Repository.FirstOrDefault<TestItemModel>(model2.Id);
+            var loadedModel1 = repository.FirstOrDefault<TestItemModel>(model1.Id);
+            var loadedModel2 = repository.FirstOrDefault<TestItemModel>(model2.Id);
 
             Assert.NotNull(loadedModel1);
             Assert.Null(loadedModel2);

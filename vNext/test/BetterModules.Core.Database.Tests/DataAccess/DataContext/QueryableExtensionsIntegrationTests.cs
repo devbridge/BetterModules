@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using BetterModules.Core.DataAccess;
 using BetterModules.Core.DataAccess.DataContext;
 using BetterModules.Sample.Module.Models;
 using Microsoft.Framework.DependencyInjection;
@@ -12,9 +13,14 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
     public class QueryableExtensionsIntegrationTests
     {
         private DatabaseTestFixture fixture;
+        private readonly IRepository repository;
+        private readonly IUnitOfWork unitOfWork;
 
         public QueryableExtensionsIntegrationTests(DatabaseTestFixture fixture)
         {
+            var provider = fixture.Services.BuildServiceProvider();
+            repository = provider.GetService<IRepository>();
+            unitOfWork = provider.GetService<IUnitOfWork>();
             this.fixture = fixture;
         }
 
@@ -37,12 +43,12 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
             category2.Name = "QEIT_" + category1.Name.Substring(10);
             category3.Name = "QEIT_" + category1.Name.Substring(10);
 
-            fixture.Repository.Save(category1);
-            fixture.Repository.Save(category2);
-            fixture.Repository.Save(category3);
-            fixture.UnitOfWork.Commit();
+            repository.Save(category1);
+            repository.Save(category2);
+            repository.Save(category3);
+            unitOfWork.Commit();
 
-            var query = fixture.Repository.AsQueryable<TestItemCategory>().Where(c => c.Name.StartsWith("QEIT_"));
+            var query = repository.AsQueryable<TestItemCategory>().Where(c => c.Name.StartsWith("QEIT_"));
             var countFuture = query.ToRowCountFutureValue();
             var future = query.ToFuture();
 

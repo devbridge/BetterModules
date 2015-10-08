@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using BetterModules.Core.DataAccess.DataContext;
 using BetterModules.Core.DataAccess.DataContext.Migrations;
 using BetterModules.Core.Environment.FileSystem;
 using BetterModules.Core.Modules.Registration;
@@ -12,10 +13,13 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.Migrations
     [Collection("Database test collection")]
     public class DefaultVersionCheckerTests
     {
+        private readonly IUnitOfWork unitOfWork;
         private DatabaseTestFixture fixture;
 
         public DefaultVersionCheckerTests(DatabaseTestFixture fixture)
         {
+            var provider = fixture.Services.BuildServiceProvider();
+            unitOfWork = provider.GetService<IUnitOfWork>();
             this.fixture = fixture;
         }
 
@@ -94,7 +98,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.Migrations
             var modulesRegistration = fixture.Provider.GetService<IModulesRegistration>();
             var workingDirectory = fixture.Provider.GetService<IWorkingDirectory>();
 
-            var versionChecker = new DefaultVersionChecker(fixture.UnitOfWork, modulesRegistration, workingDirectory, new LoggerFactory());
+            var versionChecker = new DefaultVersionChecker(unitOfWork, modulesRegistration, workingDirectory, new LoggerFactory());
 
             return versionChecker;
         }

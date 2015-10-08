@@ -1,4 +1,5 @@
-﻿using BetterModules.Core.DataAccess.DataContext;
+﻿using BetterModules.Core.DataAccess;
+using BetterModules.Core.DataAccess.DataContext;
 using BetterModules.Sample.Module.Models;
 using Microsoft.Framework.DependencyInjection;
 using NHibernate.Criterion;
@@ -9,10 +10,15 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
     [Collection("Database test collection")]
     public class RestrictionsExtensionsIntegrationTests
     {
+        private readonly IRepository repository;
+        private readonly IUnitOfWork unitOfWork;
         private DatabaseTestFixture fixture;
 
         public RestrictionsExtensionsIntegrationTests(DatabaseTestFixture fixture)
         {
+            var provider = fixture.Services.BuildServiceProvider();
+            repository = provider.GetService<IRepository>();
+            unitOfWork = provider.GetService<IUnitOfWork>();
             this.fixture = fixture;
         }
 
@@ -22,11 +28,11 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
             var category = fixture.DatabaseTestDataProvider.ProvideRandomTestItemCategory();
             category.Name = "   ";
 
-            fixture.Repository.Save(category);
-            fixture.UnitOfWork.Commit();
+            repository.Save(category);
+            unitOfWork.Commit();
 
             TestItemCategory alias = null;
-            var loadedCategory = fixture.Repository
+            var loadedCategory = repository
                 .AsQueryOver(() => alias)
                 .Where(RestrictionsExtensions.IsNullOrWhiteSpace(Projections.Property(() => alias.Name)))
                 .And(() => alias.Id == category.Id)

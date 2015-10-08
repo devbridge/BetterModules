@@ -7,10 +7,13 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
     [Collection("Database test collection")]
     public class DefaultUnitOfWorkFactoryIntegrationTests
     {
+        private readonly IUnitOfWork unitOfWork;
         private DatabaseTestFixture fixture;
 
         public DefaultUnitOfWorkFactoryIntegrationTests(DatabaseTestFixture fixture)
         {
+            var provider = fixture.Services.BuildServiceProvider();
+            unitOfWork = provider.GetService<IUnitOfWork>();
             this.fixture = fixture;
         }
 
@@ -21,7 +24,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
             var uow = factory.New();
 
             Assert.NotNull(uow);
-            Assert.NotEqual(uow, fixture.UnitOfWork);
+            Assert.NotEqual(uow, unitOfWork);
         }
     }
 }

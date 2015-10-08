@@ -1,4 +1,6 @@
-﻿using BetterModules.Core.Exceptions.DataTier;
+﻿using BetterModules.Core.DataAccess;
+using BetterModules.Core.DataAccess.DataContext;
+using BetterModules.Core.Exceptions.DataTier;
 using Microsoft.Framework.DependencyInjection;
 using Xunit;
 
@@ -8,10 +10,15 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.Interceptors
     public class StaleInterceptorIntegrationTests
     {
         private DatabaseTestFixture fixture;
+        private readonly IRepository repository;
+        private readonly IUnitOfWork unitOfWork;
 
         public StaleInterceptorIntegrationTests(DatabaseTestFixture fixture)
         {
             this.fixture = fixture;
+            var provider = fixture.Services.BuildServiceProvider();
+            repository = provider.GetService<IRepository>();
+            unitOfWork = provider.GetService<IUnitOfWork>();
         }
 
         [Fact]
@@ -21,8 +28,8 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.Interceptors
             
             Assert.Equal(model.Version, 0);
 
-            fixture.Repository.Save(model);
-            fixture.UnitOfWork.Commit();
+            repository.Save(model);
+            unitOfWork.Commit();
 
             Assert.Equal(model.Version, 1);
         }
@@ -34,19 +41,19 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.Interceptors
 
             Assert.Equal(model.Version, 0);
 
-            fixture.Repository.Save(model);
-            fixture.UnitOfWork.Commit();
+            repository.Save(model);
+            unitOfWork.Commit();
 
             Assert.Equal(model.Version, 1);
 
-            fixture.Repository.Save(model);
-            fixture.UnitOfWork.Commit();
+            repository.Save(model);
+            unitOfWork.Commit();
 
             Assert.Equal(model.Version, 1);
 
             model.Name = fixture.TestDataProvider.ProvideRandomString();
-            fixture.Repository.Save(model);
-            fixture.UnitOfWork.Commit();
+            repository.Save(model);
+            unitOfWork.Commit();
 
             Assert.Equal(model.Version, 2);
         }
@@ -60,14 +67,14 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.Interceptors
 
                 Assert.Equal(model.Version, 0);
 
-                fixture.Repository.Save(model);
-                fixture.UnitOfWork.Commit();
+                repository.Save(model);
+                unitOfWork.Commit();
 
                 model.Name = fixture.TestDataProvider.ProvideRandomString();
                 model.Version = 3;
 
-                fixture.Repository.Save(model);
-                fixture.UnitOfWork.Commit();
+                repository.Save(model);
+                unitOfWork.Commit();
             });
         }
         
@@ -80,14 +87,14 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.Interceptors
 
                 Assert.Equal(model.Version, 0);
 
-                fixture.Repository.Save(model);
-                fixture.UnitOfWork.Commit();
+                repository.Save(model);
+                unitOfWork.Commit();
 
                 model.Name = fixture.TestDataProvider.ProvideRandomString();
                 model.Version = 3;
 
-                fixture.Repository.Delete(model);
-                fixture.UnitOfWork.Commit();
+                repository.Delete(model);
+                unitOfWork.Commit();
             });
         }
     }

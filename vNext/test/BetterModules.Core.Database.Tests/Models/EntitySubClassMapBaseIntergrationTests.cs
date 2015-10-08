@@ -1,4 +1,5 @@
 ﻿using System;
+using BetterModules.Core.DataAccess;
 using BetterModules.Sample.Module;
 using BetterModules.Sample.Module.Models;
 using Microsoft.Framework.DependencyInjection;
@@ -9,18 +10,19 @@ namespace BetterModules.Core.Database.Tests.Models
     [Collection("Database test collection")]
     public class EntitySubClassMapBaseIntergrationTests
     {
-        private DatabaseTestFixture fixture;
+        private readonly IRepository repository;
 
         public EntitySubClassMapBaseIntergrationTests(DatabaseTestFixture fixture)
         {
-            this.fixture = fixture;
+            var provider = fixture.Services.BuildServiceProvider();
+            repository = provider.GetService<IRepository>();
         }
 
         [Fact]
         public void Should_Load_And_Map_BaseEntity_Correctly()
         {
-            var category = fixture.Repository.FirstOrDefault<TestItemCategory>(c => c.Name == "ItemCategory1");
-            var item = fixture.Repository.FirstOrDefault<InheritedTestItemModel>(SampleModuleDescriptor.TestItemModelId);
+            var category = repository.FirstOrDefault<TestItemCategory>(c => c.Name == "ItemCategory1");
+            var item = repository.FirstOrDefault<InheritedTestItemModel>(SampleModuleDescriptor.TestItemModelId);
 
             Assert.NotNull(item);
             Assert.NotNull(category);

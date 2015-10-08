@@ -23,9 +23,14 @@ namespace BetterModules.Core.Database.Tests.DataAccess
         private TestItemModel deletedModel;
         private bool isSet;
         private DatabaseTestFixture fixture;
+        private readonly IRepository repository;
+        private readonly IUnitOfWork unitOfWork;
         public DefaultRepositoryIntegrationTests(DatabaseTestFixture fixture)
         {
             this.fixture = fixture;
+            var provider = fixture.Services.BuildServiceProvider();
+            repository = provider.GetService<IRepository>();
+            unitOfWork = provider.GetService<IUnitOfWork>();
             if (!isSet)
             {
                 isSet = true;
@@ -41,25 +46,25 @@ namespace BetterModules.Core.Database.Tests.DataAccess
                 deletedModel = fixture.DatabaseTestDataProvider.ProvideRandomTestItemModel(category1);
                 deletedModel.Name = "DRT_04";
 
-                fixture.Repository.Save(model3);
-                fixture.Repository.Save(deletedModel);
-                fixture.Repository.Save(model2);
-                fixture.Repository.Save(model1);
-                fixture.UnitOfWork.Commit();
+                repository.Save(model3);
+                repository.Save(deletedModel);
+                repository.Save(model2);
+                repository.Save(model1);
+                unitOfWork.Commit();
 
-                fixture.Repository.Delete(deletedModel);
-                fixture.UnitOfWork.Commit();
+                repository.Delete(deletedModel);
+                unitOfWork.Commit();
             }
         }
 
         [Fact]
         public void Should_UnProxy_Entity()
         {
-            var proxy = fixture.Repository.AsProxy<TestItemModel>(SampleModuleDescriptor.TestItemModelId);
+            var proxy = repository.AsProxy<TestItemModel>(SampleModuleDescriptor.TestItemModelId);
             Assert.NotNull(proxy);
             Assert.True(proxy is IProxy);
 
-            var unproxy = fixture.Repository.UnProxy(proxy);
+            var unproxy = repository.UnProxy(proxy);
             Assert.NotNull(unproxy);
             Assert.Equal(unproxy.Id, SampleModuleDescriptor.TestItemModelId);
             Assert.False(unproxy is IProxy);
@@ -68,10 +73,10 @@ namespace BetterModules.Core.Database.Tests.DataAccess
         [Fact]
         public void Should_Return_Same_Entity_When_UnProxying_Entity()
         {
-            var proxy = fixture.Repository.AsProxy<TestItemModel>(model1.Id);
+            var proxy = repository.AsProxy<TestItemModel>(model1.Id);
             Assert.NotNull(proxy);
 
-            var unproxy = fixture.Repository.UnProxy(proxy);
+            var unproxy = repository.UnProxy(proxy);
             Assert.NotNull(unproxy);
 
             Assert.Equal(unproxy, proxy);
@@ -80,7 +85,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess
         [Fact]
         public void Should_Load_Entity_AsProxy()
         {
-            var proxy = fixture.Repository.AsProxy<TestItemModel>(Guid.NewGuid());
+            var proxy = repository.AsProxy<TestItemModel>(Guid.NewGuid());
 
             Assert.NotNull(proxy);
             Assert.True(proxy is IProxy);
@@ -89,7 +94,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess
         [Fact]
         public void Should_Retrieve_First_Entity_By_Id()
         {
-            var entity = fixture.Repository.First<TestItemModel>(model1.Id);
+            var entity = repository.First<TestItemModel>(model1.Id);
 
             Assert.NotNull(entity);
             Assert.Equal(entity.Id, model1.Id);
@@ -100,7 +105,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess
         {
             Assert.Throws<EntityNotFoundException>(() =>
             {
-                fixture.Repository.First<TestItemModel>(Guid.NewGuid());
+                repository.First<TestItemModel>(Guid.NewGuid());
             });
 
         }
@@ -108,7 +113,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess
         [Fact]
         public void Should_Retrieve_First_Entity_By_Filter()
         {
-            var entity = fixture.Repository.First<TestItemModel>(m => m.Id == model1.Id);
+            var entity = repository.First<TestItemModel>(m => m.Id == model1.Id);
 
             Assert.NotNull(entity);
             Assert.Equal(entity.Id, model1.Id);
@@ -120,14 +125,14 @@ namespace BetterModules.Core.Database.Tests.DataAccess
             Assert.Throws<EntityNotFoundException>(() =>
             {
                 var guid = Guid.NewGuid();
-                fixture.Repository.First<TestItemModel>(m => m.Id == guid);
+                repository.First<TestItemModel>(m => m.Id == guid);
             });
         }
 
         [Fact]
         public void Should_Retrieve_FirstOrDefault_Entity_By_Id()
         {
-            var entity = fixture.Repository.FirstOrDefault<TestItemModel>(model1.Id);
+            var entity = repository.FirstOrDefault<TestItemModel>(model1.Id);
 
             Assert.NotNull(entity);
             Assert.Equal(entity.Id, model1.Id);
@@ -136,7 +141,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess
         [Fact]
         public void Should_Retrieve_FirstOrDefault_Entity_By_Filter()
         {
-            var entity = fixture.Repository.FirstOrDefault<TestItemModel>(m => m.Id == model1.Id);
+            var entity = repository.FirstOrDefault<TestItemModel>(m => m.Id == model1.Id);
 
             Assert.NotNull(entity);
             Assert.Equal(entity.Id, model1.Id);
@@ -146,7 +151,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess
         public void Should_Retrieve_Null_Retrieving_FirstOrDefault_Entity_By_Id()
         {
             var guid = Guid.NewGuid();
-            var entity = fixture.Repository.FirstOrDefault<TestItemModel>(guid);
+            var entity = repository.FirstOrDefault<TestItemModel>(guid);
 
             Assert.Null(entity);
         }
@@ -155,7 +160,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess
         public void Should_Retrieve_Null_Retrieving_FirstOrDefault_Entity_By_Filter()
         {
             var guid = Guid.NewGuid();
-            var entity = fixture.Repository.FirstOrDefault<TestItemModel>(m => m.Id == guid);
+            var entity = repository.FirstOrDefault<TestItemModel>(m => m.Id == guid);
 
             Assert.Null(entity);
         }
@@ -163,7 +168,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess
         [Fact]
         public void Should_Return_QueryOver_Without_Deleted_Generic()
         {
-            var list = fixture.Repository
+            var list = repository
                 .AsQueryOver<TestItemModel>().Where(q => q.Category == category1)
                 .OrderBy(q => q.Name).Asc
                 .List<TestItemModel>();
@@ -179,7 +184,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess
         public void Should_Return_QueryOver_Without_Deleted_By_Alias()
         {
             TestItemModel alias = null;
-            var list = fixture.Repository
+            var list = repository
                 .AsQueryOver(() => alias)
                 .Where(() => alias.Category == category1)
                 .OrderBy(q => q.Name).Asc
@@ -196,7 +201,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess
         public void Should_Return_QueryOver_Without_Deleted_By_Null_Alias()
         {
             TestItemModel alias = null;
-            var list = fixture.Repository
+            var list = repository
                 .AsQueryOver<TestItemModel>(null)
                 .Where(t => t.Category == category1)
                 .OrderBy(q => q.Name).Asc
@@ -212,7 +217,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess
         [Fact]
         public void Should_Return_Queryable_By_Filter()
         {
-            var list = fixture.Repository
+            var list = repository
                 .AsQueryable<TestItemModel>(q => q.Category == category1)
                 .OrderBy(q => q.Name)
                 .ToList();
@@ -227,7 +232,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess
         [Fact]
         public void Should_Return_Queryable_Without_Deleted()
         {
-            var list = fixture.Repository
+            var list = repository
                 .AsQueryable<TestItemModel>()
                 .Where(q => q.Category == category1)
                 .OrderBy(q => q.Name)
@@ -243,7 +248,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess
         [Fact]
         public void Should_Check_If_Record_Exists()
         {
-            var exists = fixture.Repository.Any<TestItemModel>(q => q.Name == model1.Name);
+            var exists = repository.Any<TestItemModel>(q => q.Name == model1.Name);
 
             Assert.True(exists);
         }
@@ -251,7 +256,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess
         [Fact]
         public void Should_Check_If_Deleted_Record_Not_Exists()
         {
-            var exists = fixture.Repository.Any<TestItemModel>(q => q.Name == deletedModel.Name);
+            var exists = repository.Any<TestItemModel>(q => q.Name == deletedModel.Name);
 
             Assert.False(exists);
         }
@@ -261,8 +266,8 @@ namespace BetterModules.Core.Database.Tests.DataAccess
         {
             var model = fixture.DatabaseTestDataProvider.ProvideRandomTestItemModel();
 
-            fixture.Repository.Save(model);
-            fixture.UnitOfWork.Commit();
+            repository.Save(model);
+            unitOfWork.Commit();
 
             Assert.True(model.Id != default(Guid));
         }
@@ -272,15 +277,15 @@ namespace BetterModules.Core.Database.Tests.DataAccess
         {
             var model = fixture.DatabaseTestDataProvider.ProvideRandomTestItemModel();
 
-            fixture.Repository.Save(model);
-            fixture.UnitOfWork.Commit();
+            repository.Save(model);
+            unitOfWork.Commit();
 
             Assert.True(model.Id != default(Guid));
 
-            fixture.Repository.Delete<TestItemModel>(model.Id, model.Version, false);
-            fixture.UnitOfWork.Commit();
+            repository.Delete<TestItemModel>(model.Id, model.Version, false);
+            unitOfWork.Commit();
 
-            var exists = fixture.Repository.Any<TestItemModel>(q => q.Id == model.Id);
+            var exists = repository.Any<TestItemModel>(q => q.Id == model.Id);
             Assert.False(exists);
         }
 
@@ -289,15 +294,15 @@ namespace BetterModules.Core.Database.Tests.DataAccess
         {
             var model = fixture.DatabaseTestDataProvider.ProvideRandomTestItemModel();
 
-            fixture.Repository.Save(model);
-            fixture.UnitOfWork.Commit();
+            repository.Save(model);
+            unitOfWork.Commit();
 
             Assert.True(model.Id != default(Guid));
 
-            fixture.Repository.Delete<TestItemModel>(model.Id, model.Version, true);
-            fixture.UnitOfWork.Commit();
+            repository.Delete<TestItemModel>(model.Id, model.Version, true);
+            unitOfWork.Commit();
 
-            var exists = fixture.Repository.Any<TestItemModel>(q => q.Id == model.Id);
+            var exists = repository.Any<TestItemModel>(q => q.Id == model.Id);
             Assert.False(exists);
         }
 
@@ -306,15 +311,15 @@ namespace BetterModules.Core.Database.Tests.DataAccess
         {
             var model = fixture.DatabaseTestDataProvider.ProvideRandomTestItemModel();
 
-            fixture.Repository.Save(model);
-            fixture.UnitOfWork.Commit();
+            repository.Save(model);
+            unitOfWork.Commit();
 
             Assert.True(model.Id != default(Guid));
 
-            fixture.Repository.Delete(model);
-            fixture.UnitOfWork.Commit();
+            repository.Delete(model);
+            unitOfWork.Commit();
 
-            var exists = fixture.Repository.Any<TestItemModel>(q => q.Id == model.Id);
+            var exists = repository.Any<TestItemModel>(q => q.Id == model.Id);
             Assert.False(exists);
         }
 
@@ -323,25 +328,25 @@ namespace BetterModules.Core.Database.Tests.DataAccess
         {
             // Create entity
             var model = fixture.DatabaseTestDataProvider.ProvideRandomTestItemModel();
-            fixture.Repository.Save(model);
-            fixture.UnitOfWork.Commit();
+            repository.Save(model);
+            unitOfWork.Commit();
 
             var version = model.Version;
 
             // Load detached version, touch multiple times
-            var detachedModel = fixture.Repository.First<TestItemModel>(model.Id);
-            fixture.Repository.Detach(detachedModel);
+            var detachedModel = repository.First<TestItemModel>(model.Id);
+            repository.Detach(detachedModel);
             detachedModel.Name = fixture.TestDataProvider.ProvideRandomString();
-            fixture.UnitOfWork.Commit();
+            unitOfWork.Commit();
             detachedModel.Name = fixture.TestDataProvider.ProvideRandomString();
-            fixture.UnitOfWork.Commit();
+            unitOfWork.Commit();
 
             Assert.Equal(detachedModel.Version, version);
 
             // Attach and save again
-            fixture.Repository.Attach(detachedModel);
+            repository.Attach(detachedModel);
             detachedModel.Name = fixture.TestDataProvider.ProvideRandomString();
-            fixture.UnitOfWork.Commit();
+            unitOfWork.Commit();
 
             Assert.NotEqual(detachedModel.Version, version);
         }
@@ -351,24 +356,24 @@ namespace BetterModules.Core.Database.Tests.DataAccess
         {
             // Create entity
             var model = fixture.DatabaseTestDataProvider.ProvideRandomTestItemModel();
-            fixture.Repository.Save(model);
-            fixture.UnitOfWork.Commit();
+            repository.Save(model);
+            unitOfWork.Commit();
 
             // Touch entity - changes should be saved on flush
             var version = model.Version;
 
-            var attachedModel = fixture.Repository.First<TestItemModel>(model.Id);
+            var attachedModel = repository.First<TestItemModel>(model.Id);
             attachedModel.Name = fixture.TestDataProvider.ProvideRandomString();
-            fixture.UnitOfWork.Commit();
+            unitOfWork.Commit();
 
             Assert.True(attachedModel.Version > version);
             version = attachedModel.Version;
 
             // Detach and touch again - changes shouldn't saved on flush
-            var detachedModel = fixture.Repository.First<TestItemModel>(model.Id);
-            fixture.Repository.Detach(detachedModel);
+            var detachedModel = repository.First<TestItemModel>(model.Id);
+            repository.Detach(detachedModel);
             detachedModel.Name = fixture.TestDataProvider.ProvideRandomString();
-            fixture.UnitOfWork.Commit();
+            unitOfWork.Commit();
 
             Assert.Equal(detachedModel.Version, version);
         }
@@ -378,18 +383,18 @@ namespace BetterModules.Core.Database.Tests.DataAccess
         {
             // Create entity
             var model = fixture.DatabaseTestDataProvider.ProvideRandomTestItemModel();
-            fixture.Repository.Save(model);
-            fixture.UnitOfWork.Commit();
+            repository.Save(model);
+            unitOfWork.Commit();
 
             var version = model.Version;
 
             // Load attached and detached version, touch multiple times
-            var detachedModel = fixture.Repository.First<TestItemModel>(model.Id);
+            var detachedModel = repository.First<TestItemModel>(model.Id);
 
             // Open another session
             var provider = fixture.Services.BuildServiceProvider();
-            var configuration = provider.GetService<IOptions<DefaultConfigurationSection>>().Options;
-            configuration.Database.ConnectionString = fixture.ConnectionString;
+            //var configuration = provider.GetService<IOptions<DefaultConfigurationSection>>().Options;
+            //configuration.Database.ConnectionString = fixture.ConnectionString;
             var repository2 = provider.GetService<IRepository>();
             var unitOfWork2 = provider.GetService<IUnitOfWork>();
 
@@ -400,7 +405,7 @@ namespace BetterModules.Core.Database.Tests.DataAccess
             Assert.Equal(detachedModel.Version, version);
 
             // Refresh detached entity - version should be updated
-            fixture.Repository.Refresh(detachedModel);
+            repository.Refresh(detachedModel);
             Assert.NotEqual(detachedModel.Version, version);
         }
     }

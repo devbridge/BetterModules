@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Reflection;
 using BetterModules.Core.Configuration;
-using BetterModules.Core.DataAccess;
-using BetterModules.Core.DataAccess.DataContext;
 using BetterModules.Core.Database.Tests.TestHelpers;
 using BetterModules.Core.Database.Tests.TestHelpers.Migrations;
 using BetterModules.Core.Extensions;
@@ -14,7 +12,6 @@ using Microsoft.Dnx.Runtime;
 using Microsoft.Framework.Configuration;
 using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Logging;
-using Microsoft.Framework.OptionsModel;
 using Moq;
 
 namespace BetterModules.Core.Database.Tests
@@ -29,21 +26,15 @@ namespace BetterModules.Core.Database.Tests
 
         private bool started;
 
-        private IRepository repository;
-
-        private IUnitOfWork unitOfWork;
-
         public IServiceCollection Services { get; set; }
 
         public IServiceProvider Provider { get; set; }
 
         public SqlConnection SqlConnection => database.SqlConnection;
 
-        public IRepository Repository => repository ?? (repository = Provider.GetService<IRepository>());
+        public virtual DatabaseRandomTestDataProvider DatabaseTestDataProvider => dbTestDataProvider ?? (dbTestDataProvider = new DatabaseRandomTestDataProvider());
 
-        public IUnitOfWork UnitOfWork => unitOfWork ?? (unitOfWork = Provider.GetService<IUnitOfWork>());
-
-        public string ConnectionString => database?.ConnectionString;
+        public virtual RandomTestDataProvider TestDataProvider => testDataProvider ?? (testDataProvider = new RandomTestDataProvider());
 
         public DatabaseTestFixture()
         {
@@ -82,20 +73,19 @@ namespace BetterModules.Core.Database.Tests
                 });
             services.AddBetterModulesCore(builder.Build());
             Services = services;
-            Provider = services.BuildServiceProvider();
+            Provider = Services.BuildServiceProvider();
         }
 
         private void InitializeDatabase()
         {
             database = TestDatabaseInitializer.RunDatabaseMigrationTests(Provider);
-
-            var configuration = Provider.GetService<IOptions<DefaultConfigurationSection>>().Options;
-            configuration.Database.ConnectionString = database.ConnectionString;
+            Services.Configure<DefaultConfigurationSection>(opt =>
+            {
+                opt.Database.ConnectionString = database.ConnectionString;
+            });
+            Provider = Services.BuildServiceProvider();
         }
 
-        public virtual DatabaseRandomTestDataProvider DatabaseTestDataProvider => dbTestDataProvider ?? (dbTestDataProvider = new DatabaseRandomTestDataProvider());
-
-        public virtual RandomTestDataProvider TestDataProvider => testDataProvider ?? (testDataProvider = new RandomTestDataProvider());
         public void Dispose()
         {
             database?.Dispose();
