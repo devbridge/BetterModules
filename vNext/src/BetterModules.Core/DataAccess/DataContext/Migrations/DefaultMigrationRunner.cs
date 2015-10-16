@@ -65,7 +65,7 @@ namespace BetterModules.Core.DataAccess.DataContext.Migrations
             ILoggerFactory loggerFactory)
         {
             this.assemblyLoader = assemblyLoader;
-            this.configuration = configuration.Options;
+            this.configuration = configuration.Value;
             this.versionChecker = versionChecker;
             logger = loggerFactory.CreateLogger(typeof (DefaultMigrationRunner).FullName);
         }

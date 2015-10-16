@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace BetterModules.Core.Extensions
 {
@@ -16,12 +17,9 @@ namespace BetterModules.Core.Extensions
         {
             var interfaceTypes = givenType.GetInterfaces();
 
-            foreach (var it in interfaceTypes)
+            if (interfaceTypes.Any(it => it.IsGenericType && it.GetGenericTypeDefinition() == genericType))
             {
-                if (it.IsGenericType && it.GetGenericTypeDefinition() == genericType)
-                {
-                    return true;
-                }
+                return true;
             }
 
             Type baseType = givenType.BaseType;

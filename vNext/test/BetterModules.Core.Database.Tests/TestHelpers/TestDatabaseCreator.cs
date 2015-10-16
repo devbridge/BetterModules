@@ -127,7 +127,7 @@ namespace BetterModules.Core.Database.Tests.TestHelpers
 
                 var configuration = new Mock<IOptions<DefaultConfigurationSection>>();
                 configuration
-                    .Setup(c => c.Options)
+                    .Setup(c => c.Value)
                     .Returns(() => new DefaultConfigurationSection
                     {
                         Database = new DatabaseConfigurationElement

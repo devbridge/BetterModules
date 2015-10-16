@@ -64,7 +64,8 @@ namespace BetterModules.Core.Database.Tests
             services.AddSingleton<ILoggerFactory, LoggerFactory>();
             services.AddInstance(manager.Object);
             services.AddOptions();
-            var builder = new ConfigurationBuilder(System.Environment.CurrentDirectory)
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(System.Environment.CurrentDirectory)
                 .AddJsonFile("Config/modules.json")
                 .AddJsonFile("Config/connectionStrings.json")
                 .AddInMemoryCollection(new List<KeyValuePair<string, string>>

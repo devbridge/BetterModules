@@ -6,6 +6,7 @@ using BetterModules.Core.Infrastructure.Commands;
 using BetterModules.Core.Web.Models;
 using BetterModules.Core.Web.Mvc.Extensions;
 using Microsoft.AspNet.Mvc;
+using Microsoft.AspNet.Mvc.Filters;
 
 namespace BetterModules.Core.Web.Mvc
 {

@@ -8,9 +8,9 @@
 
     "dependencies": {
         "BetterModules.Core": "2.0.0-*",
-        "Microsoft.AspNet.Http": "1.0.0-beta7",
-        "Microsoft.AspNet.Mvc": "6.0.0-beta7",
-        "Microsoft.AspNet.StaticFiles": "1.0.0-beta7"
+        "Microsoft.AspNet.Http": "1.0.0-beta8",
+        "Microsoft.AspNet.Mvc": "6.0.0-beta8",
+        "Microsoft.AspNet.StaticFiles": "1.0.0-beta8"
     },
 
     "frameworks": {

@@ -36,7 +36,7 @@ namespace BetterModules.Core.DataAccess.DataContext
             ILoggerFactory loggerFactory)
         {
             this.mappingResolver = mappingResolver;
-            this.configuration = configuration.Options;
+            this.configuration = configuration.Value;
             this.principalProvider = principalProvider;
             logger = loggerFactory.CreateLogger(typeof (DefaultSessionFactoryProvider).FullName);
         }

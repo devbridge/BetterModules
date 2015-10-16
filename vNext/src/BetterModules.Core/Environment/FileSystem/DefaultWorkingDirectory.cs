@@ -46,7 +46,7 @@ namespace BetterModules.Core.Environment.FileSystem
             modulesFolder = new DirectoryInfo(Path.Combine(rootFolder.FullName, ModulesFolderName));
             modulesRuntimeFolder = new DirectoryInfo(AppDomain.CurrentDomain.DynamicDirectory ?? AppDomain.CurrentDomain.BaseDirectory);
 
-            loggerFactory.CreateLogger(typeof (DefaultWorkingDirectory).FullName);
+            logger = loggerFactory.CreateLogger(typeof (DefaultWorkingDirectory).FullName);
         }
 
         /// <summary>

@@ -33,7 +33,7 @@ namespace BetterModules.Core.Web.Web
         public DefaultHttpContextAccessor(IOptions<DefaultWebConfigurationSection> configuration, IHostingEnvironment hostingEnvironment)
         {
             this.hostingEnvironment = hostingEnvironment;
-            this.configuration = configuration.Options;
+            this.configuration = configuration.Value;
         }
 
         // TBD: create a DefaultControllerContextAccessor service to get current controller views and etc. 

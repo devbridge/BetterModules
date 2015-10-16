@@ -9,8 +9,8 @@
     "dependencies": {
         "xunit": "2.1.0",
         "xunit.runner.dnx": "2.1.0-beta5a-build188",
-        "BetterModules.Core": "1.0.0-*",
-        "BetterModules.Sample.Module": "1.0.0-*",
+        "BetterModules.Core": "2.0.0-*",
+        "BetterModules.Sample.Module": "2.0.0-*",
         "Moq": "4.2.1506.2515"
     },
 

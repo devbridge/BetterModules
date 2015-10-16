@@ -1,6 +1,8 @@
 ﻿using System.IO;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
+using Microsoft.AspNet.Mvc.ViewEngines;
+using Microsoft.AspNet.Mvc.ViewFeatures;
 using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.OptionsModel;
 
@@ -20,7 +22,7 @@ namespace BetterModules.Core.Web.Mvc.Extensions
         {
             var services = controller.ActionContext.HttpContext.RequestServices;
             var compositeViewEngine = services.GetRequiredService<ICompositeViewEngine>();
-            var htmlHelperOptions = services.GetRequiredService<IOptions<MvcViewOptions>>().Options.HtmlHelperOptions;
+            var htmlHelperOptions = services.GetRequiredService<IOptions<MvcViewOptions>>().Value.HtmlHelperOptions;
 
             if (string.IsNullOrEmpty(viewName) || viewName.ToLower() == controller.ActionContext.ActionDescriptor.Name.ToLower())
             {

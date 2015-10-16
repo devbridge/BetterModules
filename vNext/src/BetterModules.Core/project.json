@@ -4,8 +4,7 @@
     "authors": [ "Devbridge Group" ],
     "tags": [ "" ],
     "projectUrl": "https://github.com/devbridge/BetterModules",
-    "licenseUrl": "",
-
+    
     "dependencies": {
         "NHibernate": "4.0.4.4000",
         "FluentNHibernate": "2.0.1",
@@ -13,11 +12,11 @@
         "FluentMigrator.Tools": "1.6.0",
         "FluentMigrator.Runner": "1.6.0",
         "FluentMigrator.Runner.DNX": "1.0.0-alpha7",
-        "Microsoft.Framework.OptionsModel": "1.0.0-beta7",
-        "Microsoft.Framework.Configuration.Json": "1.0.0-beta6",
-        "Microsoft.Framework.Logging": "1.0.0-beta7",
-        "Microsoft.Framework.DependencyInjection": "1.0.0-beta7",
-        "Microsoft.Dnx.Runtime.Abstractions": "1.0.0-beta7"
+        "Microsoft.Framework.OptionsModel": "1.0.0-beta8",
+        "Microsoft.Framework.Configuration.Json": "1.0.0-beta8",
+        "Microsoft.Framework.Logging": "1.0.0-beta8",
+        "Microsoft.Framework.DependencyInjection": "1.0.0-beta8",
+        "Microsoft.Dnx.Runtime.Abstractions": "1.0.0-beta8"
     },
 
     "frameworks": {

@@ -8,7 +8,7 @@ using BetterModules.Core.Modules.Registration;
 using BetterModules.Core.Web.Modules;
 using Microsoft.AspNet.FileProviders;
 using Microsoft.Dnx.Runtime;
-using Microsoft.Framework.Caching;
+using Microsoft.Framework.Primitives;
 
 namespace BetterModules.Core.Web.Web.EmbeddedResources
 {
@@ -80,7 +80,7 @@ namespace BetterModules.Core.Web.Web.EmbeddedResources
             return physicalFileProvider.GetDirectoryContents(subpath);
         }
 
-        public IExpirationTrigger Watch(string filter)
+        public IChangeToken Watch(string filter)
         {
             return physicalFileProvider.Watch(filter);
         }
