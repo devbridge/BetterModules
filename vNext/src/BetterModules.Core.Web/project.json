@@ -1,5 +1,5 @@
 {
-    "version": "2.0.0-alpha1",
+    "version": "2.0.0-alpha2",
     "description": "Core logic that implements modular architecture supporting web based and business logic modules.",
     "authors": [ "Devbridge Group" ],
     "tags": [ "" ],
