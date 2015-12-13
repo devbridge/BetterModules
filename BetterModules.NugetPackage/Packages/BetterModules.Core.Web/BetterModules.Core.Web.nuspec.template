@@ -12,8 +12,9 @@
     <copyright>BetterModules is licensed under MIT LICENSE AGREEMENT (https://github.com/devbridge/BetterModules/blob/master/LICENSE).</copyright>
     <dependencies>
       <dependency id="BetterModules.Core" version="[@BetterModulesVersion@]" />
-      <dependency id="Autofac" version="3.5.0" />
+      <dependency id="Autofac" version="3.5.2" />
       <dependency id="Common.Logging" version="3.3.1" />
+      <dependency id="Common.Logging.Core" version="3.3.1" />
       <dependency id="Microsoft.AspNet.Mvc" version="5.2.3" />
       <dependency id="Microsoft.AspNet.Razor" version="3.2.3" />
       <dependency id="Microsoft.AspNet.WebPages" version="3.2.3" />
