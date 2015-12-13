@@ -95,10 +95,12 @@ namespace BetterModules.Core.Database.Tests.DataAccess
         }
         
         [Test]
-        [ExpectedException(typeof(EntityNotFoundException))]
         public void Should_Throw_Exception_Retrieving_First_Entity_By_Id()
         {
-            Repository.First<TestItemModel>(Guid.NewGuid());
+            Assert.Throws<EntityNotFoundException>(() =>
+            {
+                Repository.First<TestItemModel>(Guid.NewGuid());
+            });
         }
 
         [Test]
@@ -111,11 +113,13 @@ namespace BetterModules.Core.Database.Tests.DataAccess
         }
 
         [Test]
-        [ExpectedException(typeof(EntityNotFoundException))]
         public void Should_Throw_Exception_Retrieving_First_Entity_By_Filter()
         {
-            var guid = Guid.NewGuid();
-            Repository.First<TestItemModel>(m => m.Id == guid);
+            Assert.Throws<EntityNotFoundException>(() =>
+            {
+                var guid = Guid.NewGuid();
+                Repository.First<TestItemModel>(m => m.Id == guid);
+            });
         }
 
         [Test]

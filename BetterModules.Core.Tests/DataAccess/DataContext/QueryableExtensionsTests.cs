@@ -12,13 +12,15 @@ namespace BetterModules.Core.Tests.DataAccess.DataContext
     public class QueryableExtensionsTests
     {
         [Test]
-        [ExpectedException(typeof(EntityNotFoundException))]
         public void Enumerable_FirstOne_Should_Throw_EntityNotFoundException()
         {
             var list = new List<string>();
-            list.AsEnumerable().FirstOne();
+            Assert.Throws<EntityNotFoundException>(() =>
+            {
+                list.AsEnumerable().FirstOne();
+            });
         }
-        
+
         [Test]
         public void Enumerable_FirstOne_Should_Return_First_Item()
         {
@@ -29,11 +31,13 @@ namespace BetterModules.Core.Tests.DataAccess.DataContext
         }
         
         [Test]
-        [ExpectedException(typeof(EntityNotFoundException))]
         public void Queryable_FirstOne_Should_Throw_EntityNotFoundException()
         {
             var list = new List<string>();
-            list.AsQueryable().FirstOne();
+            Assert.Throws<EntityNotFoundException>(() =>
+            {
+                list.AsQueryable().FirstOne();
+            });
         }
         
         [Test]

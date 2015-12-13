@@ -8,11 +8,13 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.Migrations
     public class DefaultMigrationTests
     {
         [Test]
-        [ExpectedException(typeof(CoreException))]
         public void Should_Throw_Core_Exception_Migrating_Down()
         {
-            var migration = new TestMigration("Test");
-            migration.Down();
+            Assert.Throws<CoreException>(() =>
+            {
+                var migration = new TestMigration("Test");
+                migration.Down();
+            });
         }
         
         private class TestMigration : DefaultMigration

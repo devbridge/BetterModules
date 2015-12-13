@@ -40,7 +40,7 @@ namespace BetterModules.Core.Web.Tests.Web
             var path = accessor.MapPath("test\\test1");
             Assert.IsNotNull(path);
             Assert.IsTrue(path.EndsWith("test\\test1"));
-            Assert.IsTrue(path.StartsWith(AppDomain.CurrentDomain.BaseDirectory));
+            Assert.IsTrue(Path.IsPathRooted(AppDomain.CurrentDomain.BaseDirectory), "\"{0}\" should start with \"{1}\".", path, AppDomain.CurrentDomain.BaseDirectory);
 
             RestoreContext();
         }

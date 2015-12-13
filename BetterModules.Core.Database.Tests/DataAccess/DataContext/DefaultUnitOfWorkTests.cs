@@ -43,14 +43,16 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
         }
         
         [Test]
-        [ExpectedException(typeof(DataException))]
         public void Should_Throw_Exception_Creating_Multiple_Transactions()
         {
-            using (var unitOfWork = new DefaultUnitOfWork(Container.Resolve<ISessionFactoryProvider>()))
+            Assert.Throws<DataException>(() =>
             {
-                unitOfWork.BeginTransaction();
-                unitOfWork.BeginTransaction();
-            }
+                using (var unitOfWork = new DefaultUnitOfWork(Container.Resolve<ISessionFactoryProvider>()))
+                {
+                    unitOfWork.BeginTransaction();
+                    unitOfWork.BeginTransaction();
+                }
+            });
         }
 
         [Test]

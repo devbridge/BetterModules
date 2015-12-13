@@ -1,4 +1,5 @@
-﻿using BetterModules.Core.DataContracts;
+﻿using System.Collections.Generic;
+using BetterModules.Core.DataContracts;
 using BetterModules.Core.Models;
 using Iesi.Collections;
 using NHibernate.Engine;
@@ -39,7 +40,7 @@ namespace BetterModules.Core.DataAccess.DataContext.EventListeners
         /// <param name="persister">The entity persister.</param>
         /// <param name="transientEntities">A cache of already deleted entities.</param>
         protected override void DeleteEntity(IEventSource session, object entity, EntityEntry entityEntry, 
-            bool isCascadeDeleteEnabled, IEntityPersister persister, ISet transientEntities)
+            bool isCascadeDeleteEnabled, IEntityPersister persister, ISet<object> transientEntities)
         {
             if (entity is IEntity)
             {                
