@@ -1,4 +1,6 @@
-﻿using Autofac;
+﻿using System;
+using System.Threading;
+using Autofac;
 using BetterModules.Core.Security;
 using BetterModules.Sample.Module.Models;
 using NUnit.Framework;
@@ -37,7 +39,8 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.EventListener
             Assert.IsNotNull(entity.ModifiedOn);
             Assert.AreEqual(entity.ModifiedByUser, principalProvider.CurrentPrincipalName);
 
-            var modified = entity.ModifiedOn;
+            var modified = new DateTime(entity.ModifiedOn.Ticks);
+            Thread.Sleep(25);
 
             var loadedEntity = Repository.FirstOrDefault<TestItemModel>(entity.Id);
             loadedEntity.Name = TestDataProvider.ProvideRandomString(100);

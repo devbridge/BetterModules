@@ -13,7 +13,9 @@ namespace BetterModules.Core.Database.Tests
     {
         private DatabaseRandomTestDataProvider testDataProvider;
 
-        private static LocalDatabase database;
+        private static readonly object lockObject = new object();
+
+        private volatile static LocalDatabase database;
         
         private IRepository repository;
 
@@ -21,7 +23,21 @@ namespace BetterModules.Core.Database.Tests
 
         protected SqlConnection SqlConnection
         {
-            get { return database.SqlConnection; }
+            get
+            {
+                if (database == null)
+                {
+                    lock (lockObject)
+                    {
+                        if (database == null)
+                        {
+                            InitializeDatabase();
+                        }
+                    }
+                }
+
+                return database.SqlConnection;
+            }
         }
 
         protected IRepository Repository
@@ -44,7 +60,13 @@ namespace BetterModules.Core.Database.Tests
         {
             if (database == null)
             {
-                InitializeDatabase();
+                lock (lockObject)
+                {
+                    if (database == null)
+                    {
+                        InitializeDatabase();
+                    }
+                }
             }
         }
 
@@ -56,14 +78,15 @@ namespace BetterModules.Core.Database.Tests
             configuration.Database.ConnectionString = database.ConnectionString;
         }
 
-        protected override void OnTextFixtureDown()
+        protected override void OnTestFixtureDown()
         {
+
             if (database != null)
             {
-                database.Dispose();
+            //    database.Dispose();
             }
 
-            base.OnTextFixtureDown();
+            base.OnTestFixtureDown();
         }
 
         public virtual DatabaseRandomTestDataProvider DatabaseTestDataProvider

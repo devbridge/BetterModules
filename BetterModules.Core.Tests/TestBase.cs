@@ -50,10 +50,10 @@ namespace BetterModules.Core.Tests
         [TestFixtureTearDown]
         public void Down()
         {
-            OnTextFixtureDown();
+            OnTestFixtureDown();
         }
 
-        protected virtual void OnTextFixtureDown()
+        protected virtual void OnTestFixtureDown()
         {
             if (Container != null)
             {

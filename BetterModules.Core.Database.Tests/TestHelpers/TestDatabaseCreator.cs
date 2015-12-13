@@ -57,7 +57,7 @@ namespace BetterModules.Core.Database.Tests.TestHelpers
             }
             File.Copy(originalFile, tempFile);
 
-            connectionString = string.Format("Data Source=(LocalDb)\\v11.0; Initial Catalog=BetterModulesTestsDataSet; Integrated Security=SSPI; AttachDBFilename={0}", tempFile.TrimEnd('\\'));
+            connectionString = string.Format("Data Source=(LocalDb)\\v12.0; Initial Catalog=BetterModulesTestsDataSet; Integrated Security=SSPI; AttachDBFilename={0}", tempFile.TrimEnd('\\'));
         }
 
         public void Dispose()
