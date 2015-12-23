@@ -53,7 +53,6 @@
     <None Include="Packages\BetterModules.Core\BetterModules.Core.nuspec.template">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Packages\BetterModules.Core\install.ps1" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

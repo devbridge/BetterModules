@@ -49,16 +49,18 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext
             Assert.IsNotNull(item);
             Assert.AreEqual(item.Name, model1.Name);
         }
-        
+
         [Test]
-        [ExpectedException(typeof(EntityNotFoundException))]
         public void Should_Throw_EntityNotFound_Exception_Retrieving_First()
         {
-            var guid = Guid.NewGuid();
-            Repository
-                .AsQueryOver<TestItemModel>()
-                .Where(t => t.Id == guid)
-                .First<TestItemModel, TestItemModel>();
+            Assert.Throws<EntityNotFoundException>(() =>
+            {
+                var guid = Guid.NewGuid();
+                Repository
+                    .AsQueryOver<TestItemModel>()
+                    .Where(t => t.Id == guid)
+                    .First<TestItemModel, TestItemModel>();
+            });
         }
 
         [Test]

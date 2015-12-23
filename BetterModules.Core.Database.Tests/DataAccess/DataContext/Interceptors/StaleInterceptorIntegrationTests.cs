@@ -1,4 +1,5 @@
-﻿using BetterModules.Core.Exceptions.DataTier;
+﻿using System;
+using BetterModules.Core.Exceptions.DataTier;
 using NUnit.Framework;
 
 namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.Interceptors
@@ -44,39 +45,28 @@ namespace BetterModules.Core.Database.Tests.DataAccess.DataContext.Interceptors
         }
 
         [Test]
-        [ExpectedException(typeof (ConcurrentDataException))]
         public void Should_Throw_Concurrent_Data_Exception_Saving()
         {
             var model = DatabaseTestDataProvider.ProvideRandomTestItemModel();
 
-            Assert.AreEqual(model.Version, 0);
-
-            Repository.Save(model);
-            UnitOfWork.Commit();
-
-            model.Name = TestDataProvider.ProvideRandomString();
-            model.Version = 3;
-
-            Repository.Save(model);
-            UnitOfWork.Commit();
-        }
+            Assert.AreEqual(0, model.Version);
+            Assert.AreEqual(0, model.Category.Version);
         
-        [Test]
-        [ExpectedException(typeof (ConcurrentDataException))]
-        public void Should_Throw_Concurrent_Data_Exception_Deleting()
-        {
-            var model = DatabaseTestDataProvider.ProvideRandomTestItemModel();
-
-            Assert.AreEqual(model.Version, 0);
-
             Repository.Save(model);
             UnitOfWork.Commit();
+
+            Assert.AreEqual(1, model.Version);
+            Assert.AreEqual(1, model.Category.Version);
 
             model.Name = TestDataProvider.ProvideRandomString();
             model.Version = 3;
 
-            Repository.Delete(model);
-            UnitOfWork.Commit();
+            Assert.Throws<ConcurrentDataException>(() =>
+            {
+                Repository.Save(model);
+                UnitOfWork.Commit();
+            });
         }
+     
     }
 }

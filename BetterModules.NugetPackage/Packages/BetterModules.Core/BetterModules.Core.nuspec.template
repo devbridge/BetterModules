@@ -11,13 +11,15 @@
     <description>The Core module for BetterModules. BetterModules is modular architecture supporting web based and business logic modules.</description>
     <copyright>BetterModules is licensed under MIT LICENSE AGREEMENT (https://github.com/devbridge/BetterModules/blob/master/LICENSE).</copyright>
     <dependencies>
-      <dependency id="Autofac" version="3.1.5" />
-      <dependency id="Common.Logging" version="2.1.2" />
-      <dependency id="FluentMigrator" version="[1.0.6.0]" />
-      <dependency id="FluentMigrator.Tools" version="[1.0.6.0]" />
-      <dependency id="FluentNHibernate" version="[1.3.0.733]" />
-      <dependency id="Iesi.Collections" version="3.3.1.4000" />
-      <dependency id="NHibernate" version="[3.3.3.4001]" />
+      <dependency id="Autofac" version="3.5.2" />
+      <dependency id="Common.Logging" version="3.3.1" />
+      <dependency id="Common.Logging.Core" version="3.3.1" />
+      <dependency id="FluentMigrator" version="[1.6.1.0]" />
+      <dependency id="FluentMigrator.Tools" version="[1.6.1.0]" />
+      <dependency id="FluentMigrator.Runner" version="[1.6.1.0]" />
+      <dependency id="FluentNHibernate" version="[2.0.3.0]" />
+      <dependency id="Iesi.Collections" version="4.0.0.4000" />
+      <dependency id="NHibernate" version="[4.0.4.4000]" />
     </dependencies>
   </metadata>
 </package>
