@@ -165,7 +165,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SampleDefaultWebApplicationAutoHost.cs" />
+    <Compile Include="SampleWebApplicationHost.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

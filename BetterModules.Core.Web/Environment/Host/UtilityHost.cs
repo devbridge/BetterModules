@@ -8,7 +8,7 @@ using BetterModules.Core.Web.Environment.Host;
 using BetterModules.Core.Web.Modules.Registration;
 using BetterModules.Events;
 
-[assembly : WebApplicationHost(typeof(UtilityHost), Order = Int32.MaxValue)]
+//[assembly : WebApplicationHost(typeof(UtilityHost), Order = Int32.MaxValue)]
 namespace BetterModules.Core.Web.Environment.Host
 {
     public sealed class UtilityHost : DefaultWebApplicationAutoHost
