@@ -11,6 +11,13 @@ namespace BetterModules.Core.Exceptions
         /// <summary>
         /// Initializes a new instance of the <see cref="CoreException" /> class.
         /// </summary>
+        public CoreException()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CoreException" /> class.
+        /// </summary>
         /// <param name="message">The message.</param>
         public CoreException(string message) : base(message)
         {

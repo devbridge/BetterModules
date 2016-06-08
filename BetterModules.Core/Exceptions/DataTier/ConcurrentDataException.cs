@@ -12,6 +12,13 @@ namespace BetterModules.Core.Exceptions.DataTier
         /// <summary>
         /// Initializes a new instance of the <see cref="ConcurrentDataException" /> class.
         /// </summary>
+        public ConcurrentDataException()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConcurrentDataException" /> class.
+        /// </summary>
         /// <param name="message">The message.</param>
         public ConcurrentDataException(string message)
             : base(message)
