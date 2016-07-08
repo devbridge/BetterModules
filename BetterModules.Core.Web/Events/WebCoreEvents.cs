@@ -18,6 +18,10 @@ namespace BetterModules.Events
 
         public event DefaultEventHandler<SingleItemEventArgs<HttpApplication>> HostAuthenticateRequest;
 
+        public event DefaultEventHandler<SingleItemEventArgs<HttpApplication>> RequestBegin;
+
+        public event DefaultEventHandler<SingleItemEventArgs<HttpApplication>> RequestEnd;
+
         /// <summary>
         /// Called when a host starts.
         /// </summary>
@@ -63,6 +67,30 @@ namespace BetterModules.Events
             if (HostAuthenticateRequest != null)
             {
                 HostAuthenticateRequest(new SingleItemEventArgs<HttpApplication>(host));
+            }
+        }
+
+        /// <summary>
+        /// Called when request begins.
+        /// </summary>
+        /// <param name="application">The application.</param>
+        public void OnRequestBegin(HttpApplication application)
+        {
+            if (application != null)
+            {
+                RequestBegin(new SingleItemEventArgs<HttpApplication>(application));
+            }
+        }
+
+        /// <summary>
+        /// Called when request ends.
+        /// </summary>
+        /// <param name="application">The application.</param>
+        public void OnRequestEnd(HttpApplication application)
+        {
+            if (application != null)
+            {
+                RequestEnd(new SingleItemEventArgs<HttpApplication>(application));
             }
         }
     }

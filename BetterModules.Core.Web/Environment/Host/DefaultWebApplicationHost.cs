@@ -102,6 +102,8 @@ namespace BetterModules.Core.Web.Environment.Host
         /// <param name="application">The host application.</param>
         public virtual void OnEndRequest(HttpApplication application)
         {
+            // Notify.
+            Events.WebCoreEvents.Instance.OnRequestEnd(application);
         }
         
         /// <summary>
@@ -118,6 +120,8 @@ namespace BetterModules.Core.Web.Environment.Host
                 RestartAndReloadHost(application);
             }
 #endif
+            // Notify.
+            Events.WebCoreEvents.Instance.OnRequestBegin(application);
         }
 
         /// <summary>
