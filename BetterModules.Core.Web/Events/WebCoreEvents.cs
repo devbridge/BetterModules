@@ -76,7 +76,7 @@ namespace BetterModules.Events
         /// <param name="application">The application.</param>
         public void OnRequestBegin(HttpApplication application)
         {
-            if (application != null)
+            if (RequestBegin != null)
             {
                 RequestBegin(new SingleItemEventArgs<HttpApplication>(application));
             }
@@ -88,7 +88,7 @@ namespace BetterModules.Events
         /// <param name="application">The application.</param>
         public void OnRequestEnd(HttpApplication application)
         {
-            if (application != null)
+            if (RequestEnd != null)
             {
                 RequestEnd(new SingleItemEventArgs<HttpApplication>(application));
             }
