@@ -178,3 +178,4 @@ packages/**
 #Test databases
 BetterModules.Core.Tests/App_Data/Temp/*.mdf
 BetterModules.Core.Tests/App_Data/Temp/*.ldf
+.vs
